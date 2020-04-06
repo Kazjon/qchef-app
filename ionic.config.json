@@ -1,0 +1,7 @@
+{
+  "name": "qchef-app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
