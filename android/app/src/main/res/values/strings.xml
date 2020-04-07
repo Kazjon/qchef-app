@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">QChef</string>
+    <string name="title_activity_main">QChef</string>
+    <string name="package_name">com.theprojectfactory.qchef</string>
+    <string name="custom_url_scheme">com.theprojectfactory.qchef</string>
+</resources>

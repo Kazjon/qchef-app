@@ -1,0 +1,21 @@
+.section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+
+    .photo-wrap {
+        width: 80%;
+        height: 100px;
+        background: lightslategrey;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        overflow: hidden;
+
+        img {
+            object-fit: contain;
+        }
+    }
+
+}

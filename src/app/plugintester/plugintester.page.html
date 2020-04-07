@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>plugintester</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <section class="section">
+    <h1>Take Photo</h1>
+    <div class="photo-wrap">
+      <img *ngIf="photo" [src]="photo" >
+    </div>
+    <ion-button (click)="takePhoto()">Take photo</ion-button>
+  </section>
+
+  <section class="section">
+    <h1>Share via Share Sheet</h1>
+    <ion-button (click)="shareStuff()">Share stuff</ion-button>
+  </section>
+
+  <section class="section">
+    <h1>Set a local notification</h1>
+    <ion-button (click)="askNotificationPermission()">Set local notification</ion-button>
+    <strong>Scheduled: </strong>
+    <div class="scheduled" *ngIf="scheduledNotifications != undefined">
+      <p *ngFor="let notification of scheduledNotifications.notifications">{{ notification.id }}</p>
+    </div>
+  </section>
+
+
+
+
+</ion-content>
