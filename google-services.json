@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "228604764374",
+    "firebase_url": "https://shib-test-e525c.firebaseio.com",
+    "project_id": "shib-test-e525c",
+    "storage_bucket": "shib-test-e525c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:228604764374:android:423fdddb82d1cbc42ba977",
+        "android_client_info": {
+          "package_name": "com.ent.theprojectfactory.qchef"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "228604764374-89lcvmvrjsh37lrdmlfp6bs2ccj129bh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0Z2HgkIlqyupgasnpBChtUk_CywREqVA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "228604764374-89lcvmvrjsh37lrdmlfp6bs2ccj129bh.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "228604764374-pcbhdkfhvt08a0l265q9hdfhept00ej4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ent.theprojectfactory.qchef"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

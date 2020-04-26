@@ -1,0 +1,19 @@
+<ion-content>
+
+	<div class="content-wrapper">
+		<ion-card class="content-prompt">
+			<ion-card-header>
+				<ion-card-title>Login to Start</ion-card-title>
+			</ion-card-header>
+
+			<ion-card-content>
+				<form (ngSubmit)="login()" [formGroup]="loginForm">
+					<ion-input formControlName="email" type="email" placeholder="Email"></ion-input>
+					<ion-input formControlName="password" type="password" placeholder="Password"></ion-input>
+					<ion-button type="submit">Login</ion-button>
+				</form>
+			</ion-card-content>
+		</ion-card>
+	</div>
+
+</ion-content>

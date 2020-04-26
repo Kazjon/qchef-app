@@ -1,0 +1,58 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Test Plugins</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <section class="section">
+    <h1>Login Firebase User</h1>
+    <div class="login-form" *ngIf="!isLoading && !isLoggedIn">
+      <ion-item>
+        <ion-label position="stacked">Email</ion-label>
+        <ion-input type="email" [(ngModel)]="userEmail"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Password</ion-label>
+        <ion-input type="password" [(ngModel)]="userPass"></ion-input>
+      </ion-item>
+      <ion-button class="butt-submit" (click)="loginFirebaseUser()">Login</ion-button>
+    </div>
+    <ion-spinner *ngIf="isLoading" name="dots"></ion-spinner>
+    <div class="login-form" *ngIf="isLoggedIn">
+      <p>You've successfully logged in!</p>
+      <ion-button (click)="getFirestoreData()">Get Recipies</ion-button>
+      <div class="recipes">
+
+      </div>
+    </div>
+
+  </section>
+
+  <section class="section">
+    <h1>Take Photo</h1>
+    <div class="photo-wrap">
+      <img *ngIf="photo" [src]="photo" >
+    </div>
+    <ion-button (click)="takePhoto()">Take photo</ion-button>
+  </section>
+
+  <section class="section">
+    <h1>Share via Share Sheet</h1>
+    <ion-button (click)="shareStuff()">Share stuff</ion-button>
+  </section>
+
+  <section class="section">
+    <h1>Set a local notification</h1>
+    <ion-button (click)="askNotificationPermission()">Set local notification</ion-button>
+    <strong>Scheduled: </strong>
+    <div class="scheduled" *ngIf="scheduledNotifications != undefined">
+      <p *ngFor="let notification of scheduledNotifications.notifications">{{ notification.id }}</p>
+    </div>
+  </section>
+
+</ion-content>
