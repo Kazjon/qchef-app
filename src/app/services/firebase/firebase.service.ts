@@ -11,7 +11,7 @@ export class FirebaseService {
 
     constructor() { }
 
-    checkIfUserAuthenticated() {
+    isUserAuthenticated() {
 
         let resolver = (resolve, reject) => {
 
