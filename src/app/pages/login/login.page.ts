@@ -11,6 +11,8 @@ import { Router } from '@angular/router';
 export class LoginPage implements OnInit {
     loginForm: FormGroup;
     formSubmitted: boolean = false;
+    formDisabled: boolean = false;
+    errorMessage: string = undefined;
     loginStates = {
         loading: "loading",
         ready: "ready",
@@ -49,23 +51,26 @@ export class LoginPage implements OnInit {
 
             this.firebaseService.loginWithEmailAndPassword(this.loginForm.value.email, this.loginForm.value.password)
                 .then((res) => {
+                    console.log(res);
                     this.state = this.loginStates.ready;
                     this.router.navigateByUrl('home', { replaceUrl: true });
                 })
                 .catch((error) => {
-                    this.state = this.loginStates.ready;
-                    console.log(error);
-                })
-            this.formSubmitted = true;
+                    this.state = this.loginStates.error;
+                    this.enableForm();
+                    this.errorMessage = error.message;
+                });
         }
 
     }
 
     private disableForm() {
-        this.loginForm.controls['email'].disable;
-        this.loginForm.controls['password'].disable;
-        this.loginForm.disable;
+        this.loginForm.disable();
+        this.formDisabled = true;
     }
 
-
+    private enableForm() {
+        this.loginForm.enable();
+        this.formDisabled = false;
+    }
 }
