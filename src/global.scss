@@ -36,6 +36,41 @@
     .content-prompt {
         max-width: 400px;
         width: 80%;
+
+        &.loading {
+
+            .loading-overlay {
+                display: flex;
+            }
+
+        }
+
+        .loading-overlay {
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            position: absolute;
+            top: 0;
+            left: 0;
+            margin: auto;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2;
+        }
     }
 }
 
+.error {
+    display: none;
+    background: var(--ion-color-danger);
+    border-radius: 10px;
+    padding: 10px;
+    color: var(--ion-color-danger-contrast);
+    font-size: 0.9em;
+    margin: 10px;
+
+    &.is-error {
+        display: block;
+    }
+}

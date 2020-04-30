@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import * as firebase from 'firebase/app';
 import 'firebase/analytics';
 import 'firebase/auth';
@@ -9,9 +10,20 @@ import 'firebase/firestore';
 })
 export class FirebaseService {
 
-    constructor() { }
+    constructor(private http: HttpClient) { }
 
-    checkIfUserAuthenticated() {
+    /*getStuff(access) {
+
+        let headers = new HttpHeaders({
+            'Authorization': 'Bearer ' + access,
+            'Content-Type': 'application/json'
+        });
+
+        return this.http.get("https://neura-ca-stage.theprojectfactory.com/vasat/api/Patient?patientId=778891", {headers});
+
+    }*/
+
+    isUserAuthenticated() {
 
         let resolver = (resolve, reject) => {
 

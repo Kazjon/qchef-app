@@ -1,7 +1,7 @@
 <ion-content>
 
 	<div class="content-wrapper">
-		<ion-card class="content-prompt">
+		<ion-card class="content-prompt" [ngClass]="{ 'loading': state === 'loading'}">
 			<ion-card-header>
 				<ion-card-title>Login to Start</ion-card-title>
 			</ion-card-header>
@@ -10,9 +10,15 @@
 				<form (ngSubmit)="login()" [formGroup]="loginForm">
 					<ion-input formControlName="email" type="email" placeholder="Email"></ion-input>
 					<ion-input formControlName="password" type="password" placeholder="Password"></ion-input>
-					<ion-button type="submit">Login</ion-button>
+					<ion-button type="submit" [disabled]="formDisabled">Login</ion-button>
+					<div class="error" [ngClass]="{'is-error': state === 'error'}">{{ errorMessage }}</div>
 				</form>
 			</ion-card-content>
+
+			<div class="loading-overlay">
+				<ion-spinner name="crescent" color="primary"></ion-spinner>
+			</div>
+
 		</ion-card>
 	</div>
 

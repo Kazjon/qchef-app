@@ -16,13 +16,18 @@ export class SplashPage implements OnInit {
 	}
 
 	checkUserAuthentication() {
-		this.firebaseService.checkIfUserAuthenticated()
-			.then(() => {
-				this.router.navigateByUrl('home', { replaceUrl: true });
-			})
-			.catch(() => {
-				this.router.navigateByUrl('login', { replaceUrl: true });
-			});
+
+		let timeout = setTimeout(() => {
+			this.firebaseService.isUserAuthenticated()
+				.then(() => {
+					this.router.navigateByUrl('home', { replaceUrl: true });
+				})
+				.catch(() => {
+					this.router.navigateByUrl('login', { replaceUrl: true });
+				});
+		}, 500);
+
+
 	}
 
 }
