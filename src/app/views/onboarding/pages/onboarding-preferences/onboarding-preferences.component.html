@@ -1,0 +1,29 @@
+<ion-header [translucent]="true">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+
+    <div class="content-wrapper">
+
+        <ion-card class="content-prompt">
+            <ion-card-header>
+                <ion-card-title>Food Preferences</ion-card-title>
+            </ion-card-header>
+
+            <ion-card-content>
+                <p>To help us customise your meal plan, tell us whether you like (or don't like) the following meals and ingredients.</p>
+                <ion-button color="primary" (click)="next()">Next</ion-button>
+            </ion-card-content>
+
+            <div class="loading-overlay">
+                <ion-spinner name="crescent" color="primary"></ion-spinner>
+            </div>
+
+        </ion-card>
+    </div>
+
+</ion-content>

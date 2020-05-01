@@ -1,0 +1,16 @@
+.content-wrapper {
+    flex-direction: column;
+    justify-content: space-between;
+
+    .meal-options {
+        width: 100%;
+
+        .preference-question-group {
+            display: none;
+
+            &.visible {
+                display: block;
+            }
+        }
+    }
+}

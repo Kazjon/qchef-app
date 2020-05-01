@@ -5,20 +5,25 @@ import { AuthGuardService as AuthGuard } from './services/auth-guard/auth-guard.
 const routes: Routes = [
 	{
 		path: 'home',
-		loadChildren: () => import('./pages/home/home.module').then(m => m.HomePageModule),
+		loadChildren: () => import('./views/home/home.module').then(m => m.HomePageModule),
 		canActivate: [AuthGuard]
 	},
 	{
 		path: 'plugintester',
-		loadChildren: () => import('./pages/plugintester/plugintester.module').then(m => m.PlugintesterPageModule)
+		loadChildren: () => import('./views/plugintester/plugintester.module').then(m => m.PlugintesterPageModule)
 	},
 	{
 		path: 'login',
-		loadChildren: () => import('./pages/login/login.module').then(m => m.LoginPageModule)
+		loadChildren: () => import('./views/login/login.module').then(m => m.LoginPageModule)
 	},
 	{
 		path: 'splash',
-		loadChildren: () => import('./pages/splash/splash.module').then(m => m.SplashPageModule)
+		loadChildren: () => import('./views/splash/splash.module').then(m => m.SplashPageModule)
+	},
+	{
+		path: 'onboarding',
+		loadChildren: () => import('./views/onboarding/onboarding.module').then(m => m.OnboardingModule),
+		canActivate: [AuthGuard]
 	},
 	{ 	path: '**',
 		redirectTo: 'splash',

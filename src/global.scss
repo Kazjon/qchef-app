@@ -74,3 +74,9 @@
         display: block;
     }
 }
+
+ion-slide {
+    ion-card {
+        max-width: 400px;
+    }
+}
