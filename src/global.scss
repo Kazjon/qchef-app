@@ -33,6 +33,42 @@
     justify-content: center;
     align-items: center;
 
+    &.row {
+        flex-direction: row;
+    }
+
+    &.column {
+        flex-direction: column;
+    }
+
+    &.start {
+        justify-content: flex-start;
+    }
+
+    .progress {
+        width: 80%;
+        padding: 40px 0;
+    }
+
+    .content {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .slide-options {
+        width: 100%;
+
+        .preference-question-group {
+            display: none;
+
+            &.visible {
+                display: block;
+            }
+        }
+    }
+
     .content-prompt {
         max-width: 400px;
         width: 80%;

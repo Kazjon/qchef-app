@@ -6,6 +6,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { OnboardingGetStartedPage } from './pages/onboarding-getstarted/onboarding-getstarted.page';
 import { OnboardingPreferencesComponent } from './pages/onboarding-preferences/onboarding-preferences.component';
 import { OnboardingMealPreferencesComponent } from './pages/onboarding-mealpreferences/onboarding-mealpreferences.component';
+import { OnboardingIngredientPreferencesComponent } from './pages/onboarding-ingredientpreferences/onboarding-ingredientpreferences.component';
+import { OnboardingNumberOfMealsComponent } from './pages/onboarding-numberofmeals/onboarding-numberofmeals.component';
+import { OnboardingCompleteComponent } from './pages/onboarding-complete/onboarding-complete.component';
 
 
 const routes: Routes = [
@@ -20,6 +23,15 @@ const routes: Routes = [
     },
     {
         path: 'mealpreferences', component: OnboardingMealPreferencesComponent
+    },
+    {
+        path: 'ingredientpreferences', component: OnboardingIngredientPreferencesComponent
+    },
+    {
+        path: 'numberofmeals', component: OnboardingNumberOfMealsComponent
+    },
+    {
+        path: 'complete', component: OnboardingCompleteComponent
     }
 ];
 
@@ -33,7 +45,10 @@ const routes: Routes = [
     declarations: [
         OnboardingGetStartedPage,
         OnboardingPreferencesComponent,
-        OnboardingMealPreferencesComponent
+        OnboardingMealPreferencesComponent,
+        OnboardingIngredientPreferencesComponent,
+        OnboardingNumberOfMealsComponent,
+        OnboardingCompleteComponent
     ]
 })
 export class OnboardingModule { }

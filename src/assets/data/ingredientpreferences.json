@@ -1,0 +1,17 @@
+[
+    {
+        "id": 123,
+        "image": "https://images.pexels.com/photos/1080071/pexels-photo-1080071.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+        "title": "Pumpkin Seeds"
+    },
+    {
+        "id": 124,
+        "image": "https://images.pexels.com/photos/255469/pexels-photo-255469.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+        "title": "Peas"
+    },
+    {
+        "id": 125,
+        "image": "https://images.pexels.com/photos/1274613/pexels-photo-1274613.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+        "title": "Capsicum"
+    }
+]

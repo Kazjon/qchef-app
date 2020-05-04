@@ -9,17 +9,16 @@
 
 	<div class="content-wrapper column">
 		<div class="slide-options">
-			<ion-slides #mealSlides>
-				<ion-slide *ngFor="let meal of mealPreferenceOptions; let mealIndex = index">
+			<ion-slides #ingredientSlides>
+				<ion-slide *ngFor="let ingredient of ingredientPreferenceOptions; let ingredientIndex = index">
 					<ion-card>
-						<img src="{{ meal.image }}" />
+						<img src="{{ ingredient.image }}" />
 						<ion-card-header>
-							<ion-card-title>{{ meal.title }}</ion-card-title>
+							<ion-card-title>{{ ingredient.title }}</ion-card-title>
 						</ion-card-header>
 						<ion-card-content>
-							<p>{{ meal.description }}</p>
-							<ion-radio-group class="preference-question-group" *ngFor="let question of meal.questions; let questionIndex = index" [ngClass]="{'visible': question.active}">
-								<ion-item *ngFor="let option of question.options" (click)="selectPreference(meal.id, question.id, option, questionIndex, mealIndex)">
+							<ion-radio-group class="preference-question-group" *ngFor="let question of ingredient.questions; let questionIndex = index" [ngClass]="{'visible': question.active}">
+								<ion-item *ngFor="let option of question.options" (click)="selectPreference(ingredient.id, question.id, option, questionIndex, ingredientIndex)">
 									<ion-radio value="{{ option }}" slot="start"></ion-radio>
 								  	<ion-label text-wrap>{{ option }}</ion-label>
 								</ion-item>
@@ -29,7 +28,7 @@
 				</ion-slide>
 			</ion-slides>
 		</div>
-		<div class="pager">1 of 30 meals</div>
+		<div class="pager">1 of 20 ingredients</div>
 	</div>
 
 </ion-content>

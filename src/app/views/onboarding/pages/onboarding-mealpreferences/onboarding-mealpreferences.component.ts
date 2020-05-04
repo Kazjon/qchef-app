@@ -1,10 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DataService } from '../../../../services/data/data.service';
 import { mealPreferenceQuestions } from '../../../../../assets/data/mealpreferencequestions';
-import { MealPreference } from '../../../../core/MealPreference';
-import { MealPreferenceQuestion } from '../../../../core/MealPreferenceQuestion';
-import { MealPreferenceResponse } from 'src/app/core/MealPreferenceResponse';
+import { MealPreference } from '../../../../core/objects/MealPreference';
+import { MealPreferenceQuestion } from '../../../../core/objects/MealPreferenceQuestion';
+import { MealPreferenceResponse } from 'src/app/core/objects/MealPreferenceResponse';
 import { IonSlides } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-onboarding-mealpreferences',
@@ -12,12 +13,12 @@ import { IonSlides } from '@ionic/angular';
     styleUrls: ['./onboarding-mealpreferences.component.scss'],
 })
 export class OnboardingMealPreferencesComponent implements OnInit {
-    @ViewChild('mealSlides', { static: false }) mealSlides: IonSlides
+    @ViewChild('mealSlides', { static: false }) mealSlides: IonSlides;
     mealPreferenceOptions: MealPreference[];
     preferenceQuestions: MealPreferenceQuestion[] = mealPreferenceQuestions;
     mealPreferenceResponses: MealPreferenceResponse[] = [];
 
-    constructor(private dataService: DataService) { }
+    constructor(private dataService: DataService, private router: Router) { }
 
     ngOnInit() {
 
@@ -89,9 +90,20 @@ export class OnboardingMealPreferencesComponent implements OnInit {
             this.mealPreferenceOptions[mealIndex].questions[next].active = true;
         }
         else {
-            this.mealSlides.slideNext();
+            this.mealSlides.isEnd().then((isEnd) => {
+                if (isEnd) {
+                    this.goToIngredients();
+                }
+                else {
+                    this.mealSlides.slideNext();
+                }
+            });
         }
 
+    }
+
+    private goToIngredients() {
+        this.router.navigateByUrl("/onboarding/ingredientpreferences");
     }
 
 }
