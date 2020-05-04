@@ -1,0 +1,36 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+      <ion-buttons slot="start">
+          <ion-back-button></ion-back-button>
+      </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+
+  <div class="content-wrapper column start">
+
+      <div class="progress">
+          <ion-progress-bar color="tertiary" value="0.5"></ion-progress-bar>
+      </div>
+
+      <div class="content">
+          <ion-card class="content-prompt">
+              <ion-card-header>
+                  <ion-card-title>Number of Meals</ion-card-title>
+              </ion-card-header>
+
+              <ion-card-content>
+                  <p>How many recipes do you want to prepare this week?</p>
+                  <ion-button color="primary" (click)="next()">Next</ion-button>
+              </ion-card-content>
+
+              <div class="loading-overlay">
+                  <ion-spinner name="crescent" color="primary"></ion-spinner>
+              </div>
+          </ion-card>
+      </div>
+
+
+  </div>
+
+</ion-content>

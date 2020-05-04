@@ -1,0 +1,34 @@
+<ion-header [translucent]="true">
+	<ion-toolbar>
+		<ion-buttons slot="start">
+			<ion-back-button></ion-back-button>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+<ion-content>
+
+	<div class="content-wrapper column">
+		<div class="slide-options">
+			<ion-slides #ingredientSlides>
+				<ion-slide *ngFor="let ingredient of ingredientPreferenceOptions; let ingredientIndex = index">
+					<ion-card>
+						<img src="{{ ingredient.image }}" />
+						<ion-card-header>
+							<ion-card-title>{{ ingredient.title }}</ion-card-title>
+						</ion-card-header>
+						<ion-card-content>
+							<ion-radio-group class="preference-question-group" *ngFor="let question of ingredient.questions; let questionIndex = index" [ngClass]="{'visible': question.active}">
+								<ion-item *ngFor="let option of question.options" (click)="selectPreference(ingredient.id, question.id, option, questionIndex, ingredientIndex)">
+									<ion-radio value="{{ option }}" slot="start"></ion-radio>
+								  	<ion-label text-wrap>{{ option }}</ion-label>
+								</ion-item>
+							  </ion-radio-group>
+						</ion-card-content>
+					</ion-card>
+				</ion-slide>
+			</ion-slides>
+		</div>
+		<div class="pager">1 of 20 ingredients</div>
+	</div>
+
+</ion-content>
