@@ -15,7 +15,7 @@ export class OnboardingCompleteComponent implements OnInit {
         // here we'll pull down their meal options for the week
 
         let timeout = setTimeout(() => {
-            this.router.navigateByUrl("/selectmeals/mealone");
+            this.router.navigateByUrl("/mealselection/meal/1");
             clearTimeout(timeout);
         }, 1000);
 

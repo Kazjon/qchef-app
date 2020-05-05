@@ -25,8 +25,8 @@ export class SplashPage implements OnInit {
 				.catch(() => {
 					this.router.navigateByUrl('login', { replaceUrl: true });
 				});
-		}, 500);
-
+			clearTimeout(timeout);
+		}, 1500);
 
 	}
 

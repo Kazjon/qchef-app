@@ -1,0 +1,10 @@
+.swiper-slide {
+    &.selected {
+
+        ion-card {
+            border: 3px solid var(--ion-color-secondary);
+        }
+
+    }
+
+}
