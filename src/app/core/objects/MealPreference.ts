@@ -9,5 +9,6 @@ export interface MealPreference {
     image: string,
     ingredients: Array<string>,
     method: Array<string>,
-    questions?: Array<MealPreferenceQuestion>
+    questions?: Array<MealPreferenceQuestion>,
+    selected?: boolean
 }
