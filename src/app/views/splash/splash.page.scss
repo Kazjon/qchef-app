@@ -1,0 +1,25 @@
+ion-content {
+    .center {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .splash-image {
+        width: 82px;
+        height: 82px;
+    }
+
+    ion-label {
+        align-self: center;
+        margin-left: 15px;
+        height: 82px;
+
+        color: var(--ion-color-font-main);
+        font-family: var(--font-family-logo);
+        font-style: var(--font-style-logo);
+        font-weight: var(--font-weight-logo);
+        font-size: 80px;
+        line-height: 95px;
+        text-align: center;
+    }
+}
