@@ -13,13 +13,13 @@ ion-content {
 
     ion-label {
         align-self: center;
-        color: $black;
         margin-left: 15px;
         height: 82px;
 
-        font-family: rubikbold;
-        font-style: normal;
-        font-weight: bold;
+        color: var(--ion-color-font-main);
+        font-family: var(--font-family-logo);
+        font-style: var(--font-style-logo);
+        font-weight: var(--font-weight-logo);
         font-size: 80px;
         line-height: 95px;
         text-align: center;
