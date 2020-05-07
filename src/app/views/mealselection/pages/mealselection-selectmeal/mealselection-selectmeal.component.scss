@@ -8,3 +8,30 @@
     }
 
 }
+
+ion-slides {
+    padding-bottom: 20px;
+
+    .swiper-pagination {
+        bottom: 0;
+    }
+}
+
+.meal-slots {
+    width: 100%;
+    overflow-x: scroll;
+    white-space: nowrap;
+
+    .meal {
+        width: 70px;
+        height: 72px;
+        border: 1px solid var(--ion-color-disabled);
+        border-radius: 8px;
+        display: inline-block;
+        margin: 6px;
+        text-align: center;
+        line-height: 72px;
+        color: var(--ion-color-disabled);
+        font-size: 2.25em;
+    }
+}

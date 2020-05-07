@@ -5,6 +5,8 @@ import { DataService } from 'src/app/services/data/data.service';
 import { Subscription } from 'rxjs';
 import { MealsPerWeekResponse } from 'src/app/core/objects/MealsPerWeekResponse';
 import { MealPreference } from 'src/app/core/objects/MealPreference';
+import { ModalController } from '@ionic/angular';
+import { RecipeModalComponent } from '../../../../core/components/recipemodal/recipemodal.component';
 
 @Component({
     selector: 'app-mealselection-selectmeal',
@@ -20,7 +22,10 @@ export class MealSelectionSelectMealComponent implements OnInit {
     mealOptions: MealPreference[];
     canContinue: boolean = false;
 
-    constructor(private route: ActivatedRoute, private dataService: DataService) { }
+    constructor(
+        private route: ActivatedRoute,
+        private dataService: DataService,
+        public modalController: ModalController) { }
 
     ngOnInit() {
 
@@ -80,6 +85,19 @@ export class MealSelectionSelectMealComponent implements OnInit {
         this.mealOptions[mealIndex].selected = true;
 
         this.canContinue = true;
+
+    }
+
+    async openRecipe(recipe: MealPreference) {
+
+        const modal = await this.modalController.create({
+            component: RecipeModalComponent,
+            componentProps: {
+                'recipe': recipe
+            }
+        });
+
+        return await modal.present();
 
     }
 }

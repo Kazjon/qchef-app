@@ -74,6 +74,14 @@
   --ion-color-light-contrast-rgb: 0, 0, 0;
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
+
+  /** disabled **/
+  --ion-color-disabled: #e3e3e3;
+  --ion-color-disabled-rgb: 227,227,227;
+  --ion-color-disabled-contrast: #000000;
+  --ion-color-disabled-contrast-rgb: 0,0,0;
+  --ion-color-disabled-shade: #c8c8c8;
+  --ion-color-disabled-tint: #e6e6e6;
 }
 
 @media (prefers-color-scheme: dark) {

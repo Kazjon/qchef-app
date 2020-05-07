@@ -9,13 +9,27 @@
 
     <div class="content-wrapper column start">
 
+        <meal-slot></meal-slot>
+
+        <div class="meal-slots">
+            <div class="meal">
+                1
+            </div>
+            <div class="meal">
+                2
+            </div>
+            <div class="meal">
+                3
+            </div>
+        </div>
+
         <h1>Select Meal {{ mealSlot }}/{{ mealsPerWeek?.mealsPerWeek }}</h1>
 
         <div class="slide-options">
 			<ion-slides #mealSlides pager="true">
 				<ion-slide *ngFor="let meal of mealOptions; let mealIndex = index" [ngClass]="{'selected': meal.selected}">
 					<ion-card>
-						<img src="{{ meal.image }}" />
+						<img src="{{ meal.image }}" (click)="openRecipe(meal)"/>
 						<ion-card-header>
 							<ion-card-title>{{ meal.title }}</ion-card-title>
 						</ion-card-header>
