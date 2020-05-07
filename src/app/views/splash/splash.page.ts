@@ -11,7 +11,7 @@ export class SplashPage implements OnInit {
 	imgSrc: String;
 
 	constructor(private firebaseService: FirebaseService, private router: Router) {
-		this.imgSrc = "../../../assets/splash.svg"
+		this.imgSrc = "../../../assets/images/splash.svg"
 	}
 
 	ngOnInit() {
