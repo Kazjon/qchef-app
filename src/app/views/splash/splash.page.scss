@@ -1,0 +1,27 @@
+@import "../../../theme/constants.scss";
+
+ion-content {
+    .center {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .splash-image {
+        width: 82px;
+        height: 82px;
+    }
+
+    ion-label {
+        align-self: center;
+        color: $black;
+        margin-left: 15px;
+        height: 82px;
+
+        font-family: rubikbold;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 80px;
+        line-height: 95px;
+        text-align: center;
+    }
+}
