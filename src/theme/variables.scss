@@ -83,11 +83,33 @@
   --ion-color-font-main-shade: #000000;
   --ion-color-font-main-tint: #1a1a1a;
 
+  /** font button **/
+  --ion-color-font-button: #ffffff;
+  --ion-color-font-button-rgb: 255,255,255;
+  --ion-color-font-button-contrast: #000000;
+  --ion-color-font-button-contrast-rgb: 0,0,0;
+  --ion-color-font-button-shade: #e0e0e0;
+  --ion-color-font-button-tint: #ffffff;
+
   /** logo font **/
   --font-family-logo: rubikbold;
   --font-style-logo: normal;
   --font-weight-logo: bold;
 
+  /** heading **/
+  --font-family-heading: work_sansregular;
+  --font-style-heading: normal;
+  --font-weight-heading: normal;
+
+  /** body font **/
+  --font-family-body: robotoregular;
+  --font-style-body: normal;
+  --font-weight-body: normal;
+
+  /** button font **/
+  --font-family-button: rubikbold;
+  --font-style-button: normal;
+  --font-weight-button: bold;
 }
 
 @media (prefers-color-scheme: dark) {

@@ -53,7 +53,7 @@ export class LoginPage implements OnInit {
                 .then((res) => {
                     console.log(res);
                     this.state = this.loginStates.ready;
-                    this.router.navigateByUrl('onboarding', { replaceUrl: true });
+                    this.router.navigateByUrl('onboarding');
                 })
                 .catch((error) => {
                     this.state = this.loginStates.error;

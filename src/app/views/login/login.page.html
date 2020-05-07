@@ -8,9 +8,9 @@
 
 			<ion-card-content>
 				<form (ngSubmit)="login()" [formGroup]="loginForm">
-					<ion-input formControlName="email" type="email" placeholder="Email"></ion-input>
-					<ion-input formControlName="password" type="password" placeholder="Password"></ion-input>
-					<ion-button type="submit" [disabled]="formDisabled">Login</ion-button>
+					<ion-input class="form-input" formControlName="email" type="email" placeholder="Username"></ion-input>
+					<ion-input class="form-input" formControlName="password" type="password" placeholder="Password"></ion-input>
+					<ion-button class="submit-button" type="submit" [disabled]="formDisabled">Login</ion-button>
 					<div class="error" [ngClass]="{'is-error': state === 'error'}">{{ errorMessage }}</div>
 				</form>
 			</ion-card-content>
