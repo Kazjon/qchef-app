@@ -64,6 +64,14 @@
 
         ion-card-content {
             padding: 0 40px 24px;
+            p {
+                color: var(--ion-color-font-main);
+                font-family: var(--font-family-body);
+                font-style: var(--font-style-body);
+                font-weight: var(--font-weight-body);
+                font-size: 18px;
+                line-height: 23px;  
+            }
         }
 
         ion-card-title {
