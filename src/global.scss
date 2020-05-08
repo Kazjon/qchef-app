@@ -138,22 +138,40 @@ ion-card-title {
     line-height: 45px;
 }
 
-.form-input{
-    background: #FEFEFE;
-    border: 1px solid #E3E3E3;
+ion-header.transparent-header {
+    backdrop-filter: blur(0);
+}
+
+ion-toolbar {
+    top: 24px;
+    left: 24px;
+}
+
+ion-back-button {
+    font-family: var(--font-family-back);
+    font-style: var(--font-style-back);
+    font-weight: var(--font-weight-back);
+    font-size: 14px;
+    line-height: 16px;
+    text-transform: uppercase;
+}
+
+ion-input {
+    background: var(--ion-color-input-background) !important;
+    border: 1px solid var(--ion-color-input-border) ;
     box-sizing: border-box;
     margin: 12px auto;
 
-    --padding-start: 10px;
+    --padding-start: 10px !important;
 
-    font-family: var(--font-family-body);
-    font-style: var(--font-style-body);
-    font-weight: var(--font-weight-body);
-    font-size: 18px;
+    font-family: var(--font-family-body) !important;
+    font-style: var(--font-style-body) !important;
+    font-weight: var(--font-weight-body) !important;
+    font-size: 18px !important;
     line-height: 23px;
 }
 
-.submit-button {
+ion-button {
     width: 100%;
     --border-radius: 50px;
     --box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
