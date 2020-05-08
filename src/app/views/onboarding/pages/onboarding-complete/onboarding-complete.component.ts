@@ -19,6 +19,8 @@ export class OnboardingCompleteComponent implements OnInit {
 
     ngOnInit() {
 
+        console.log("on init complete");
+
         // Get how many meals per week the user has selected
         this.mealsPerWeekSubscription = this.dataService.mealsPerWeekObservable.subscribe((res) => {
             this.mealsPerWeek = res;

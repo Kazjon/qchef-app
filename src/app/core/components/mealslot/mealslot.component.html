@@ -1,3 +1,4 @@
-<p>
-  mealslot works!
-</p>
+<div class="meal">
+	<span *ngIf="!mealSlot.selected">{{ mealSlot.id }}</span>
+	<img *ngIf="mealSlot.selected" src="{{ mealSlot.image }}" />
+</div>

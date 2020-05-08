@@ -1,14 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { MealSlot } from '../../objects/MealSlot';
 
 @Component({
-  selector: 'meal-slot',
-  templateUrl: './mealslot.component.html',
-  styleUrls: ['./mealslot.component.scss'],
+    selector: 'meal-slot',
+    templateUrl: './mealslot.component.html',
+    styleUrls: ['./mealslot.component.scss'],
 })
 export class MealSlotComponent implements OnInit {
+    @Input() mealSlot: MealSlot;
 
-  constructor() { }
+    constructor() { }
 
-  ngOnInit() {}
+    ngOnInit() {
+        console.log(this.mealSlot);
+    }
 
 }

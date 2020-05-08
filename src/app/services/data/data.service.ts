@@ -37,27 +37,22 @@ export class DataService {
 
     getRecommendedMealsFromLocal() {
 
-        let resolver = new Promise((resolve) => {
+        let recommendedMeals: MealPreference[];
+        let localRecommendedMealsString = localStorage.getItem("localRecommendedMeals");
 
-            let recommendedMeals: MealPreference[];
-            let localRecommendedMealsString = localStorage.getItem("localRecommendedMeals");
+        if (localRecommendedMealsString != undefined) {
+            recommendedMeals = JSON.parse(localRecommendedMealsString);
+        }
+        else {
+            recommendedMeals = [];
+        }
 
-            if (localRecommendedMealsString != undefined) {
-                recommendedMeals = JSON.parse(localRecommendedMealsString);
-            }
-            else {
-                recommendedMeals = [];
-            }
-
-            resolve(recommendedMeals);
-
-        });
-
-        return resolver;
+        this.setRecommendedMeals(recommendedMeals);
 
     }
 
     getMealSlotsFromLocal() {
+
 
         let mealSlots: MealSlot[];
         let localMealSlotsString = localStorage.getItem("localMealSlots");

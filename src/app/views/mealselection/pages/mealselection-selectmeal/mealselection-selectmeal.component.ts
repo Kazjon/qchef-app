@@ -37,22 +37,49 @@ export class MealSelectionSelectMealComponent implements OnInit {
         // get meals per week
         // get meal slots
         // get meal recommendations
-        forkJoin({
-            mealsPerWeek: this.dataService.mealsPerWeek.pipe(take(1)),
-            mealSlots: this.dataService.mealSlots.pipe(take(1)),
-            mealRecommendations: this.dataService.recommendedMeals.pipe(take(1))
-        }).subscribe((res) => {
-            this.initialiseData(res);
+
+        combineLatest(
+            this.dataService.mealsPerWeekObservable,
+            this.dataService.mealSlotsObservable,
+            this.dataService.recommendedMealsObservable
+        ).pipe(
+            take(4)
+        )
+        .subscribe(([mealsPerWeek, mealSlots, recommendedMeals]) => {
+            this.checkData(mealsPerWeek, mealSlots, recommendedMeals);
         });
 
     }
 
-    private initialiseData(data) {
+    private checkData(mealsPerWeek, mealSlots, recommendedMeals) {
+        if (mealSlots.length <= 0) {
+            this.dataService.getMealSlotsFromLocal();
+        }
+        else if (recommendedMeals.length <= 0) {
+            this.dataService.getRecommendedMealsFromLocal();
+        }
+        else {
+            this.initialiseData(mealsPerWeek, mealSlots, recommendedMeals);
+        }
+    }
 
-        this.mealSlots = data.mealSlots;
-        this.mealsPerWeek = data.mealsPerWeek;
-        this.mealOptions = data.mealRecommendations;
+    private initialiseData(mealsPerWeek, mealSlots, recommendedMeals) {
 
+        this.mealsPerWeek = mealsPerWeek;
+        this.mealSlots = mealSlots;
+        this.mealOptions = recommendedMeals;
+
+        this.setCurrentMealSlot();
+
+    }
+
+    private setCurrentMealSlot() {
+        for (let i = 0; i < this.mealSlots.length; i++) {
+            if (this.paramMealSlot == this.mealSlots[i].id) {
+                this.currentMealSlot = this.mealSlots[i];
+                break;
+            }
+        }
     }
 
     selectMeal(mealIndex: number) {

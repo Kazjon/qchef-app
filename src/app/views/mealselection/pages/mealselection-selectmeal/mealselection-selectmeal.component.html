@@ -9,10 +9,8 @@
 
     <div class="content-wrapper column start">
 
-        <meal-slot></meal-slot>
-
         <div class="meal-slots">
-            <meal-slot *ngFor="let mealslot of mealSlots"></meal-slot>
+            <meal-slot *ngFor="let mealslot of mealSlots" [mealSlot]="mealslot"></meal-slot>
         </div>
 
         <h1>Select Meal {{ currentMealSlot?.id }}/{{ mealsPerWeek?.mealsPerWeek }}</h1>
