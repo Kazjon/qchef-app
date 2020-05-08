@@ -91,11 +91,51 @@
   --ion-color-font-main-shade: #000000;
   --ion-color-font-main-tint: #1a1a1a;
 
+  /** font button **/
+  --ion-color-font-button: #ffffff;
+  --ion-color-font-button-rgb: 255,255,255;
+  --ion-color-font-button-contrast: #000000;
+  --ion-color-font-button-contrast-rgb: 0,0,0;
+  --ion-color-font-button-shade: #e0e0e0;
+  --ion-color-font-button-tint: #ffffff;
+
+  /** input background **/
+  --ion-color-input-background: #FEFEFE;
+  --ion-color-input-background-rgb: 254,254,254;
+  --ion-color-input-background-contrast: #000000;
+  --ion-color-input-background-contrast-rgb: 0,0,0;
+  --ion-color-input-background-shade: #e0e0e0;
+  --ion-color-input-background-tint: #fefefe;
+
+  /** input border **/
+  --ion-color-input-border: #E3E3E3;
+  --ion-color-input-border-rgb: 227,227,227;
+  --ion-color-input-border-contrast: #000000;
+  --ion-color-input-border-contrast-rgb: 0,0,0;
+  --ion-color-input-border-shade: #c8c8c8;
+  --ion-color-input-border-tint: #e6e6e6;
+
   /** logo font **/
   --font-family-logo: rubikbold;
   --font-style-logo: normal;
   --font-weight-logo: bold;
 
+  /** heading **/
+  --font-family-heading: work_sansregular;
+  --font-style-heading: normal;
+  --font-weight-heading: normal;
+
+  /** body font **/
+  --font-family-body: robotoregular;
+  --font-style-body: normal;
+  --font-weight-body: normal;
+
+  /** button font **/
+  --font-family-button: rubikbold;
+  --font-style-button: normal;
+  --font-weight-button: bold;
+
+  
 }
 
 @media (prefers-color-scheme: dark) {
