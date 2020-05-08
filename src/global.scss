@@ -138,24 +138,6 @@ ion-card-title {
     line-height: 45px;
 }
 
-ion-header.transparent-header {
-    backdrop-filter: blur(0);
-}
-
-ion-toolbar {
-    top: 24px;
-    left: 24px;
-}
-
-ion-back-button {
-    font-family: var(--font-family-back);
-    font-style: var(--font-style-back);
-    font-weight: var(--font-weight-back);
-    font-size: 14px;
-    line-height: 16px;
-    text-transform: uppercase;
-}
-
 ion-input {
     background: var(--ion-color-input-background) !important;
     border: 1px solid var(--ion-color-input-border) ;
