@@ -32,7 +32,7 @@
         box-sizing: border-box;
         margin: 12px auto;
 
-        --padding-start: 10px;
+        --padding-start: 15px;
 
         font-family: var(--font-family-body);
         font-style: var(--font-style-body);
@@ -59,8 +59,7 @@
         }
 
         ion-card-content {
-            padding-left: 40px;
-            padding-right: 40px;
+            padding: 0 40px 24px;
         }
 
         ion-card-title {
