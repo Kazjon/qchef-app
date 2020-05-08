@@ -12,18 +12,10 @@
         <meal-slot></meal-slot>
 
         <div class="meal-slots">
-            <div class="meal">
-                1
-            </div>
-            <div class="meal">
-                2
-            </div>
-            <div class="meal">
-                3
-            </div>
+            <meal-slot *ngFor="let mealslot of mealSlots"></meal-slot>
         </div>
 
-        <h1>Select Meal {{ mealSlot }}/{{ mealsPerWeek?.mealsPerWeek }}</h1>
+        <h1>Select Meal {{ currentMealSlot?.id }}/{{ mealsPerWeek?.mealsPerWeek }}</h1>
 
         <div class="slide-options">
 			<ion-slides #mealSlides pager="true">

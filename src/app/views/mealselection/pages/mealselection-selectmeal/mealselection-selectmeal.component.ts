@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { MealPlanSelection } from 'src/app/core/objects/MealPlanSelection';
+import { MealPlanSelectionResponse } from 'src/app/core/objects/MealPlanSelectionResponse';
 import { DataService } from 'src/app/services/data/data.service';
-import { Subscription } from 'rxjs';
+import { forkJoin, combineLatest } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { MealsPerWeekResponse } from 'src/app/core/objects/MealsPerWeekResponse';
 import { MealPreference } from 'src/app/core/objects/MealPreference';
 import { ModalController } from '@ionic/angular';
 import { RecipeModalComponent } from '../../../../core/components/recipemodal/recipemodal.component';
+import { MealSlot } from 'src/app/core/objects/MealSlot';
 
 @Component({
     selector: 'app-mealselection-selectmeal',
@@ -14,13 +16,12 @@ import { RecipeModalComponent } from '../../../../core/components/recipemodal/re
     styleUrls: ['./mealselection-selectmeal.component.scss'],
 })
 export class MealSelectionSelectMealComponent implements OnInit {
-    mealSlot: number;
-    mealsPerWeekSubscription: Subscription;
+    currentMealSlot: MealSlot;
     mealsPerWeek: MealsPerWeekResponse;
-    allSelectedMealPlans: MealPlanSelection[];
-    mealPlanSelection: MealPlanSelection;
     mealOptions: MealPreference[];
+    mealSlots: MealSlot[];
     canContinue: boolean = false;
+    paramMealSlot: number;
 
     constructor(
         private route: ActivatedRoute,
@@ -29,51 +30,30 @@ export class MealSelectionSelectMealComponent implements OnInit {
 
     ngOnInit() {
 
-        this.mealsPerWeekSubscription = this.dataService.mealsPerWeekObservable.subscribe((res) => {
-            this.mealsPerWeek = res;
-        });
-
-        this.allSelectedMealPlans = this.dataService.getMealPlansFromLocal();
-
         this.route.paramMap.subscribe(params => {
-            let mealSlot: number = parseInt(params.get('mealslot'));
-            this.initialiseMealSlot(mealSlot);
+            this.paramMealSlot = parseInt(params.get('mealslot'));
         });
 
-        this.dataService.getMealsFromServer().subscribe((res) => {
-            this.mealOptions = res;
+        // get meals per week
+        // get meal slots
+        // get meal recommendations
+        forkJoin({
+            mealsPerWeek: this.dataService.mealsPerWeek.pipe(take(1)),
+            mealSlots: this.dataService.mealSlots.pipe(take(1)),
+            mealRecommendations: this.dataService.recommendedMeals.pipe(take(1))
+        }).subscribe((res) => {
+            this.checkDataIsOk(res);
         });
 
     }
 
-    ngOnDestroy() {
-        this.mealsPerWeekSubscription.unsubscribe();
-    }
+    private checkDataIsOk(data) {
+        console.log(data);
 
-    initialiseMealSlot(mealSlot: number) {
-
-        this.mealSlot = mealSlot;
-
-        if (this.allSelectedMealPlans.length <= 0) {
-            this.createNewMealPlanSlot(mealSlot);
-            this.addSlotToSelectedMealPlans(this.mealPlanSelection);
-        }
-        else {
-
+        if (data.mealSlots.length <= 0) {
+            this.dataService.getMealSlotsFromLocal();
         }
 
-    }
-
-    createNewMealPlanSlot(mealSlot: number) {
-        this.mealPlanSelection = {
-            recipeID: 1,
-            reviewed: false,
-            mealSlot: mealSlot
-        }
-    }
-
-    addSlotToSelectedMealPlans(mealPlan) {
-        this.allSelectedMealPlans.push(mealPlan);
     }
 
     selectMeal(mealIndex: number) {
