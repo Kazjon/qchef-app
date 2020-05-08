@@ -25,6 +25,73 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 
+:root {
+    ion-input {
+        background: var(--ion-color-input-background);
+        border: 1px solid var(--ion-color-input-border) ;
+        box-sizing: border-box;
+        margin: 12px auto;
+
+        --padding-start: 10px;
+
+        font-family: var(--font-family-body);
+        font-style: var(--font-style-body);
+        font-weight: var(--font-weight-body);
+        font-size: 18px;
+        line-height: 23px;
+
+        input {
+            height: 52px;
+        }
+    }
+
+    ion-slide {
+        ion-card {
+            max-width: 400px;
+        }
+    }
+    
+    ion-card {
+        border-radius: 0px;
+
+        ion-card-header {
+            padding: 26px 40px 0;
+        }
+
+        ion-card-content {
+            padding-left: 40px;
+            padding-right: 40px;
+        }
+
+        ion-card-title {
+            color: var(--ion-color-font-main);
+            font-family: var(--font-family-heading);
+            font-style: var(--font-style-heading);
+            font-weight: var(--font-weight-heading);
+            font-size: 36px;
+            line-height: 45px;  
+        }
+        
+    }
+    
+    ion-button {
+        width: 100%;
+        --border-radius: 50px;
+        --box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    
+        color: var(--ion-color-font-button);
+        font-family: var(--font-family-button);
+        font-style: var(--font-style-button);
+        font-weight: var(--font-weight-button);
+        font-size: 16px;
+        line-height: 19px;
+        text-align: center;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        height: 50px;
+        margin: 8px auto;
+    }
+}
 
 .content-wrapper {
     width: 100%;
@@ -71,7 +138,7 @@
 
     .content-prompt {
         max-width: 400px;
-        width: 80%;
+        width: 87%;
 
         &.loading {
 
@@ -116,59 +183,6 @@
     align-items: center;
     justify-content: center;
     height: 100%;
-}
-
-ion-slide {
-    ion-card {
-        max-width: 400px;
-    }
-}
-
-ion-card {
-    border-radius: 0px;
-    padding: 8px;
-}
-
-ion-card-title {
-    color: var(--ion-color-font-main);
-    font-family: var(--font-family-heading);
-    font-style: var(--font-style-heading);
-    font-weight: var(--font-weight-heading);
-    font-size: 36px;
-    line-height: 45px;
-}
-
-ion-input {
-    background: var(--ion-color-input-background) !important;
-    border: 1px solid var(--ion-color-input-border) ;
-    box-sizing: border-box;
-    margin: 12px auto;
-
-    --padding-start: 10px !important;
-
-    font-family: var(--font-family-body) !important;
-    font-style: var(--font-style-body) !important;
-    font-weight: var(--font-weight-body) !important;
-    font-size: 18px !important;
-    line-height: 23px;
-}
-
-ion-button {
-    width: 100%;
-    --border-radius: 50px;
-    --box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-
-    color: var(--ion-color-font-button);
-    font-family: var(--font-family-button);
-    font-style: var(--font-style-button);
-    font-weight: var(--font-weight-button);
-    font-size: 16px;
-    line-height: 19px;
-    text-align: center;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    height: 50px;
-    margin: 8px auto;
 }
 
 p {
