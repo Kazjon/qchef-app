@@ -89,6 +89,25 @@
         height: 50px;
         margin: 8px auto;
     }
+
+    ion-header {
+        backdrop-filter: blur(0);
+    }
+    
+    ion-toolbar {
+        top: 24px;
+        left: 24px;
+        --opacity: 0;
+    }
+
+    ion-back-button {
+        font-family: var(--font-family-back);
+        font-style: var(--font-style-back);
+        font-weight: var(--font-weight-back);
+        font-size: 14px;
+        line-height: 16px;
+        text-transform: uppercase;
+    }
 }
 
 .content-wrapper {
@@ -192,7 +211,7 @@ p {
     line-height: 23px;
 }
 
-.content-wrapper {
+ion-content {
     background-size: auto 100%;
 }
 
