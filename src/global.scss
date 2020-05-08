@@ -126,6 +126,7 @@ ion-slide {
 
 ion-card {
     border-radius: 0px;
+    padding: 8px;
 }
 
 ion-card-title {
@@ -168,6 +169,15 @@ ion-card-title {
     text-transform: uppercase;
     height: 50px;
     margin: 8px auto;
+}
+
+p {
+    color: var(--ion-color-font-main);
+    font-family: var(--font-family-body);
+    font-style: var(--font-style-body);
+    font-weight: var(--font-weight-body);
+    font-size: 18px;
+    line-height: 23px;
 }
 
 .content-wrapper {
