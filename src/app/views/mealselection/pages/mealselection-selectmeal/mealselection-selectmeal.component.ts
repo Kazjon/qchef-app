@@ -42,17 +42,16 @@ export class MealSelectionSelectMealComponent implements OnInit {
             mealSlots: this.dataService.mealSlots.pipe(take(1)),
             mealRecommendations: this.dataService.recommendedMeals.pipe(take(1))
         }).subscribe((res) => {
-            this.checkDataIsOk(res);
+            this.initialiseData(res);
         });
 
     }
 
-    private checkDataIsOk(data) {
-        console.log(data);
+    private initialiseData(data) {
 
-        if (data.mealSlots.length <= 0) {
-            this.dataService.getMealSlotsFromLocal();
-        }
+        this.mealSlots = data.mealSlots;
+        this.mealsPerWeek = data.mealsPerWeek;
+        this.mealOptions = data.mealRecommendations;
 
     }
 

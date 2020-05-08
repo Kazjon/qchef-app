@@ -82,6 +82,20 @@
   --ion-color-disabled-contrast-rgb: 0,0,0;
   --ion-color-disabled-shade: #c8c8c8;
   --ion-color-disabled-tint: #e6e6e6;
+
+  /** font main **/
+  --ion-color-font-main: #000000;
+  --ion-color-font-main-rgb: 0,0,0;
+  --ion-color-font-main-contrast: #ffffff;
+  --ion-color-font-main-contrast-rgb: 255,255,255;
+  --ion-color-font-main-shade: #000000;
+  --ion-color-font-main-tint: #1a1a1a;
+
+  /** logo font **/
+  --font-family-logo: rubikbold;
+  --font-style-logo: normal;
+  --font-weight-logo: bold;
+
 }
 
 @media (prefers-color-scheme: dark) {

@@ -8,8 +8,11 @@ import { Router } from '@angular/router';
 	styleUrls: ['./splash.page.scss'],
 })
 export class SplashPage implements OnInit {
+	imgSrc: String;
 
-	constructor(private firebaseService: FirebaseService, private router: Router) { }
+	constructor(private firebaseService: FirebaseService, private router: Router) {
+		this.imgSrc = "../../../assets/images/splash.svg"
+	}
 
 	ngOnInit() {
 		this.checkUserAuthentication();
