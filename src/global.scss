@@ -30,7 +30,7 @@
         background: var(--ion-color-input-background);
         border: 1px solid var(--ion-color-input-border) ;
         box-sizing: border-box;
-        margin: 12px auto;
+        margin-bottom: 12px;
 
         --padding-start: 15px;
 
@@ -55,7 +55,11 @@
         border-radius: 0px;
 
         ion-card-header {
-            padding: 26px 40px 0;
+            padding: 26px 40px 11px;
+
+            ion-card-title {
+                padding-top: 10px;
+            }
         }
 
         ion-card-content {
