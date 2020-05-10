@@ -147,6 +147,17 @@
     .progress {
         width: 80%;
         padding: 40px 0;
+        position: absolute;
+    }
+
+    .progress-percentage {
+        text-align: center;
+        color: var(--ion-color-font-main);
+        font-family: var(--font-family-body);
+        font-style: var(--font-style-body);
+        font-weight: var(--font-weight-body);
+        line-height: 16px;
+        font-size: 12px;
     }
 
     .content {
