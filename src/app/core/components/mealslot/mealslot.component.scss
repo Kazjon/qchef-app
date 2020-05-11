@@ -9,4 +9,11 @@
     line-height: 72px;
     color: var(--ion-color-disabled);
     font-size: 2.25em;
+    overflow: hidden;
+
+    img {
+        object-fit: cover;
+        height: 100%;
+    }
+
 }

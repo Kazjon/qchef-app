@@ -77,9 +77,36 @@ export class MealSelectionSelectMealComponent implements OnInit {
         for (let i = 0; i < this.mealSlots.length; i++) {
             if (this.paramMealSlot == this.mealSlots[i].id) {
                 this.currentMealSlot = this.mealSlots[i];
+                this.updateCurrentMeal(this.currentMealSlot);
                 break;
             }
         }
+    }
+
+    private updateCurrentMeal(mealSlot: MealSlot) {
+        if (mealSlot.selected && mealSlot.recipeID != undefined) {
+
+            for (let i = 0; i < this.mealOptions.length; i++) {
+                if (mealSlot.recipeID == this.mealOptions[i].id) {
+                    this.mealOptions[i].selected = true;
+                }
+            }
+
+        }
+
+        console.log(this.mealOptions);
+    }
+
+    private updateMealSlots(mealSlot: MealSlot) {
+
+        for (let i = 0; i < this.mealSlots.length; i++) {
+            if (mealSlot.id == this.mealSlots[i].id) {
+                this.mealSlots[i] = mealSlot;
+                this.dataService.setMealSlots(this.mealSlots);
+                break;
+            }
+        }
+
     }
 
     selectMeal(mealIndex: number) {
@@ -89,6 +116,12 @@ export class MealSelectionSelectMealComponent implements OnInit {
         });
 
         this.mealOptions[mealIndex].selected = true;
+
+        this.currentMealSlot.selected = true;
+        this.currentMealSlot.image = this.mealOptions[mealIndex].image;
+        this.currentMealSlot.recipeID = this.mealOptions[mealIndex].id;
+
+        this.updateMealSlots(this.currentMealSlot);
 
         this.canContinue = true;
 
