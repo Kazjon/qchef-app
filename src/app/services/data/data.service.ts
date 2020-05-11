@@ -3,9 +3,10 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { MealPreference } from '../../core/objects/MealPreference';
 import { IngredientPreference } from 'src/app/core/objects/IngredientPreference';
-import { MealPlanSelection } from 'src/app/core/objects/MealPlanSelection';
+import { MealPlanSelectionResponse } from 'src/app/core/objects/MealPlanSelectionResponse';
 import { MealsPerWeekResponse } from 'src/app/core/objects/MealsPerWeekResponse';
 import { ProgressStage } from 'src/app/core/objects/ProgressStage';
+import { MealSlot } from 'src/app/core/objects/MealSlot';
 
 @Injectable({
     providedIn: 'root'
@@ -13,11 +14,17 @@ import { ProgressStage } from 'src/app/core/objects/ProgressStage';
 export class DataService {
     private totalStages:number = 53;
 
-    private mealsPerWeek = new BehaviorSubject<MealsPerWeekResponse>({ mealsPerWeek: 3 });
+    mealsPerWeek = new BehaviorSubject<MealsPerWeekResponse>({ mealsPerWeek: 3 });
     mealsPerWeekObservable = this.mealsPerWeek.asObservable();
 
     private preferenceProgress = new BehaviorSubject<ProgressStage>({ stage: 0 });
     preferenceProgressObservable = this.preferenceProgress.asObservable();
+    
+    recommendedMeals = new BehaviorSubject<MealPreference[]>([]);
+    recommendedMealsObservable = this.recommendedMeals.asObservable();
+
+    mealSlots = new BehaviorSubject<MealSlot[]>([]);
+    mealSlotsObservable = this.mealSlots.asObservable();
 
     constructor(private http: HttpClient) { }
 
@@ -29,20 +36,51 @@ export class DataService {
         return this.http.get<IngredientPreference[]>('assets/data/ingredientpreferences.json');
     }
 
-    getMealPlansFromLocal() {
+    getRecommendedMealsFromServer(): Observable<MealPreference[]> {
+        return this.http.get<MealPreference[]>('assets/data/mealpreferences.json');
+    }
 
-        let mealPlans: MealPlanSelection[];
-        let localMealPlansString = localStorage.getItem("localMealPlans");
+    getRecommendedMealsFromLocal() {
 
-        if (localMealPlansString != undefined) {
-            mealPlans = JSON.parse(localMealPlansString);
+        let recommendedMeals: MealPreference[];
+        let localRecommendedMealsString = localStorage.getItem("localRecommendedMeals");
+
+        if (localRecommendedMealsString != undefined) {
+            recommendedMeals = JSON.parse(localRecommendedMealsString);
         }
         else {
-            mealPlans = [];
+            recommendedMeals = [];
         }
 
-        return mealPlans;
+        this.setRecommendedMeals(recommendedMeals);
 
+    }
+
+    getMealSlotsFromLocal() {
+
+
+        let mealSlots: MealSlot[];
+        let localMealSlotsString = localStorage.getItem("localMealSlots");
+
+        if (localMealSlotsString != undefined) {
+            mealSlots = JSON.parse(localMealSlotsString);
+        }
+        else {
+            mealSlots = [];
+        }
+
+        this.setMealSlots(mealSlots);
+
+    }
+
+    saveRecommendedMealsToLocal(recommendedMeals: MealPreference[]) {
+        let recommendedMealsString = JSON.stringify(recommendedMeals);
+        localStorage.setItem("localRecommendedMeals", recommendedMealsString);
+    }
+
+    saveMealSlotsToLocal(mealSlots: MealSlot[]) {
+        let mealSlotsString = JSON.stringify(mealSlots);
+        localStorage.setItem("localMealSlots", mealSlotsString);
     }
 
     getMealsPerWeekFromLocal() {
@@ -90,5 +128,15 @@ export class DataService {
         this.setProgressStage({ stage: mark })
 
         return (Math.round((mark/this.totalStages) * 100) / 100).toFixed(2);
+    }
+    
+    setRecommendedMeals(recommendedMeals: MealPreference[]) {
+        this.saveRecommendedMealsToLocal(recommendedMeals);
+        this.recommendedMeals.next(recommendedMeals);
+    }
+
+    setMealSlots(mealSlots: MealSlot[]) {
+        this.saveMealSlotsToLocal(mealSlots);
+        this.mealSlots.next(mealSlots);
     }
 }

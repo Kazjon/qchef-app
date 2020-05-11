@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { IngredientPreference } from 'src/app/core/objects/IngredientPreference';
 import { IngredientPreferenceQuestion } from 'src/app/core/objects/IngredientPreferenceQuestion';
 import { ingredientPreferenceQuestions } from '../../../../../assets/data/ingredientpreferencequestions';
@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 })
 export class OnboardingIngredientPreferencesComponent implements OnInit {
     @ViewChild('ingredientSlides', { static: false }) ingredientSlides: IonSlides;
+    @Input() progressValue: string;
     ingredientPreferenceOptions: IngredientPreference[];
     preferenceQuestions: IngredientPreferenceQuestion[] = ingredientPreferenceQuestions;
     ingredientPreferenceResponses: IngredientPreferenceResponse[] = [];
@@ -26,7 +27,11 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
             this.ingredientPreferenceOptions = res;
             this.addIngredientPreferenceQuestionsToIngredients();
         });
+        this.progressValue = this.dataService.getProgressStage();
+    }
 
+    prevStage() {
+        this.progressValue = this.dataService.getProgressMark('mealPreference');
     }
 
     selectPreference(ingredientID: number, questionID: number, preference: string, questionIndex: number, ingredientIndex: number) {

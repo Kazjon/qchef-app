@@ -1,10 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { MealPlanSelection } from 'src/app/core/objects/MealPlanSelection';
+import { MealPlanSelectionResponse } from 'src/app/core/objects/MealPlanSelectionResponse';
 import { DataService } from 'src/app/services/data/data.service';
-import { Subscription } from 'rxjs';
+import { forkJoin, combineLatest } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { MealsPerWeekResponse } from 'src/app/core/objects/MealsPerWeekResponse';
 import { MealPreference } from 'src/app/core/objects/MealPreference';
+import { ModalController } from '@ionic/angular';
+import { RecipeModalComponent } from '../../../../core/components/recipemodal/recipemodal.component';
+import { MealSlot } from 'src/app/core/objects/MealSlot';
 
 @Component({
     selector: 'app-mealselection-selectmeal',
@@ -12,63 +16,97 @@ import { MealPreference } from 'src/app/core/objects/MealPreference';
     styleUrls: ['./mealselection-selectmeal.component.scss'],
 })
 export class MealSelectionSelectMealComponent implements OnInit {
-    mealSlot: number;
-    mealsPerWeekSubscription: Subscription;
+    currentMealSlot: MealSlot;
     mealsPerWeek: MealsPerWeekResponse;
-    allSelectedMealPlans: MealPlanSelection[];
-    mealPlanSelection: MealPlanSelection;
     mealOptions: MealPreference[];
+    mealSlots: MealSlot[];
     canContinue: boolean = false;
+    paramMealSlot: number;
 
-    constructor(private route: ActivatedRoute, private dataService: DataService) { }
+    constructor(
+        private route: ActivatedRoute,
+        private dataService: DataService,
+        public modalController: ModalController) { }
 
     ngOnInit() {
 
-        this.mealsPerWeekSubscription = this.dataService.mealsPerWeekObservable.subscribe((res) => {
-            this.mealsPerWeek = res;
-        });
-
-        this.allSelectedMealPlans = this.dataService.getMealPlansFromLocal();
-
         this.route.paramMap.subscribe(params => {
-            let mealSlot: number = parseInt(params.get('mealslot'));
-            this.initialiseMealSlot(mealSlot);
+            this.paramMealSlot = parseInt(params.get('mealslot'));
         });
 
-        this.dataService.getMealsFromServer().subscribe((res) => {
-            this.mealOptions = res;
+        // get meals per week
+        // get meal slots
+        // get meal recommendations
+
+        combineLatest(
+            this.dataService.mealsPerWeekObservable,
+            this.dataService.mealSlotsObservable,
+            this.dataService.recommendedMealsObservable
+        ).pipe(
+            take(4)
+        )
+        .subscribe(([mealsPerWeek, mealSlots, recommendedMeals]) => {
+            this.checkData(mealsPerWeek, mealSlots, recommendedMeals);
         });
 
     }
 
-    ngOnDestroy() {
-        this.mealsPerWeekSubscription.unsubscribe();
-    }
-
-    initialiseMealSlot(mealSlot: number) {
-
-        this.mealSlot = mealSlot;
-
-        if (this.allSelectedMealPlans.length <= 0) {
-            this.createNewMealPlanSlot(mealSlot);
-            this.addSlotToSelectedMealPlans(this.mealPlanSelection);
+    private checkData(mealsPerWeek, mealSlots, recommendedMeals) {
+        if (mealSlots.length <= 0) {
+            this.dataService.getMealSlotsFromLocal();
+        }
+        else if (recommendedMeals.length <= 0) {
+            this.dataService.getRecommendedMealsFromLocal();
         }
         else {
-
-        }
-
-    }
-
-    createNewMealPlanSlot(mealSlot: number) {
-        this.mealPlanSelection = {
-            recipeID: 1,
-            reviewed: false,
-            mealSlot: mealSlot
+            this.initialiseData(mealsPerWeek, mealSlots, recommendedMeals);
         }
     }
 
-    addSlotToSelectedMealPlans(mealPlan) {
-        this.allSelectedMealPlans.push(mealPlan);
+    private initialiseData(mealsPerWeek, mealSlots, recommendedMeals) {
+
+        this.mealsPerWeek = mealsPerWeek;
+        this.mealSlots = mealSlots;
+        this.mealOptions = recommendedMeals;
+
+        this.setCurrentMealSlot();
+
+    }
+
+    private setCurrentMealSlot() {
+        for (let i = 0; i < this.mealSlots.length; i++) {
+            if (this.paramMealSlot == this.mealSlots[i].id) {
+                this.currentMealSlot = this.mealSlots[i];
+                this.updateCurrentMeal(this.currentMealSlot);
+                break;
+            }
+        }
+    }
+
+    private updateCurrentMeal(mealSlot: MealSlot) {
+        if (mealSlot.selected && mealSlot.recipeID != undefined) {
+
+            for (let i = 0; i < this.mealOptions.length; i++) {
+                if (mealSlot.recipeID == this.mealOptions[i].id) {
+                    this.mealOptions[i].selected = true;
+                }
+            }
+
+        }
+
+        console.log(this.mealOptions);
+    }
+
+    private updateMealSlots(mealSlot: MealSlot) {
+
+        for (let i = 0; i < this.mealSlots.length; i++) {
+            if (mealSlot.id == this.mealSlots[i].id) {
+                this.mealSlots[i] = mealSlot;
+                this.dataService.setMealSlots(this.mealSlots);
+                break;
+            }
+        }
+
     }
 
     selectMeal(mealIndex: number) {
@@ -79,7 +117,26 @@ export class MealSelectionSelectMealComponent implements OnInit {
 
         this.mealOptions[mealIndex].selected = true;
 
+        this.currentMealSlot.selected = true;
+        this.currentMealSlot.image = this.mealOptions[mealIndex].image;
+        this.currentMealSlot.recipeID = this.mealOptions[mealIndex].id;
+
+        this.updateMealSlots(this.currentMealSlot);
+
         this.canContinue = true;
+
+    }
+
+    async openRecipe(recipe: MealPreference) {
+
+        const modal = await this.modalController.create({
+            component: RecipeModalComponent,
+            componentProps: {
+                'recipe': recipe
+            }
+        });
+
+        return await modal.present();
 
     }
 }
