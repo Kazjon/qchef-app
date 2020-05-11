@@ -115,6 +115,14 @@
   --ion-color-input-border-shade: #c8c8c8;
   --ion-color-input-border-tint: #e6e6e6;
 
+  /** disabled **/
+  --ion-color-disabled: #e3e3e3;
+  --ion-color-disabled-rgb: 227,227,227;
+  --ion-color-disabled-contrast: #000000;
+  --ion-color-disabled-contrast-rgb: 0,0,0;
+  --ion-color-disabled-shade: #c8c8c8;
+  --ion-color-disabled-tint: #e6e6e6;
+
   /** logo font **/
   --font-family-logo: rubikbold;
   --font-style-logo: normal;
@@ -135,7 +143,7 @@
   --font-style-button: normal;
   --font-weight-button: bold;
 
-  
+
 }
 
 @media (prefers-color-scheme: dark) {

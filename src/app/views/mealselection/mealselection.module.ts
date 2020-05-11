@@ -4,6 +4,8 @@ import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { MealSelectionSelectMealComponent } from './pages/mealselection-selectmeal/mealselection-selectmeal.component';
+import { RecipeModalComponent } from 'src/app/core/components/recipemodal/recipemodal.component';
+import { MealSlotComponent } from '../../core/components/mealslot/mealslot.component';
 
 
 const routes: Routes = [
@@ -23,7 +25,12 @@ const routes: Routes = [
         RouterModule.forChild(routes)
     ],
     declarations: [
-        MealSelectionSelectMealComponent
+        MealSelectionSelectMealComponent,
+        RecipeModalComponent,
+        MealSlotComponent
+    ],
+    entryComponents: [
+        RecipeModalComponent
     ]
 })
 export class MealSelectionModule { }

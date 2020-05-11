@@ -8,3 +8,17 @@
     }
 
 }
+
+ion-slides {
+    padding-bottom: 20px;
+
+    .swiper-pagination {
+        bottom: 0;
+    }
+}
+
+.meal-slots {
+    width: 100%;
+    overflow-x: scroll;
+    white-space: nowrap;
+}
