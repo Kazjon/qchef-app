@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input} from '@angular/core';
 import { DataService } from '../../../../services/data/data.service';
 import { mealPreferenceQuestions } from '../../../../../assets/data/mealpreferencequestions';
 import { MealPreference } from '../../../../core/objects/MealPreference';
@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 })
 export class OnboardingMealPreferencesComponent implements OnInit {
     @ViewChild('mealSlides', { static: false }) mealSlides: IonSlides;
+    @Input() progressValue: any;
     mealPreferenceOptions: MealPreference[];
     preferenceQuestions: MealPreferenceQuestion[] = mealPreferenceQuestions;
     mealPreferenceResponses: MealPreferenceResponse[] = [];
@@ -21,13 +22,16 @@ export class OnboardingMealPreferencesComponent implements OnInit {
     constructor(private dataService: DataService, private router: Router) { }
 
     ngOnInit() {
-
         this.dataService.getMealsFromServer()
             .subscribe((res) => {
                 this.mealPreferenceOptions = res;
                 this.addMealPreferenceQuestionsToMeals();
             });
+        this.progressValue = this.dataService.getProgressStage();
+    }
 
+    prevStage() {
+        this.progressValue = this.dataService.getProgressMark('intro');
     }
 
     selectPreference(mealID: number, questionID: number, preference: string, questionIndex: number, mealIndex: number) {
@@ -95,6 +99,7 @@ export class OnboardingMealPreferencesComponent implements OnInit {
                     this.goToIngredients();
                 }
                 else {
+                    this.progressValue = this.dataService.getProgressStage();
                     this.mealSlides.slideNext();
                 }
             });

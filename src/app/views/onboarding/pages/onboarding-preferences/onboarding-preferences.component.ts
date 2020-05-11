@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
-
+import { DataService } from '../../../../services/data/data.service'
 
 @Component({
     selector: 'app-onboarding-preferences',
@@ -8,10 +8,15 @@ import { Router } from '@angular/router';
     styleUrls: ['./onboarding-preferences.component.scss'],
 })
 export class OnboardingPreferencesComponent implements OnInit {
+    @Input() progressValue: any;
+    constructor(
+        private router: Router,
+        private dataService: DataService
+    ) { }
 
-    constructor(private router: Router) { }
-
-    ngOnInit() { }
+    ngOnInit() {
+        this.progressValue = this.dataService.getProgressStage();
+    }
 
     next() {
         this.router.navigateByUrl('/onboarding/mealpreferences');
