@@ -11,6 +11,11 @@
     font-size: 2.25em;
     overflow: hidden;
 
+    &.active {
+        font-weight: bold;
+        color: var(--ion-color-font-main);
+    }
+
     img {
         object-fit: cover;
         height: 100%;

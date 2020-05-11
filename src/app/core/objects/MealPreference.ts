@@ -10,5 +10,6 @@ export interface MealPreference {
     ingredients: Array<string>,
     method: Array<string>,
     questions?: Array<MealPreferenceQuestion>,
-    selected?: boolean
+    selected?: boolean,
+    disabled?: boolean
 }

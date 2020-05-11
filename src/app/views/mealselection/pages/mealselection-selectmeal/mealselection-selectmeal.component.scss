@@ -7,6 +7,14 @@
 
     }
 
+    &.disabled {
+
+        ion-card {
+            opacity: 0.2;
+        }
+
+    }
+
 }
 
 ion-slides {

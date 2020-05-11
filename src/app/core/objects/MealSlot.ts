@@ -1,6 +1,8 @@
+import { MealPreference } from './MealPreference';
+
 export interface MealSlot {
     id: number,
-    image?: string,
-    recipeID?: number,
-    selected: boolean
+    recipe?: MealPreference
+    selected: boolean,
+    active: boolean
 }
