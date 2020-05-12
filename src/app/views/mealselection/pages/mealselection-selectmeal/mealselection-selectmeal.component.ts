@@ -194,7 +194,7 @@ export class MealSelectionSelectMealComponent implements OnInit {
 
         if (this.paramMealSlot < this.mealSlots.length) {
             let nextSlot = this.paramMealSlot + 1;
-            this.router.navigateByUrl("/mealselection/meal/" + nextSlot, { replaceUrl: true });
+            this.router.navigateByUrl("/mealselection/meal/" + nextSlot);
         }
         else {
             this.router.navigateByUrl("/mealselection/summary", { replaceUrl: true });
