@@ -18,11 +18,17 @@ export class OnboardingMealPreferencesComponent implements OnInit {
     @Input() imgSrc: string;
     @Input() ableToBack: boolean = false;
     @Input() isSelected: boolean = false;
+    @Input() page: number = 1;
+
     mealPreferenceOptions: MealPreference[];
     preferenceQuestions: MealPreferenceQuestion[] = mealPreferenceQuestions;
     mealPreferenceResponses: MealPreferenceResponse[] = [];
     currentMealIndex: number = 0;
     currentQuestionIndex: number = 0;
+    currentMealID: number;
+    currentQuestionID: number;
+    currentPreference: string;
+
     constructor(private dataService: DataService, private router: Router) { }
 
     ngOnInit() {
@@ -36,6 +42,23 @@ export class OnboardingMealPreferencesComponent implements OnInit {
         this.progressValue = this.dataService.getProgressStage();
     }
 
+    ionViewWillEnter() {
+        if(this.currentPreference != null) {
+            this.ableToBack = true;
+            let questions = this.mealPreferenceOptions[this.currentMealIndex].questions;
+            let options = questions[this.currentQuestionIndex].options;
+
+            this.markAsSelected(options, questions, this.currentQuestionIndex);  
+        }
+
+    }
+
+    getIndex() {
+        let questions = this.mealPreferenceOptions[this.page].questions;
+        let options = questions[this.currentQuestionIndex].options;
+        this.markAsSelected(options, questions, this.currentQuestionIndex);  
+    }
+
     prevStage() {
         this.progressValue = this.dataService.getProgressMark('intro');
     }
@@ -43,7 +66,10 @@ export class OnboardingMealPreferencesComponent implements OnInit {
     selectPreference(mealID: number, questionID: number, preference: string, questionIndex: number, mealIndex: number) {
 
         let preferenceResponse = this.getMealPreferenceResponse(mealID);
-        this.isSelected = true;
+        this.currentMealID = mealID;
+        this.currentQuestionID = questionID;
+        this.currentPreference = preference;
+
         if (Object.entries(preferenceResponse).length > 0) {
             preferenceResponse[questionID] = preference;
         }
@@ -52,7 +78,19 @@ export class OnboardingMealPreferencesComponent implements OnInit {
         }
 
         this.showNextQuestion(questionIndex, mealIndex);
+    }
 
+    markAsSelected(option, questions, prev){
+        this.mealPreferenceResponses.forEach(element => {
+            for(let i = 0; i < option.length; i++) {
+                console.log(option, 'option-'+this.currentMealIndex+prev+''+i)
+                console.log(option[i], element[questions[prev].id], element[questions[prev].id] == option[i])
+                if (element[questions[prev].id] == option[i])
+                    document.getElementById('option-'+this.currentMealIndex+prev+''+i).color  = 'secondary'
+                else
+                    document.getElementById('option-'+this.currentMealIndex+prev+''+i).color  = 'primary'
+            }
+        });
     }
 
     private addMealPreferenceQuestionsToMeals() {
@@ -91,11 +129,9 @@ export class OnboardingMealPreferencesComponent implements OnInit {
 
     }
 
-    private showNextQuestion(questionIndex: number, mealIndex: number) {
-
+    private showNextQuestion(questionIndex: number, mealIndex: number) {     
         let next = questionIndex + 1;
         this.currentQuestionIndex = next;
-        console.log('this.currentQuestionIndex', this.currentQuestionIndex)
 
         if (next < this.mealPreferenceOptions[mealIndex].questions.length) {
             this.mealPreferenceOptions[mealIndex].questions[questionIndex].active = false;
@@ -107,13 +143,12 @@ export class OnboardingMealPreferencesComponent implements OnInit {
             this.mealSlides.isEnd().then((isEnd) => {
                 if (isEnd) {
                     this.goToIngredients();
+                    this.currentQuestionIndex--;
                 }
                 else {
                     this.progressValue = this.dataService.getProgressStage();
                     this.mealSlides.slideNext();
                     this.currentMealIndex = mealIndex + 1;
-                    console.log('this.currentQuestionIndex', this.currentMealIndex)
-
                 }
             });
         }
@@ -121,11 +156,18 @@ export class OnboardingMealPreferencesComponent implements OnInit {
     }
 
     private backToPrevQuestion() {
-        let prev = this.currentQuestionIndex - 1;
-        if (this.currentQuestionIndex > 0) {
-            this.mealPreferenceOptions[this.currentMealIndex].questions[this.currentQuestionIndex].active = false;
-            this.mealPreferenceOptions[this.currentMealIndex].questions[prev].active = true;
+        let questions = this.mealPreferenceOptions[this.currentMealIndex].questions;
+        let current = this.currentQuestionIndex;
+        let prev = current - 1;
+        let prevOptions = questions[prev].options;
+
+        this.markAsSelected(prevOptions, questions, prev);
+
+        if (this.currentQuestionIndex > 0 ) {
+            questions[current].active = false;
+            questions[prev].active = true;
             this.ableToBack = true;
+            console.log(this.currentMealIndex)
             if(this.currentQuestionIndex == 1) {
                 this.ableToBack = false;
             }

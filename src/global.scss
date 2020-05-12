@@ -183,7 +183,8 @@
                 font-family: var(--font-family-button);
                 font-style: var(--font-style-button);
                 font-weight: var(--font-weight-button);
-
+                --box-shadow: none;
+                
                 &:active, &:hover, &:focus {
                     --background: var(--ion-color-background);
                     --background-activated: var(--ion-color-background);
@@ -208,8 +209,9 @@
                     letter-spacing: 0;
                 }
 
-                &selected {
-                    background-color: var(--ion-color-secondary);
+                &.selected {
+                    --background: var(--ion-color-secondary);
+                    --border-radius: 50px;
                 }
             }
         }
@@ -236,8 +238,9 @@
     }
 
     .progress {
-        width: 100%;
-        padding: 45px 16px 0;
+        width: 87%;
+        max-width: 400px;
+        padding: 45px 0 0;
     }
 
     .progress-percentage {
