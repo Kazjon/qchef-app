@@ -152,6 +152,11 @@ export class OnboardingMealPreferencesComponent implements OnInit {
         else {
             this.mealSlides.isEnd().then((isEnd) => {
                 if (isEnd) {
+                    this.currentMeal = this.findCurrentMeal(this.currentMealID);
+                    this.currentQuestion = this.findCurrentQuestion();   
+                    this.currentQuestionID = this.currentQuestion.id;         
+
+                    this.markAsSelected();
                     this.goToIngredients();
                 }
                 else {
@@ -165,11 +170,9 @@ export class OnboardingMealPreferencesComponent implements OnInit {
 
     private backToPrevQuestion(currentQuestionIndex: number) {
         let prev: number;
-        console.log(this.mealPreferenceOptions[this.currentMealIndex].questions)
         let questions = this.mealPreferenceOptions[this.currentMealIndex].questions;
         this.currentMealID = this.mealPreferenceOptions[this.currentMealIndex].id;
         
-
         if (currentQuestionIndex > 0) {
             prev = currentQuestionIndex - 1;
             questions[currentQuestionIndex].active = false;
@@ -177,8 +180,9 @@ export class OnboardingMealPreferencesComponent implements OnInit {
             this.currentQuestionIndex = prev;
         }
         this.currentMeal = this.findCurrentMeal(this.currentMealID);
-        this.currentQuestion = this.findCurrentQuestion();            
-        console.log(this.currentQuestion)
+        this.currentQuestion = this.findCurrentQuestion();   
+        this.currentQuestionID = this.currentQuestion.id;         
+
         this.markAsSelected();
     }
 
