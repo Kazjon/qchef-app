@@ -14,7 +14,7 @@
 		</div>
 		<h1 class="content-prompt">Meal Preferences</h1>
 		<div class="slide-options">
-			<ion-slides #mealSlides (ionSlideDidChange)="getIndex()">
+			<ion-slides #mealSlides (ionSlideDidChange)="onSlideChange()">
 				<ion-slide *ngFor="let meal of mealPreferenceOptions; let mealIndex = index">
 					<ion-card>
 						<img src="{{ meal.image }}" />
@@ -28,11 +28,12 @@
 							<p class="description">{{ meal.description }}</p>
 							<div class="preference-question-group" *ngFor="let question of meal.questions; let questionIndex = index" [ngClass]="{'visible': question.active}">
 								<p class="sub-heading">Question {{ questionIndex + 1 }} of {{ meal.questions.length }}:</p>
-								<div *ngFor="let option of question.options; let optionIndex = index" (click)="selectPreference(meal.id, question.id, option, questionIndex, mealIndex)">
-									<ion-button slot="start" (click)="selectMeal(mealIndex)" id="option-{{mealIndex}}{{questionIndex}}{{optionIndex}}"><span>{{ option }}</span></ion-button>
+								<div *ngFor="let option of question.options; let optionIndex = index" (click)="selectPreference(meal.id, question.id, option, optionIndex, questionIndex, mealIndex)">
+									<ion-button slot="start" (click)="selectMeal(mealIndex)" id="option-{{meal.id}}{{questionIndex}}{{optionIndex}}"><span>{{ option }}</span></ion-button>
 								</div>
-							</div>
-							<ion-button class="transparent-butt" [ngClass]="{'hidden':!ableToBack}" (click)="backToPrevQuestion()"> &#60; Back to Previous Question</ion-button>
+								<ion-button class="transparent-butt" [ngClass]="{'hidden': questionIndex == 0}" (click)="backToPrevQuestion(questionIndex)"> &#60; Back to Previous Question</ion-button>
+
+							</div> 
 						</ion-card-content>
 					</ion-card>
 				</ion-slide>

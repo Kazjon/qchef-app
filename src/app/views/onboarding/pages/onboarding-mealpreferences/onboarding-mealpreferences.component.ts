@@ -24,11 +24,13 @@ export class OnboardingMealPreferencesComponent implements OnInit {
     preferenceQuestions: MealPreferenceQuestion[] = mealPreferenceQuestions;
     mealPreferenceResponses: MealPreferenceResponse[] = [];
     currentMealIndex: number = 0;
-    currentQuestionIndex: number = 0;
+    currentQuestionIndex: number;
     currentMealID: number;
     currentQuestionID: number;
     currentPreference: string;
-
+    currentMeal: any;
+    currentQuestion: any;
+    currentOptionIndex: number;
     constructor(private dataService: DataService, private router: Router) { }
 
     ngOnInit() {
@@ -43,53 +45,64 @@ export class OnboardingMealPreferencesComponent implements OnInit {
     }
 
     ionViewWillEnter() {
-        if(this.currentPreference != null) {
-            this.ableToBack = true;
-            let questions = this.mealPreferenceOptions[this.currentMealIndex].questions;
-            let options = questions[this.currentQuestionIndex].options;
-
-            this.markAsSelected(options, questions, this.currentQuestionIndex);  
-        }
 
     }
 
-    getIndex() {
-        this.mealSlides.getActiveIndex().then((index)=> {this.page = index+1; this.currentMealIndex = index});
-        console.log('index', this.currentMealIndex)
+    findCurrentMeal(id: number) {
+        return this.mealPreferenceOptions.find((element: any) => element.id == id )
+    }
 
-        let questions = this.mealPreferenceOptions[this.page].questions;
-        let options = questions[this.currentQuestionIndex].options;
-        this.markAsSelected(options, questions, this.currentQuestionIndex);  
+    findCurrentQuestion() {
+        return this.currentMeal.questions.find((element: any) => element.active == true)
+    }
+
+    onSlideChange() {
+        this.mealSlides.getActiveIndex().then((index)=> {
+            this.page = index + 1;
+            this.currentMealIndex = index;
+            this.currentMealID = this.mealPreferenceOptions[this.currentMealIndex].id;
+            this.currentMeal = this.findCurrentMeal(this.currentMealID);
+            this.currentQuestion = this.findCurrentQuestion();
+        })
+        .then(() => {
+            this.markAsSelected();
+        });
     }
 
     prevStage() {
         this.progressValue = this.dataService.getProgressMark('intro');
     }
 
-    selectPreference(mealID: number, questionID: number, preference: string, questionIndex: number, mealIndex: number) {
-
+    selectPreference(mealID: number, questionID: number, preference: string, optionIndex: number,questionIndex: number, mealIndex: number) {
         let preferenceResponse = this.getMealPreferenceResponse(mealID);
-        this.currentMealID = mealID;
+        // this.currentMealID = mealID;
         this.currentQuestionID = questionID;
-        this.currentPreference = preference;
-
+        this.currentQuestionIndex = questionIndex;
+        this.currentOptionIndex = optionIndex;
         if (Object.entries(preferenceResponse).length > 0) {
             preferenceResponse[questionID] = preference;
         }
         else {
             this.addMealPreferenceResponse(mealID, questionID, preference);
-        }
+        }       
 
         this.showNextQuestion(questionIndex, mealIndex);
     }
 
-    markAsSelected(option, questions, prev){
+    getCurrentQuestion(meal: any) {
+        return meal.questions.find((element: any) => element.active == true)
+    }
+
+    markAsSelected(){
         this.mealPreferenceResponses.forEach(element => {
-            for(let i = 0; i < option.length; i++) {
-                if (element[questions[prev].id] == option[i])
-                    document.getElementById('option-'+this.currentMealIndex+prev+''+i).classList.add('selected');
-                else
-                    document.getElementById('option-'+this.currentMealIndex+prev+''+i).classList.remove('selected');
+            if(element.recipeID == this.currentMealID) {
+                for(let i = 0; i < this.currentQuestion.options.length; i++) {
+                    if (element[this.currentQuestionID] == this.currentQuestion.options[i]) {
+                        document.getElementById('option-'+this.currentMealID+this.currentQuestionIndex+''+i).classList.add('selected');
+                    } else {
+                        document.getElementById('option-'+this.currentMealID+this.currentQuestionIndex+''+i).classList.remove('selected');
+                    }
+                }
             }
         });
     }
@@ -132,48 +145,41 @@ export class OnboardingMealPreferencesComponent implements OnInit {
 
     private showNextQuestion(questionIndex: number, mealIndex: number) {     
         let next = questionIndex + 1;
-        this.currentQuestionIndex = next;
-
         if (next < this.mealPreferenceOptions[mealIndex].questions.length) {
             this.mealPreferenceOptions[mealIndex].questions[questionIndex].active = false;
             this.mealPreferenceOptions[mealIndex].questions[next].active = true;
-            this.ableToBack = true;
         }
         else {
-            this.ableToBack = false;
             this.mealSlides.isEnd().then((isEnd) => {
                 if (isEnd) {
                     this.goToIngredients();
-                    this.currentQuestionIndex--;
                 }
                 else {
                     this.progressValue = this.dataService.getProgressStage();
                     this.mealSlides.slideNext();
-                    this.currentMealIndex = mealIndex + 1;
                 }
             });
         }
 
     }
 
-    private backToPrevQuestion() {
+    private backToPrevQuestion(currentQuestionIndex: number) {
+        let prev: number;
+        console.log(this.mealPreferenceOptions[this.currentMealIndex].questions)
         let questions = this.mealPreferenceOptions[this.currentMealIndex].questions;
-        let current = this.currentQuestionIndex;
-        let prev = current - 1;
-        let prevOptions = questions[prev].options;
+        this.currentMealID = this.mealPreferenceOptions[this.currentMealIndex].id;
+        
 
-        this.markAsSelected(prevOptions, questions, prev);
-
-        if (this.currentQuestionIndex > 0 ) {
-            questions[current].active = false;
+        if (currentQuestionIndex > 0) {
+            prev = currentQuestionIndex - 1;
+            questions[currentQuestionIndex].active = false;
             questions[prev].active = true;
-            this.ableToBack = true;
-            console.log(this.currentMealIndex)
-            if(this.currentQuestionIndex == 1) {
-                this.ableToBack = false;
-            }
             this.currentQuestionIndex = prev;
         }
+        this.currentMeal = this.findCurrentMeal(this.currentMealID);
+        this.currentQuestion = this.findCurrentQuestion();            
+        console.log(this.currentQuestion)
+        this.markAsSelected();
     }
 
     private goToIngredients() {
