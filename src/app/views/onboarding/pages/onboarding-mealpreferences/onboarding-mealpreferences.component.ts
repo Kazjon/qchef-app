@@ -54,6 +54,7 @@ export class OnboardingMealPreferencesComponent implements OnInit {
     }
 
     getIndex() {
+        this.mealSlides.getActiveIndex().then((index)=> {this.page = index+1; this.currentMealIndex = index});
         let questions = this.mealPreferenceOptions[this.page].questions;
         let options = questions[this.currentQuestionIndex].options;
         this.markAsSelected(options, questions, this.currentQuestionIndex);  
