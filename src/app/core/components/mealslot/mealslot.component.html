@@ -1,4 +1,4 @@
-<div class="meal">
+<div class="meal" [ngClass]="{'active': mealSlot.active}">
 	<span *ngIf="!mealSlot.selected">{{ mealSlot.id }}</span>
-	<img *ngIf="mealSlot.selected" src="{{ mealSlot.image }}" />
+	<img *ngIf="mealSlot.selected" src="{{ mealSlot.recipe?.image }}" />
 </div>

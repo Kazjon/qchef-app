@@ -12,7 +12,6 @@ export class MealSlotComponent implements OnInit {
     constructor() { }
 
     ngOnInit() {
-        console.log(this.mealSlot);
     }
 
 }
