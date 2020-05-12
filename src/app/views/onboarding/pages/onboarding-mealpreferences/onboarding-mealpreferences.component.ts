@@ -55,6 +55,8 @@ export class OnboardingMealPreferencesComponent implements OnInit {
 
     getIndex() {
         this.mealSlides.getActiveIndex().then((index)=> {this.page = index+1; this.currentMealIndex = index});
+        console.log('index', this.currentMealIndex)
+
         let questions = this.mealPreferenceOptions[this.page].questions;
         let options = questions[this.currentQuestionIndex].options;
         this.markAsSelected(options, questions, this.currentQuestionIndex);  
@@ -84,12 +86,10 @@ export class OnboardingMealPreferencesComponent implements OnInit {
     markAsSelected(option, questions, prev){
         this.mealPreferenceResponses.forEach(element => {
             for(let i = 0; i < option.length; i++) {
-                console.log(option, 'option-'+this.currentMealIndex+prev+''+i)
-                console.log(option[i], element[questions[prev].id], element[questions[prev].id] == option[i])
                 if (element[questions[prev].id] == option[i])
-                    document.getElementById('option-'+this.currentMealIndex+prev+''+i).color  = 'secondary'
+                    document.getElementById('option-'+this.currentMealIndex+prev+''+i).classList.add('selected');
                 else
-                    document.getElementById('option-'+this.currentMealIndex+prev+''+i).color  = 'primary'
+                    document.getElementById('option-'+this.currentMealIndex+prev+''+i).classList.remove('selected');
             }
         });
     }

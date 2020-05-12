@@ -184,7 +184,7 @@
                 font-style: var(--font-style-button);
                 font-weight: var(--font-weight-button);
                 --box-shadow: none;
-                
+
                 &:active, &:hover, &:focus {
                     --background: var(--ion-color-background);
                     --background-activated: var(--ion-color-background);
@@ -209,7 +209,7 @@
                     letter-spacing: 0;
                 }
 
-                &.selected {
+                &.selected, &:active, &:hover, &:focus {
                     --background: var(--ion-color-secondary);
                     --border-radius: 50px;
                 }
