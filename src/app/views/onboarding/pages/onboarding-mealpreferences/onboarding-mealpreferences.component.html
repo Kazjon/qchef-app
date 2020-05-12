@@ -10,8 +10,9 @@
 	<div class="content-wrapper column start">
 		<div class="progress">
             <ion-progress-bar indeterminate color="tertiary" value="{{progressValue}}"></ion-progress-bar>
-            <p class="progress-percentage"> {{progressValue}}% Complete</p>
+			<p class="progress-percentage"> {{progressValue}}% Complete</p>
 		</div>
+		<h1 class="content-prompt">Meal Preferences</h1>
 		<div class="slide-options">
 			<ion-slides #mealSlides>
 				<ion-slide *ngFor="let meal of mealPreferenceOptions; let mealIndex = index">
@@ -21,13 +22,17 @@
 							<ion-card-title>{{ meal.title }}</ion-card-title>
 						</ion-card-header>
 						<ion-card-content>
-							<p>{{ meal.description }}</p>
-							<ion-radio-group class="preference-question-group" *ngFor="let question of meal.questions; let questionIndex = index" [ngClass]="{'visible': question.active}">
-								<ion-item *ngFor="let option of question.options" (click)="selectPreference(meal.id, question.id, option, questionIndex, mealIndex)">
-									<ion-radio value="{{ option }}" slot="start"></ion-radio>
-									<ion-label text-wrap>{{ option }}</ion-label>
-								</ion-item>
-							</ion-radio-group>
+							<div class="content-row">
+								<ion-img [src]="imgSrc" class="icon-ingredient"></ion-img><ion-label class="sub-heading">Ingredients:</ion-label>
+							</div>
+							<p class="description">{{ meal.description }}</p>
+							<div class="preference-question-group" *ngFor="let question of meal.questions; let questionIndex = index" [ngClass]="{'visible': question.active}">
+								<p class="sub-heading">Question {{ questionIndex + 1 }} of {{ meal.questions.length }}:</p>
+								<div *ngFor="let option of question.options" (click)="selectPreference(meal.id, question.id, option, questionIndex, mealIndex)">
+									<ion-button color="primary" slot="start" [ngClass]="{'selected': isSelected}" (click)="selectMeal(mealIndex)"><span>{{ option }}</span></ion-button>
+								</div>
+							</div>
+							<ion-button class="transparent-butt" [ngClass]="{'hidden':!ableToBack}" (click)="backToPrevQuestion()"> &#60; Back to Previous Question</ion-button>
 						</ion-card-content>
 					</ion-card>
 				</ion-slide>
