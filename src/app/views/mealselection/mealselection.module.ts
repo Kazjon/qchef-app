@@ -6,6 +6,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { MealSelectionSelectMealComponent } from './pages/mealselection-selectmeal/mealselection-selectmeal.component';
 import { RecipeModalComponent } from 'src/app/core/components/recipemodal/recipemodal.component';
 import { MealSlotComponent } from '../../core/components/mealslot/mealslot.component';
+import { MealSelectionSummaryComponent } from './pages/mealselection-summary/mealselection-summary.component';
 
 
 const routes: Routes = [
@@ -14,6 +15,12 @@ const routes: Routes = [
     },
     {
         path: 'meal/:mealslot', component: MealSelectionSelectMealComponent,
+    },
+    {
+        path: 'summary', component: MealSelectionSummaryComponent
+    },
+    {
+        path: 'meal/:mealslot/change', component: MealSelectionSelectMealComponent
     }
 ];
 
@@ -26,6 +33,7 @@ const routes: Routes = [
     ],
     declarations: [
         MealSelectionSelectMealComponent,
+        MealSelectionSummaryComponent,
         RecipeModalComponent,
         MealSlotComponent
     ],

@@ -1,0 +1,22 @@
+<ion-header [translucent]="true">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+    <h1>Meal Plan Summary</h1>
+    <p>Review, edit & confirm your choices for this week</p>
+    <ion-item *ngFor="let mealslot of mealSlots" (click)="changeMeal(mealslot)">
+        <ion-thumbnail slot="start">
+            <img src="{{ mealslot.recipe.image }}">
+        </ion-thumbnail>
+        <ion-label>
+          <h2>{{ mealslot.recipe.title }}</h2>
+          <p>{{ mealslot.recipe.description }}</p>
+          <p>Change Meal</p>
+        </ion-label>
+      </ion-item>
+    <ion-button color="primary" (click)="goToNext()">Confirm</ion-button>
+</ion-content>
