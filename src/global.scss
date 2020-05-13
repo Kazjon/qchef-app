@@ -54,11 +54,11 @@
             max-width: 400px;
         }
     }
-    
+
     ion-card {
         border-radius: 0px;
         opacity: 0.9;
-        
+
         ion-card-header {
             padding: 26px 40px 0;
 
@@ -75,7 +75,7 @@
                 font-style: var(--font-style-body);
                 font-weight: var(--font-weight-body);
                 font-size: 18px;
-                line-height: 23px;  
+                line-height: 23px;
                 padding-top: 11px;
                 padding-bottom: 12px;
             }
@@ -87,15 +87,15 @@
             font-style: var(--font-style-heading);
             font-weight: var(--font-weight-heading);
             font-size: 36px;
-            line-height: 45px;  
+            line-height: 45px;
         }
-        
+
     }
-    
+
     ion-button {
         width: 100%;
         --border-radius: 50px;
-    
+
         color: var(--ion-color-font-button);
         font-family: var(--font-family-button);
         font-style: var(--font-style-button);
@@ -107,6 +107,15 @@
         text-transform: uppercase;
         height: 50px;
         margin: 8px auto;
+
+        &.small {
+            border-radius: 37px;
+            height: 37px;
+            border: 3px solid var(--ion-color-primary);
+            color: var(--ion-color-primary);
+            font-size: 14px;
+        }
+
     }
 
     ion-header {
@@ -230,6 +239,8 @@
 .content-wrapper {
     width: 100%;
     height: 100%;
+    max-width: 600px;
+    margin: 0 auto;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -368,6 +379,26 @@ p {
     opacity: 0;
 }
 
+h1 {
+    color: var(--ion-color-font-main);
+    font-family: var(--font-family-heading);
+    font-style: var(--font-style-heading);
+    font-weight: var(--font-weight-heading);
+    font-size: 45px;
+    margin: 0;
+}
+
+.swiper-pagination-bullet {
+    background: transparent;
+    border: 1px solid var(--ion-color-disabled-shade);
+    width: 9px;
+    height: 9px;
+    opacity: 1;
+}
+.swiper-pagination-bullet-active {
+    background: var(--ion-color-disabled-shade);
+    border: none;
+}
 
 /** Font **/
 @font-face {

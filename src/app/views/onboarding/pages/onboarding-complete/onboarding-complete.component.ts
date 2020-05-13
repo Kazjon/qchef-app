@@ -39,7 +39,8 @@ export class OnboardingCompleteComponent implements OnInit {
         for (let i = 0; i < this.mealsPerWeek.mealsPerWeek; i++) {
             let mealSlot: MealSlot = {
                 id: (i + 1),
-                selected: false
+                selected: false,
+                active: false
             }
             this.mealSlots.push(mealSlot);
         }
