@@ -120,7 +120,7 @@
 
     ion-header {
         backdrop-filter: blur(0);
-        height: 80px;
+        height: 55px;
 
         &::after{
             background-image: none;
@@ -128,12 +128,11 @@
     }
     
     ion-toolbar {
-        height: 80px;
         left: 24px;
         --opacity: 0;
 
-        * {
-            height: 80px;
+        ion-back-button {
+            padding-top: 24px;
         }
     }
 
@@ -260,7 +259,7 @@
     .progress {
         width: 87%;
         max-width: 400px;
-        padding: 45px 0 0;
+        padding: 35px 0 0;
     }
 
     .progress-percentage {
@@ -386,6 +385,26 @@ h1 {
     font-weight: var(--font-weight-heading);
     font-size: 45px;
     margin: 0;
+}
+
+.preferences {
+    h1 {
+        font-size: 36px;
+        line-height: 45px;
+        text-align: left;
+
+        width: 100%;
+        margin: 0;
+        margin-top: -5px;
+    }
+
+    .sub-heading {
+        padding-bottom: 6px;
+    }
+    
+    .description {
+        padding: 0;
+    }
 }
 
 .swiper-pagination-bullet {
