@@ -24,7 +24,10 @@
         </div>
         <div class="method details-box">
             <h2>Method</h2>
-            <div *ngFor="let step of recipe.method; let stepIndex = index;">{{ stepIndex + 1 }}: {{ step }}</div>
+            <div class="method-steps" *ngFor="let step of recipe.method; let stepIndex = index;">
+                <div class="list-node">{{ stepIndex + 1 }}</div>
+                <div class="list-content"><p class="text">{{ step }}</p></div>
+            </div>
         </div>
     </div>
 

@@ -110,7 +110,7 @@
     }
 
     
-    .ingredient-item {
+    .ingredient-item, .method-steps {
         .text {
             vertical-align: bottom;
             color: var(--ion-color-font-main);
@@ -121,6 +121,29 @@
             line-height: 20px;
         }
     }
+
+    .method-steps {
+        display: flex;
+        flex-direction: row;
+
+        .list-node {
+            padding-right: 15px;
+
+            color: var(--ion-color-list-node);
+            font-family: var(--font-family-body);
+            font-weight: var(--font-weight-body);
+            font-style: var(--font-style-body);
+            font-size: 36px;
+            line-height: 50px;
+        }
+
+        .list-content {
+            align-self: center;
+            p {
+                padding: 0;
+            }
+        }
+    }
 }
 
 .details-box {
@@ -129,8 +152,4 @@
     padding-bottom: 13px;
     padding-left: 7px;
     padding-right: 7px;
-
-    &:last-of-type {
-        border-bottom: 0;
-    }
 }
