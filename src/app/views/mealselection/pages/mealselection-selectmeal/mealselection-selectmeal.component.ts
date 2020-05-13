@@ -177,11 +177,11 @@ export class MealSelectionSelectMealComponent implements OnInit {
 
         const modal = await this.modalController.create({
             component: RecipeModalComponent,
+            cssClass: 'recipe-modal',
             componentProps: {
-                'recipe': recipe
+                'recipe': recipe,
             }
         });
-
         return await modal.present();
 
     }
