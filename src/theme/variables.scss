@@ -143,7 +143,18 @@
   --font-style-button: normal;
   --font-weight-button: bold;
 
+  /** meal subheading font **/
+  --font-family-meal-subheading: robotomedium;
+  --font-style-meal-subheading: normal;
+  --font-weight-bumeal-subheadingtton: normal;
 
+  /** section border **/
+  --ion-color-section-border: #EEEEEE;
+  --ion-color-section-border-rgb: 238,238,238;
+  --ion-color-section-border-contrast: #000000;
+  --ion-color-section-border-contrast-rgb: 0,0,0;
+  --ion-color-section-border-shade: #d1d1d1;
+  --ion-color-section-border-tint: #f0f0f0;
 }
 
 @media (prefers-color-scheme: dark) {

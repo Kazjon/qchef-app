@@ -1,12 +1,12 @@
 <ion-content>
     <div class="image-wrap">
         <img src="{{ recipe.image }}" />
-        <button class="butt-close" (click)="closeModal()">x</button>
+        <img class="butt-close" (click)="closeModal()" src="{{ closeImgSrc }}" />
     </div>
-    <div class="meal-details">
+    <div class="meal-details details-wrapper ">
         <h1>{{ recipe.title }}</h1>
         <p>{{ recipe.description }}</p>
-        <div class="meal-details">
+        <div class="meal-details details-box">
             <div class="detail">
                 <span class="icon cooktime"></span>
                 <span class="text">{{ recipe.cookTime }}</span>
@@ -16,11 +16,13 @@
                 <span class="text">{{ recipe.ingredients.length }} ingredients</span>
             </div>
         </div>
-        <div class="ingredients">
+        <div class="ingredients details-box">
             <h2>Ingredients</h2>
-            <div *ngFor="let ingredient of recipe.ingredients">{{ ingredient }}</div>
+            <div class="ingredient-item" *ngFor="let ingredient of recipe.ingredients">
+                <span class="text">{{ ingredient }}</span>
+            </div>
         </div>
-        <div class="method">
+        <div class="method details-box">
             <h2>Method</h2>
             <div *ngFor="let step of recipe.method; let stepIndex = index;">{{ stepIndex + 1 }}: {{ step }}</div>
         </div>
