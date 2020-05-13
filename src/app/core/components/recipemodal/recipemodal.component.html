@@ -1,6 +1,29 @@
 <ion-content>
     <div class="image-wrap">
         <img src="{{ recipe.image }}" />
-        <ion-button class="butt-close" (click)="closeModal()">Close</ion-button>
+        <button class="butt-close" (click)="closeModal()">x</button>
     </div>
+    <div class="meal-details">
+        <h1>{{ recipe.title }}</h1>
+        <p>{{ recipe.description }}</p>
+        <div class="meal-details">
+            <div class="detail">
+                <span class="icon cooktime"></span>
+                <span class="text">{{ recipe.cookTime }}</span>
+            </div>
+            <div class="detail">
+                <span class="icon ingredients"></span>
+                <span class="text">{{ recipe.ingredients.length }} ingredients</span>
+            </div>
+        </div>
+        <div class="ingredients">
+            <h2>Ingredients</h2>
+            <div *ngFor="let ingredient of recipe.ingredients">{{ ingredient }}</div>
+        </div>
+        <div class="method">
+            <h2>Method</h2>
+            <div *ngFor="let step of recipe.method; let stepIndex = index;">{{ stepIndex + 1 }}: {{ step }}</div>
+        </div>
+    </div>
+
 </ion-content>
