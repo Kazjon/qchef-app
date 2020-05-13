@@ -14,7 +14,7 @@ import { Router } from '@angular/router';
 })
 export class OnboardingIngredientPreferencesComponent implements OnInit {
     @ViewChild('ingredientSlides', { static: false }) ingredientSlides: IonSlides;
-    @Input() progressValue: number;
+    @Input() progressValue: any;
     ingredientPreferenceOptions: IngredientPreference[];
     preferenceQuestions: IngredientPreferenceQuestion[] = ingredientPreferenceQuestions;
     ingredientPreferenceResponses: IngredientPreferenceResponse[] = [];
@@ -108,6 +108,10 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
 
     private goToNumberOfMeals() {
         this.router.navigateByUrl("/onboarding/numberofmeals");
+    }
+
+    private goBack() {
+        this.router.navigateByUrl("/onboarding/mealpreferences");
     }
 
 }
