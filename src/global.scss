@@ -111,12 +111,21 @@
 
     ion-header {
         backdrop-filter: blur(0);
+        height: 80px;
+
+        &::after{
+            background-image: none;
+        }
     }
     
     ion-toolbar {
-        top: 24px;
+        height: 80px;
         left: 24px;
         --opacity: 0;
+
+        * {
+            height: 80px;
+        }
     }
 
     ion-back-button {
