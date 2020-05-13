@@ -27,8 +27,8 @@
 								<div *ngFor="let option of question.options; let optionIndex = index" (click)="selectPreference(ingredient.id, question.id, option, questionIndex, ingredientIndex)">
 									<ion-button slot="start" id="ingredient-{{ingredient.id}}{{questionIndex}}{{optionIndex}}"><span>{{ option }}</span></ion-button>
 								</div>
-								<ion-button class="transparent-butt" [ngStyle]="{'display': questionIndex != 0 ? 'none' : 'block'}" (click)="backToPrevQuestion(questionIndex)"> &#60; Back to Previous Card</ion-button>
-								<ion-button class="transparent-butt" [ngStyle]="{'display': questionIndex == 0 ? 'none' : 'block'}" (click)="goBack(questionIndex)"> &#60; Back to Previous Question</ion-button>
+								<ion-button class="transparent-butt" [ngStyle]="{'display': (ingredientIndex == 0 && questionIndex == 0) ? 'block' : 'none' }" (click)="goBack()"> &#60; Back to Previous Card</ion-button>
+								<ion-button class="transparent-butt" [ngStyle]="{'display': (ingredientIndex == 0 && questionIndex != 0) || ingredientIndex != 0 ? 'block' : 'none' }" (click)="backToPrevQuestion(questionIndex)"> &#60; Back to Previous Question</ion-button>
 							</div>
 						</ion-card-content>
 					</ion-card>
