@@ -142,8 +142,12 @@
   --font-family-button: rubikbold;
   --font-style-button: normal;
   --font-weight-button: bold;
-
-
+  
+  /** back button font **/
+  --font-family-back: robotomedium;
+  --font-style-back: normal;
+  --font-weight-back: bold;
+  
 }
 
 @media (prefers-color-scheme: dark) {

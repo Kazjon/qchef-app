@@ -5,12 +5,13 @@
         </ion-buttons>
     </ion-toolbar>
 </ion-header>
-<ion-content>
+<ion-content fullscreen>
 
     <div class="content-wrapper column start">
 
         <div class="progress">
-            <ion-progress-bar color="tertiary" value="0.5"></ion-progress-bar>
+            <ion-progress-bar indeterminate color="tertiary" value="{{progressValue}}"></ion-progress-bar>
+            <p class="progress-percentage"> {{progressValue * 100}}% Complete</p>
         </div>
 
         <div class="content">

@@ -1,13 +1,17 @@
 <ion-header [translucent]="true">
 	<ion-toolbar>
-		<ion-buttons slot="start">
+		<ion-buttons slot="start" (click)="prevStage()">
 			<ion-back-button></ion-back-button>
 		</ion-buttons>
 	</ion-toolbar>
 </ion-header>
-<ion-content>
+<ion-content fullscreen>
 
-	<div class="content-wrapper column">
+	<div class="content-wrapper column start">
+		<div class="progress">
+            <ion-progress-bar indeterminate color="tertiary" value="{{progressValue}}"></ion-progress-bar>
+            <p class="progress-percentage"> {{progressValue * 100}}% Complete</p>
+		</div>
 		<div class="slide-options">
 			<ion-slides #mealSlides>
 				<ion-slide *ngFor="let meal of mealPreferenceOptions; let mealIndex = index">
@@ -21,9 +25,9 @@
 							<ion-radio-group class="preference-question-group" *ngFor="let question of meal.questions; let questionIndex = index" [ngClass]="{'visible': question.active}">
 								<ion-item *ngFor="let option of question.options" (click)="selectPreference(meal.id, question.id, option, questionIndex, mealIndex)">
 									<ion-radio value="{{ option }}" slot="start"></ion-radio>
-								  	<ion-label text-wrap>{{ option }}</ion-label>
+									<ion-label text-wrap>{{ option }}</ion-label>
 								</ion-item>
-							  </ion-radio-group>
+							</ion-radio-group>
 						</ion-card-content>
 					</ion-card>
 				</ion-slide>
