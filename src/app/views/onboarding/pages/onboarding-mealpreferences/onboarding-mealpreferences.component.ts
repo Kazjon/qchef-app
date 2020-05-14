@@ -69,8 +69,6 @@ export class OnboardingMealPreferencesComponent implements OnInit {
             this.currentQuestion = this.findCurrentQuestion();
         })
         .then(() => {
-            console.log('id: ', this.currentMealID, this.currentMeal, this.currentQuestion)
-
             this.markAsSelected();
         });
     }
@@ -82,10 +80,19 @@ export class OnboardingMealPreferencesComponent implements OnInit {
 
     selectPreference(mealID: number, questionID: number, preference: string, optionIndex: number,questionIndex: number, mealIndex: number) {
         let preferenceResponse = this.getMealPreferenceResponse(mealID);
-        // this.currentMealID = mealID;
         this.currentQuestionID = questionID;
         this.currentQuestionIndex = questionIndex;
         this.currentOptionIndex = optionIndex;
+
+        if(this.mealPreferenceOptions[mealIndex].questions.length == questionIndex + 1) {
+            let preference = this.mealPreferenceResponses[this.currentMealIndex]
+
+            if (preference[this.currentQuestionID] == undefined) {
+                this.progressValue = this.dataService.getProgressStage();
+                this.percentage = (this.progressValue * 100).toFixed(0);
+            }
+        }
+
         if (Object.entries(preferenceResponse).length > 0) {
             preferenceResponse[questionID] = preference;
         }
@@ -105,8 +112,6 @@ export class OnboardingMealPreferencesComponent implements OnInit {
             if(element.recipeID == this.currentMealID) {
                 for(let i = 0; i < this.currentQuestion.options.length; i++) {
                     if (element[this.currentQuestionID] == this.currentQuestion.options[i]) {
-                        console.log(this.currentMealID+''+this.currentQuestionIndex+'-'+i)
-                        console.log(document.getElementById('option-'+this.currentMealID+''+this.currentQuestionIndex+''+i))
                         document.getElementById('option-'+this.currentMealID+''+this.currentQuestionIndex+''+i).classList.add('selected');
                     } else {
                         document.getElementById('option-'+this.currentMealID+''+this.currentQuestionIndex+''+i).classList.remove('selected');
@@ -169,8 +174,6 @@ export class OnboardingMealPreferencesComponent implements OnInit {
                     this.goToIngredients();
                 }
                 else {
-                    this.progressValue = this.dataService.getProgressStage();
-                    this.percentage = (this.progressValue * 100).toFixed(0);
                     this.mealSlides.slideNext();
                 }
             });
@@ -192,7 +195,6 @@ export class OnboardingMealPreferencesComponent implements OnInit {
         this.currentMeal = this.findCurrentMeal(this.currentMealID);
         this.currentQuestion = this.findCurrentQuestion();   
         this.currentQuestionID = this.currentQuestion.id;         
-        console.log('id: back = ', this.currentMealID, this.currentMeal, this.currentQuestion)
 
         this.markAsSelected();
     }

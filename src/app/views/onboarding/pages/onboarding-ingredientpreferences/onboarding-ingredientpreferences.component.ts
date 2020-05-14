@@ -66,8 +66,6 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
             
         })
         .then(() => {
-            console.log('id: ', this.currentIngredientID, this.currentIngredient, this.currentQuestion)
-
             this.markAsSelected();
         });
     }
@@ -78,6 +76,15 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
         this.currentQuestionID = questionID;
         this.currentQuestionIndex = questionIndex;
 
+        if(this.ingredientPreferenceOptions[ingredientIndex].questions.length == questionIndex + 1) {
+            let preference = this.ingredientPreferenceResponses[this.currentIngredientIndex]
+
+            if (preference[this.currentQuestionID] == undefined) {
+                this.progressValue = this.dataService.getProgressStage();
+                this.percentage = (this.progressValue * 100).toFixed(0);
+            }
+        }
+
         if (Object.entries(preferenceResponse).length > 0) {
             preferenceResponse[questionID] = preference;
         }
@@ -85,6 +92,7 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
             this.addIngredientPreferenceResponse(ingredientID, questionID, preference);
         }
 
+        
         this.showNextQuestion(questionIndex, ingredientIndex);
 
     }
@@ -144,8 +152,6 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
                     this.goToNumberOfMeals();
                 }
                 else {
-                    this.progressValue = this.dataService.getProgressStage();
-                    this.percentage = (this.progressValue * 100).toFixed(0);
                     this.ingredientSlides.slideNext();
                 }
             });
@@ -158,7 +164,6 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
             if(element.ingredientID == this.currentIngredientID) {
                 for(let i = 0; i < this.currentQuestion.options.length; i++) {
                     if (element[this.currentQuestionID] == this.currentQuestion.options[i]) {
-                        console.log(document.getElementById('ingredient-'+this.currentIngredientID+''+this.currentQuestionIndex+'-'+i), this.currentIngredientID+this.currentQuestionIndex+''+i)
                         document.getElementById('ingredient-'+this.currentIngredientID+''+this.currentQuestionIndex+''+i).classList.add('selected');
                     } else {
                         document.getElementById('ingredient-'+this.currentIngredientID+''+this.currentQuestionIndex+''+i).classList.remove('selected');
@@ -170,7 +175,7 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
 
     private backToPrevQuestion(currentQuestionIndex: number) {
         let prev: number;
-        console.log('....', this.ingredientPreferenceOptions, this.currentIngredientIndex,  this.ingredientPreferenceOptions[this.currentIngredientIndex])
+
         let questions = this.ingredientPreferenceOptions[this.currentIngredientIndex].questions;
         this.currentIngredientID = this.ingredientPreferenceOptions[this.currentIngredientIndex].id;
         
