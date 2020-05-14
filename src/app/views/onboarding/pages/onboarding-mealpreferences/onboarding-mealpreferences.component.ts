@@ -98,9 +98,9 @@ export class OnboardingMealPreferencesComponent implements OnInit {
             if(element.recipeID == this.currentMealID) {
                 for(let i = 0; i < this.currentQuestion.options.length; i++) {
                     if (element[this.currentQuestionID] == this.currentQuestion.options[i]) {
-                        document.getElementById('option-'+this.currentMealID+this.currentQuestionIndex+''+i).classList.add('selected');
+                        document.getElementById('option-'+this.currentMealID+''+this.currentQuestionIndex+''+i).classList.add('selected');
                     } else {
-                        document.getElementById('option-'+this.currentMealID+this.currentQuestionIndex+''+i).classList.remove('selected');
+                        document.getElementById('option-'+this.currentMealID+''+this.currentQuestionIndex+''+i).classList.remove('selected');
                     }
                 }
             }
