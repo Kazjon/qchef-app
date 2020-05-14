@@ -15,6 +15,16 @@ import { Router } from '@angular/router';
 export class OnboardingIngredientPreferencesComponent implements OnInit {
     @ViewChild('ingredientSlides', { static: false }) ingredientSlides: IonSlides;
     @Input() progressValue: any;
+    @Input() page: number = 1;
+
+    currentIngredientIndex: number = 0;
+    currentIngredientID: number;
+    currentQuestionID: number;
+    currentIngredient: any;
+
+    currentQuestion: any;
+    currentQuestionIndex: number;
+
     ingredientPreferenceOptions: IngredientPreference[];
     preferenceQuestions: IngredientPreferenceQuestion[] = ingredientPreferenceQuestions;
     ingredientPreferenceResponses: IngredientPreferenceResponse[] = [];
@@ -34,9 +44,35 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
         this.progressValue = this.dataService.getProgressMark('mealPreference');
     }
 
+    findCurrentIngredient(id: number) {
+        return this.ingredientPreferenceOptions.find((element: any) => element.id == id )
+    }
+
+    findCurrentQuestion() {
+        return this.currentIngredient.questions.find((element: any) => element.active == true)
+    }
+
+    onSlideChange() {
+        this.ingredientSlides.getActiveIndex().then((index)=> {
+            this.page = index + 1;
+            this.currentIngredientIndex = index;
+            this.currentIngredientID = this.ingredientPreferenceOptions[this.currentIngredientIndex].id;
+            this.currentIngredient = this.findCurrentIngredient(this.currentIngredientID);
+            this.currentQuestion = this.findCurrentQuestion();
+            
+        })
+        .then(() => {
+            console.log('id: ', this.currentIngredientID, this.currentIngredient, this.currentQuestion)
+
+            this.markAsSelected();
+        });
+    }
+
     selectPreference(ingredientID: number, questionID: number, preference: string, questionIndex: number, ingredientIndex: number) {
 
         let preferenceResponse = this.getIngredientPreferenceResponse(ingredientID);
+        this.currentQuestionID = questionID;
+        this.currentQuestionIndex = questionIndex;
 
         if (Object.entries(preferenceResponse).length > 0) {
             preferenceResponse[questionID] = preference;
@@ -96,14 +132,54 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
         else {
             this.ingredientSlides.isEnd().then((isEnd) => {
                 if (isEnd) {
+                    this.currentIngredient = this.findCurrentIngredient(this.currentIngredientID);
+                    this.currentQuestion = this.findCurrentQuestion();   
+                    this.currentQuestionID = this.currentQuestion.id;
+                        
+                    this.markAsSelected();
                     this.goToNumberOfMeals();
                 }
                 else {
+                    this.progressValue = this.dataService.getProgressStage();
                     this.ingredientSlides.slideNext();
                 }
             });
         }
 
+    }
+
+    markAsSelected(){
+        this.ingredientPreferenceResponses.forEach(element => {
+            if(element.ingredientID == this.currentIngredientID) {
+                for(let i = 0; i < this.currentQuestion.options.length; i++) {
+                    if (element[this.currentQuestionID] == this.currentQuestion.options[i]) {
+                        console.log(document.getElementById('ingredient-'+this.currentIngredientID+''+this.currentQuestionIndex+'-'+i), this.currentIngredientID+this.currentQuestionIndex+''+i)
+                        document.getElementById('ingredient-'+this.currentIngredientID+''+this.currentQuestionIndex+''+i).classList.add('selected');
+                    } else {
+                        document.getElementById('ingredient-'+this.currentIngredientID+''+this.currentQuestionIndex+''+i).classList.remove('selected');
+                    }
+                }
+            }
+        });
+    }
+
+    private backToPrevQuestion(currentQuestionIndex: number) {
+        let prev: number;
+        console.log('....', this.ingredientPreferenceOptions, this.currentIngredientIndex,  this.ingredientPreferenceOptions[this.currentIngredientIndex])
+        let questions = this.ingredientPreferenceOptions[this.currentIngredientIndex].questions;
+        this.currentIngredientID = this.ingredientPreferenceOptions[this.currentIngredientIndex].id;
+        
+        if (currentQuestionIndex > 0) {
+            prev = currentQuestionIndex - 1;
+            questions[currentQuestionIndex].active = false;
+            questions[prev].active = true;
+            this.currentQuestionIndex = prev;
+        }
+        this.currentIngredient = this.findCurrentIngredient(this.currentIngredientID);
+        this.currentQuestion = this.findCurrentQuestion();   
+        this.currentQuestionID = this.currentQuestion.id;         
+
+        this.markAsSelected();
     }
 
     private goToNumberOfMeals() {

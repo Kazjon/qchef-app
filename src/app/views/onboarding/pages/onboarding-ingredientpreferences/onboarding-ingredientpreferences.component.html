@@ -14,7 +14,7 @@
 		</div>
 		<h1 class="content-prompt">Ingredient Preferences</h1>
 		<div class="slide-options">
-			<ion-slides #ingredientSlides>
+			<ion-slides #ingredientSlides (ionSlideDidChange)="onSlideChange()">
 				<ion-slide *ngFor="let ingredient of ingredientPreferenceOptions; let ingredientIndex = index">
 					<ion-card>
 						<img src="{{ ingredient.image }}" />
@@ -28,7 +28,7 @@
 									<ion-button slot="start" id="ingredient-{{ingredient.id}}{{questionIndex}}{{optionIndex}}"><span>{{ option }}</span></ion-button>
 								</div>
 								<ion-button class="transparent-butt" [ngStyle]="{'display': (ingredientIndex == 0 && questionIndex == 0) ? 'block' : 'none' }" (click)="goBack()"> &#60; Back to Previous Card</ion-button>
-								<ion-button class="transparent-butt" [ngStyle]="{'display': (ingredientIndex == 0 && questionIndex != 0) || ingredientIndex != 0 ? 'block' : 'none' }" (click)="backToPrevQuestion(questionIndex)"> &#60; Back to Previous Question</ion-button>
+								<ion-button class="transparent-butt" [ngClass]="{'hidden': questionIndex == 0, 'not-display': ingredientIndex == 0 && questionIndex == 0 }" (click)="backToPrevQuestion(questionIndex)"> &#60; Back to Previous Question</ion-button>
 							</div>
 						</ion-card-content>
 					</ion-card>

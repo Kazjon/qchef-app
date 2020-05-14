@@ -378,6 +378,10 @@ p {
     opacity: 0;
 }
 
+.not-display {
+    display: none;
+}
+
 h1 {
     color: var(--ion-color-font-main);
     font-family: var(--font-family-heading);
