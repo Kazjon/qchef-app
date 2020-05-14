@@ -23,7 +23,10 @@
 						</ion-card-header>
 						<ion-card-content>
 							<div class="content-row">
-								<ion-img [src]="imgSrc" class="icon-ingredient"></ion-img><ion-label class="sub-heading">Ingredients:</ion-label>
+								<div class="detail">
+									<span class="icon ingredients"></span>
+									<span class="sub-heading">Ingredients</span>
+								</div>
 							</div>
 							<p class="description">{{ meal.description }}</p>
 							<div class="preference-question-group" *ngFor="let question of meal.questions; let questionIndex = index" [ngClass]="{'visible': question.active}">

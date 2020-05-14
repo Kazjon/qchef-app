@@ -1,1 +1,23 @@
 
+.icon {
+    width: 23px;
+    height: 23px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 5px;
+
+    &.ingredients {
+        background: url(../../../../../assets/images/icon-ingredients.svg) center center no-repeat;
+        background-size: 90%;
+    }
+}
+
+.text {
+    vertical-align: bottom;
+    color: var(--ion-color-font-main);
+    font-family: var(--font-family-body);
+    font-weight: var(--font-weight-body);
+    font-style: var(--font-style-body);
+    font-size: 13px;
+    line-height: 17px;
+}
