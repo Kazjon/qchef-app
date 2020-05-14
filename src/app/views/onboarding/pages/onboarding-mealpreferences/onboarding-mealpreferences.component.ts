@@ -16,7 +16,6 @@ export class OnboardingMealPreferencesComponent implements OnInit {
     @ViewChild('mealSlides', { static: false }) mealSlides: IonSlides;
     @Input() progressValue: any;
     @Input() imgSrc: string;
-    @Input() ableToBack: boolean = false;
     @Input() isSelected: boolean = false;
     @Input() page: number = 1;
 
@@ -65,6 +64,8 @@ export class OnboardingMealPreferencesComponent implements OnInit {
             this.currentQuestion = this.findCurrentQuestion();
         })
         .then(() => {
+            console.log('id: ', this.currentMealID, this.currentMeal, this.currentQuestion)
+
             this.markAsSelected();
         });
     }
@@ -98,9 +99,11 @@ export class OnboardingMealPreferencesComponent implements OnInit {
             if(element.recipeID == this.currentMealID) {
                 for(let i = 0; i < this.currentQuestion.options.length; i++) {
                     if (element[this.currentQuestionID] == this.currentQuestion.options[i]) {
-                        document.getElementById('option-'+this.currentMealID+this.currentQuestionIndex+''+i).classList.add('selected');
+                        console.log(this.currentMealID+''+this.currentQuestionIndex+'-'+i)
+                        console.log(document.getElementById('option-'+this.currentMealID+''+this.currentQuestionIndex+''+i))
+                        document.getElementById('option-'+this.currentMealID+''+this.currentQuestionIndex+''+i).classList.add('selected');
                     } else {
-                        document.getElementById('option-'+this.currentMealID+this.currentQuestionIndex+''+i).classList.remove('selected');
+                        document.getElementById('option-'+this.currentMealID+''+this.currentQuestionIndex+''+i).classList.remove('selected');
                     }
                 }
             }
@@ -182,6 +185,7 @@ export class OnboardingMealPreferencesComponent implements OnInit {
         this.currentMeal = this.findCurrentMeal(this.currentMealID);
         this.currentQuestion = this.findCurrentQuestion();   
         this.currentQuestionID = this.currentQuestion.id;         
+        console.log('id: back = ', this.currentMealID, this.currentMeal, this.currentQuestion)
 
         this.markAsSelected();
     }
