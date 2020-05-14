@@ -16,7 +16,8 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
     @ViewChild('ingredientSlides', { static: false }) ingredientSlides: IonSlides;
     @Input() progressValue: any;
     @Input() page: number = 1;
-
+    
+    percentage: any
     currentIngredientIndex: number = 0;
     currentIngredientID: number;
     currentQuestionID: number;
@@ -38,10 +39,12 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
             this.addIngredientPreferenceQuestionsToIngredients();
         });
         this.progressValue = this.dataService.getProgressStage();
+        this.percentage = (this.progressValue * 100).toFixed(0);
     }
 
     prevStage() {
         this.progressValue = this.dataService.getProgressMark('mealPreference');
+        this.percentage = (this.progressValue * 100).toFixed(0);
     }
 
     findCurrentIngredient(id: number) {
@@ -53,6 +56,7 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
     }
 
     onSlideChange() {
+
         this.ingredientSlides.getActiveIndex().then((index)=> {
             this.page = index + 1;
             this.currentIngredientIndex = index;
@@ -141,6 +145,7 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
                 }
                 else {
                     this.progressValue = this.dataService.getProgressStage();
+                    this.percentage = (this.progressValue * 100).toFixed(0);
                     this.ingredientSlides.slideNext();
                 }
             });

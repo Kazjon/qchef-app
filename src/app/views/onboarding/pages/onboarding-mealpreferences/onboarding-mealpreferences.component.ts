@@ -30,6 +30,9 @@ export class OnboardingMealPreferencesComponent implements OnInit {
     currentMeal: any;
     currentQuestion: any;
     currentOptionIndex: number;
+    
+    percentage: any;
+
     constructor(private dataService: DataService, private router: Router) { }
 
     ngOnInit() {
@@ -41,6 +44,8 @@ export class OnboardingMealPreferencesComponent implements OnInit {
                 this.addMealPreferenceQuestionsToMeals();
             });
         this.progressValue = this.dataService.getProgressStage();
+        this.percentage = (this.progressValue * 100).toFixed(0);
+
     }
 
     ionViewWillEnter() {
@@ -72,6 +77,7 @@ export class OnboardingMealPreferencesComponent implements OnInit {
 
     prevStage() {
         this.progressValue = this.dataService.getProgressMark('intro');
+        this.percentage = (this.progressValue * 100).toFixed(0);
     }
 
     selectPreference(mealID: number, questionID: number, preference: string, optionIndex: number,questionIndex: number, mealIndex: number) {
@@ -164,6 +170,7 @@ export class OnboardingMealPreferencesComponent implements OnInit {
                 }
                 else {
                     this.progressValue = this.dataService.getProgressStage();
+                    this.percentage = (this.progressValue * 100).toFixed(0);
                     this.mealSlides.slideNext();
                 }
             });
