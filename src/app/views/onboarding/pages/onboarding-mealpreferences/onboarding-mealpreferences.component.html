@@ -10,7 +10,7 @@
 	<div class="content-wrapper column start preferences">
 		<div class="progress">
             <ion-progress-bar indeterminate color="tertiary" value="{{progressValue}}"></ion-progress-bar>
-			<p class="progress-percentage"> {{progressValue * 100}}% Complete</p>
+            <p class="progress-percentage"> {{progressValue * 100}}% Complete</p>
 		</div>
 		<h1 class="content-prompt">Meal Preferences</h1>
 		<div class="slide-options">
@@ -36,7 +36,7 @@
 								</div>
 								<ion-button class="transparent-butt" [ngClass]="{'hidden': questionIndex == 0}" (click)="backToPrevQuestion(questionIndex)"> &#60; Back to Previous Question</ion-button>
 
-							</div> 
+							</div>
 						</ion-card-content>
 					</ion-card>
 				</ion-slide>

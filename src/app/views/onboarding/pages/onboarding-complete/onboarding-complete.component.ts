@@ -14,8 +14,11 @@ export class OnboardingCompleteComponent implements OnInit {
     mealsPerWeekSubscription: Subscription;
     mealsPerWeek: MealsPerWeekResponse;
     mealSlots: MealSlot[] = [];
+    imgSrc: string;
 
-    constructor(private router: Router, private dataService: DataService) { }
+    constructor(private router: Router, private dataService: DataService) {
+        this.imgSrc = "../../../assets/images/splash.svg"
+    }
 
     ngOnInit() {
 

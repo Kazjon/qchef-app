@@ -131,6 +131,22 @@
   --ion-color-pager-shade: #868686;
   --ion-color-pager-tint: #a2a2a2;
 
+  /** section border **/
+  --ion-color-section-border: #EEEEEE;
+  --ion-color-section-border-rgb: 238,238,238;
+  --ion-color-section-border-contrast: #000000;
+  --ion-color-section-border-contrast-rgb: 0,0,0;
+  --ion-color-section-border-shade: #d1d1d1;
+  --ion-color-section-border-tint: #f0f0f0;
+
+  /** list node **/
+  --ion-color-list-node: #C4C4C4;
+  --ion-color-list-node-rgb: 196,196,196;
+  --ion-color-list-node-contrast: #000000;
+  --ion-color-list-node-contrast-rgb: 0,0,0;
+  --ion-color-list-node-shade: #acacac;
+  --ion-color-list-node-tint: #cacaca;
+
   /** logo font **/
   --font-family-logo: rubikbold;
   --font-style-logo: normal;
@@ -160,11 +176,17 @@
   --font-family-button: rubikbold;
   --font-style-button: normal;
   --font-weight-button: bold;
-  
+
   /** back button font **/
   --font-family-back: robotomedium;
   --font-style-back: normal;
   --font-weight-back: bold;
+
+  /** meal subheading font **/
+  --font-family-meal-subheading: robotomedium;
+  --font-style-meal-subheading: normal;
+  --font-weight-bumeal-subheadingtton: normal;
+
 }
 
 @media (prefers-color-scheme: dark) {

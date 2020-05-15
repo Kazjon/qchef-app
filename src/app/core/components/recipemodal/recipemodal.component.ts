@@ -9,8 +9,11 @@ import { MealPreference } from '../../objects/MealPreference';
 })
 export class RecipeModalComponent {
     @Input() recipe: MealPreference;
+    closeImgSrc: string;
 
-    constructor(public modalController: ModalController) { }
+    constructor(public modalController: ModalController) {
+        this.closeImgSrc = "../../../assets/images/icon-close.svg"
+    }
 
     closeModal() {
         this.modalController.dismiss();
