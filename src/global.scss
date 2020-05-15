@@ -179,6 +179,18 @@
         display: flex;
         justify-content: center;
         align-items: center;
+
+        &.row {
+            flex-direction: row;
+        }
+    
+        &.column {
+            flex-direction: column;
+        }
+    
+        &.start {
+            justify-content: flex-start;
+        }
     }
 
     .slide-options {
@@ -270,6 +282,11 @@ h1 {
 .swiper-pagination-bullet-active {
     background: var(--ion-color-disabled-shade);
     border: none;
+}
+
+.complete-image {
+    padding-bottom: 65px;
+    width: 33%;
 }
 
 /** Font **/
