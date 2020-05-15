@@ -123,6 +123,14 @@
   --ion-color-disabled-shade: #c8c8c8;
   --ion-color-disabled-tint: #e6e6e6;
 
+  /** pager **/
+  --ion-color-pager: #989898;
+  --ion-color-pager-rgb: 152,152,152;
+  --ion-color-pager-contrast: #000000;
+  --ion-color-pager-contrast-rgb: 0,0,0;
+  --ion-color-pager-shade: #868686;
+  --ion-color-pager-tint: #a2a2a2;
+
   /** section border **/
   --ion-color-section-border: #EEEEEE;
   --ion-color-section-border-rgb: 238,238,238;
@@ -149,10 +157,20 @@
   --font-style-heading: normal;
   --font-weight-heading: normal;
 
+  /** subheading button font **/
+  --font-family-subheading: robotoregular;
+  --font-style-subheading: medium;
+  --font-weight-subheading: bold;
+
   /** body font **/
   --font-family-body: robotoregular;
   --font-style-body: normal;
   --font-weight-body: normal;
+
+  /** question button font **/
+  --font-family-question-button: robotoregular;
+  --font-style-question-button: normal;
+  --font-weight-question-button: bold;
 
   /** button font **/
   --font-family-button: rubikbold;

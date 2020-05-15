@@ -7,13 +7,14 @@
 </ion-header>
 <ion-content fullscreen>
 
-	<div class="content-wrapper column start">
+	<div class="content-wrapper column start preferences">
 		<div class="progress">
             <ion-progress-bar indeterminate color="tertiary" value="{{progressValue}}"></ion-progress-bar>
             <p class="progress-percentage"> {{progressValue * 100}}% Complete</p>
 		</div>
+		<h1 class="content-prompt">Meal Preferences</h1>
 		<div class="slide-options">
-			<ion-slides #mealSlides>
+			<ion-slides #mealSlides (ionSlideDidChange)="onSlideChange()">
 				<ion-slide *ngFor="let meal of mealPreferenceOptions; let mealIndex = index">
 					<ion-card>
 						<img src="{{ meal.image }}" />
@@ -21,19 +22,27 @@
 							<ion-card-title>{{ meal.title }}</ion-card-title>
 						</ion-card-header>
 						<ion-card-content>
-							<p>{{ meal.description }}</p>
-							<ion-radio-group class="preference-question-group" *ngFor="let question of meal.questions; let questionIndex = index" [ngClass]="{'visible': question.active}">
-								<ion-item *ngFor="let option of question.options" (click)="selectPreference(meal.id, question.id, option, questionIndex, mealIndex)">
-									<ion-radio value="{{ option }}" slot="start"></ion-radio>
-									<ion-label text-wrap>{{ option }}</ion-label>
-								</ion-item>
-							</ion-radio-group>
+							<div class="content-row">
+								<div class="detail">
+									<span class="icon ingredients"></span>
+									<span class="sub-heading">Ingredients</span>
+								</div>
+							</div>
+							<p class="description">{{ meal.description }}</p>
+							<div class="preference-question-group" *ngFor="let question of meal.questions; let questionIndex = index" [ngClass]="{'visible': question.active}">
+								<p class="sub-heading">Question {{ questionIndex + 1 }} of {{ meal.questions.length }}:</p>
+								<div *ngFor="let option of question.options; let optionIndex = index" (click)="selectPreference(meal.id, question.id, option, optionIndex, questionIndex, mealIndex)">
+									<ion-button slot="start" (click)="selectMeal(mealIndex)" id="option-{{meal.id}}{{questionIndex}}{{optionIndex}}"><span>{{ option }}</span></ion-button>
+								</div>
+								<ion-button class="transparent-butt" [ngClass]="{'hidden': questionIndex == 0}" (click)="backToPrevQuestion(questionIndex)"> &#60; Back to Previous Question</ion-button>
+
+							</div>
 						</ion-card-content>
 					</ion-card>
 				</ion-slide>
 			</ion-slides>
 		</div>
-		<div class="pager">1 of 30 meals</div>
+		<div class="pager">{{ page }} of 30 meals</div>
 	</div>
 
 </ion-content>

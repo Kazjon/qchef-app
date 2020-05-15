@@ -14,7 +14,7 @@ import { Router } from '@angular/router';
 })
 export class OnboardingIngredientPreferencesComponent implements OnInit {
     @ViewChild('ingredientSlides', { static: false }) ingredientSlides: IonSlides;
-    @Input() progressValue: string;
+    @Input() progressValue: any;
     ingredientPreferenceOptions: IngredientPreference[];
     preferenceQuestions: IngredientPreferenceQuestion[] = ingredientPreferenceQuestions;
     ingredientPreferenceResponses: IngredientPreferenceResponse[] = [];
