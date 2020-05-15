@@ -15,6 +15,17 @@ import { Router } from '@angular/router';
 export class OnboardingIngredientPreferencesComponent implements OnInit {
     @ViewChild('ingredientSlides', { static: false }) ingredientSlides: IonSlides;
     @Input() progressValue: any;
+    @Input() page: number = 1;
+
+    percentage: any
+    currentIngredientIndex: number = 0;
+    currentIngredientID: number;
+    currentQuestionID: number;
+    currentIngredient: any;
+
+    currentQuestion: any;
+    currentQuestionIndex: number;
+
     ingredientPreferenceOptions: IngredientPreference[];
     preferenceQuestions: IngredientPreferenceQuestion[] = ingredientPreferenceQuestions;
     ingredientPreferenceResponses: IngredientPreferenceResponse[] = [];
@@ -28,15 +39,51 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
             this.addIngredientPreferenceQuestionsToIngredients();
         });
         this.progressValue = this.dataService.getProgressStage();
+        this.percentage = (this.progressValue * 100).toFixed(0);
     }
 
     prevStage() {
         this.progressValue = this.dataService.getProgressMark('mealPreference');
+        this.percentage = (this.progressValue * 100).toFixed(0);
+    }
+
+    findCurrentIngredient(id: number) {
+        return this.ingredientPreferenceOptions.find((element: any) => element.id == id )
+    }
+
+    findCurrentQuestion() {
+        return this.currentIngredient.questions.find((element: any) => element.active == true)
+    }
+
+    onSlideChange() {
+
+        this.ingredientSlides.getActiveIndex().then((index)=> {
+            this.page = index + 1;
+            this.currentIngredientIndex = index;
+            this.currentIngredientID = this.ingredientPreferenceOptions[this.currentIngredientIndex].id;
+            this.currentIngredient = this.findCurrentIngredient(this.currentIngredientID);
+            this.currentQuestion = this.findCurrentQuestion();
+
+        })
+        .then(() => {
+            this.markAsSelected();
+        });
     }
 
     selectPreference(ingredientID: number, questionID: number, preference: string, questionIndex: number, ingredientIndex: number) {
 
         let preferenceResponse = this.getIngredientPreferenceResponse(ingredientID);
+        this.currentQuestionID = questionID;
+        this.currentQuestionIndex = questionIndex;
+
+        if(this.ingredientPreferenceOptions[ingredientIndex].questions.length == questionIndex + 1) {
+            let preference = this.ingredientPreferenceResponses[this.currentIngredientIndex]
+
+            if (preference[this.currentQuestionID] == undefined) {
+                this.progressValue = this.dataService.getProgressStage();
+                this.percentage = (this.progressValue * 100).toFixed(0);
+            }
+        }
 
         if (Object.entries(preferenceResponse).length > 0) {
             preferenceResponse[questionID] = preference;
@@ -44,6 +91,7 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
         else {
             this.addIngredientPreferenceResponse(ingredientID, questionID, preference);
         }
+
 
         this.showNextQuestion(questionIndex, ingredientIndex);
 
@@ -96,6 +144,11 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
         else {
             this.ingredientSlides.isEnd().then((isEnd) => {
                 if (isEnd) {
+                    this.currentIngredient = this.findCurrentIngredient(this.currentIngredientID);
+                    this.currentQuestion = this.findCurrentQuestion();
+                    this.currentQuestionID = this.currentQuestion.id;
+
+                    this.markAsSelected();
                     this.goToNumberOfMeals();
                 }
                 else {
@@ -106,8 +159,45 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
 
     }
 
+    markAsSelected(){
+        this.ingredientPreferenceResponses.forEach(element => {
+            if(element.ingredientID == this.currentIngredientID) {
+                for(let i = 0; i < this.currentQuestion.options.length; i++) {
+                    if (element[this.currentQuestionID] == this.currentQuestion.options[i]) {
+                        document.getElementById('ingredient-'+this.currentIngredientID+''+this.currentQuestionIndex+''+i).classList.add('selected');
+                    } else {
+                        document.getElementById('ingredient-'+this.currentIngredientID+''+this.currentQuestionIndex+''+i).classList.remove('selected');
+                    }
+                }
+            }
+        });
+    }
+
+    private backToPrevQuestion(currentQuestionIndex: number) {
+        let prev: number;
+
+        let questions = this.ingredientPreferenceOptions[this.currentIngredientIndex].questions;
+        this.currentIngredientID = this.ingredientPreferenceOptions[this.currentIngredientIndex].id;
+
+        if (currentQuestionIndex > 0) {
+            prev = currentQuestionIndex - 1;
+            questions[currentQuestionIndex].active = false;
+            questions[prev].active = true;
+            this.currentQuestionIndex = prev;
+        }
+        this.currentIngredient = this.findCurrentIngredient(this.currentIngredientID);
+        this.currentQuestion = this.findCurrentQuestion();
+        this.currentQuestionID = this.currentQuestion.id;
+
+        this.markAsSelected();
+    }
+
     private goToNumberOfMeals() {
         this.router.navigateByUrl("/onboarding/numberofmeals");
+    }
+
+    private goBack() {
+        this.router.navigateByUrl("/onboarding/mealpreferences");
     }
 
 }

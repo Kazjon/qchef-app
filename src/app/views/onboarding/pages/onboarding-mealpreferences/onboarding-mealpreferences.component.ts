@@ -16,7 +16,6 @@ export class OnboardingMealPreferencesComponent implements OnInit {
     @ViewChild('mealSlides', { static: false }) mealSlides: IonSlides;
     @Input() progressValue: any;
     @Input() imgSrc: string;
-    @Input() ableToBack: boolean = false;
     @Input() isSelected: boolean = false;
     @Input() page: number = 1;
 
@@ -31,6 +30,9 @@ export class OnboardingMealPreferencesComponent implements OnInit {
     currentMeal: any;
     currentQuestion: any;
     currentOptionIndex: number;
+    
+    percentage: any;
+
     constructor(private dataService: DataService, private router: Router) { }
 
     ngOnInit() {
@@ -42,6 +44,8 @@ export class OnboardingMealPreferencesComponent implements OnInit {
                 this.addMealPreferenceQuestionsToMeals();
             });
         this.progressValue = this.dataService.getProgressStage();
+        this.percentage = (this.progressValue * 100).toFixed(0);
+
     }
 
     ionViewWillEnter() {
@@ -71,14 +75,24 @@ export class OnboardingMealPreferencesComponent implements OnInit {
 
     prevStage() {
         this.progressValue = this.dataService.getProgressMark('intro');
+        this.percentage = (this.progressValue * 100).toFixed(0);
     }
 
     selectPreference(mealID: number, questionID: number, preference: string, optionIndex: number,questionIndex: number, mealIndex: number) {
         let preferenceResponse = this.getMealPreferenceResponse(mealID);
-        // this.currentMealID = mealID;
         this.currentQuestionID = questionID;
         this.currentQuestionIndex = questionIndex;
         this.currentOptionIndex = optionIndex;
+
+        if(this.mealPreferenceOptions[mealIndex].questions.length == questionIndex + 1) {
+            let preference = this.mealPreferenceResponses[this.currentMealIndex]
+
+            if (preference[this.currentQuestionID] == undefined) {
+                this.progressValue = this.dataService.getProgressStage();
+                this.percentage = (this.progressValue * 100).toFixed(0);
+            }
+        }
+
         if (Object.entries(preferenceResponse).length > 0) {
             preferenceResponse[questionID] = preference;
         }
@@ -160,7 +174,6 @@ export class OnboardingMealPreferencesComponent implements OnInit {
                     this.goToIngredients();
                 }
                 else {
-                    this.progressValue = this.dataService.getProgressStage();
                     this.mealSlides.slideNext();
                 }
             });
