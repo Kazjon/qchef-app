@@ -118,6 +118,25 @@
 
     }
 
+    ion-header {
+        backdrop-filter: blur(0);
+    }
+
+    ion-toolbar {
+        top: 24px;
+        left: 24px;
+        --opacity: 0;
+    }
+
+    ion-back-button {
+        font-family: var(--font-family-back);
+        font-style: var(--font-style-back);
+        font-weight: var(--font-weight-back);
+        font-size: 14px;
+        line-height: 16px;
+        text-transform: uppercase;
+    }
+
     .recipe-modal {
         .modal-wrapper {
             margin-top: 36px;
@@ -149,7 +168,17 @@
 
     .progress {
         width: 80%;
-        padding: 40px 0;
+        padding-top: 40px;
+    }
+
+    .progress-percentage {
+        text-align: center;
+        color: var(--ion-color-font-main);
+        font-family: var(--font-family-body);
+        font-style: var(--font-style-body);
+        font-weight: var(--font-weight-body);
+        line-height: 16px;
+        font-size: 12px;
     }
 
     .content {
@@ -157,6 +186,18 @@
         display: flex;
         justify-content: center;
         align-items: center;
+
+        &.row {
+            flex-direction: row;
+        }
+
+        &.column {
+            flex-direction: column;
+        }
+
+        &.start {
+            justify-content: flex-start;
+        }
     }
 
     .slide-options {
@@ -250,10 +291,14 @@ h1 {
     border: none;
 }
 
+.complete-image {
+    padding-bottom: 65px;
+    width: 33%;
+}
+
 .details-wrapper {
     box-shadow: 3px 0px 4px rgba(0, 0, 0, 0.25);
 }
-
 
 /** Font **/
 @font-face {
