@@ -118,6 +118,24 @@
 
     }
 
+    ion-header {
+        backdrop-filter: blur(0);
+    }
+    
+    ion-toolbar {
+        top: 24px;
+        left: 24px;
+        --opacity: 0;
+    }
+
+    ion-back-button {
+        font-family: var(--font-family-back);
+        font-style: var(--font-style-back);
+        font-weight: var(--font-weight-back);
+        font-size: 14px;
+        line-height: 16px;
+        text-transform: uppercase;
+    }
 }
 
 .content-wrapper {
@@ -143,7 +161,17 @@
 
     .progress {
         width: 80%;
-        padding: 40px 0;
+        padding-top: 40px;
+    }
+
+    .progress-percentage {
+        text-align: center;
+        color: var(--ion-color-font-main);
+        font-family: var(--font-family-body);
+        font-style: var(--font-style-body);
+        font-weight: var(--font-weight-body);
+        line-height: 16px;
+        font-size: 12px;
     }
 
     .content {
