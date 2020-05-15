@@ -126,7 +126,7 @@
             background-image: none;
         }
     }
-    
+
     ion-toolbar {
         left: 24px;
         --opacity: 0;
@@ -145,6 +145,13 @@
         text-transform: uppercase;
     }
 
+    .recipe-modal {
+        .modal-wrapper {
+            margin-top: 36px;
+            border-radius: 8px 8px 0 0;
+        }
+    }
+
     .slide-options {
         ion-card {
             border-radius: 8px;
@@ -153,10 +160,10 @@
             margin-top: 13px;
             margin-bottom: 13px;
         }
-    
+
         ion-card-header {
             padding: 0 20px;
-    
+
             ion-card-title {
                 color: var(--ion-color-font-main);
                 font-family: var(--font-family-body);
@@ -189,6 +196,7 @@
                 font-size: 14px;
                 line-height: 20px;
                 padding-top: 6px;
+                vertical-align: bottom;
             }
 
             .transparent-butt {
@@ -277,6 +285,18 @@
         display: flex;
         justify-content: center;
         align-items: center;
+
+        &.row {
+            flex-direction: row;
+        }
+
+        &.column {
+            flex-direction: column;
+        }
+
+        &.start {
+            justify-content: flex-start;
+        }
     }
 
     .slide-options {
@@ -405,7 +425,7 @@ h1 {
     .sub-heading {
         padding-bottom: 6px;
     }
-    
+
     .description {
         padding: 0;
     }
@@ -421,6 +441,15 @@ h1 {
 .swiper-pagination-bullet-active {
     background: var(--ion-color-disabled-shade);
     border: none;
+}
+
+.complete-image {
+    padding-bottom: 65px;
+    width: 33%;
+}
+
+.details-wrapper {
+    box-shadow: 3px 0px 4px rgba(0, 0, 0, 0.25);
 }
 
 /** Font **/

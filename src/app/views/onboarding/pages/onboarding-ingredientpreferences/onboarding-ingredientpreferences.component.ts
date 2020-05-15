@@ -16,7 +16,7 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
     @ViewChild('ingredientSlides', { static: false }) ingredientSlides: IonSlides;
     @Input() progressValue: any;
     @Input() page: number = 1;
-    
+
     percentage: any
     currentIngredientIndex: number = 0;
     currentIngredientID: number;
@@ -63,7 +63,7 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
             this.currentIngredientID = this.ingredientPreferenceOptions[this.currentIngredientIndex].id;
             this.currentIngredient = this.findCurrentIngredient(this.currentIngredientID);
             this.currentQuestion = this.findCurrentQuestion();
-            
+
         })
         .then(() => {
             this.markAsSelected();
@@ -92,7 +92,7 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
             this.addIngredientPreferenceResponse(ingredientID, questionID, preference);
         }
 
-        
+
         this.showNextQuestion(questionIndex, ingredientIndex);
 
     }
@@ -145,9 +145,9 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
             this.ingredientSlides.isEnd().then((isEnd) => {
                 if (isEnd) {
                     this.currentIngredient = this.findCurrentIngredient(this.currentIngredientID);
-                    this.currentQuestion = this.findCurrentQuestion();   
+                    this.currentQuestion = this.findCurrentQuestion();
                     this.currentQuestionID = this.currentQuestion.id;
-                        
+
                     this.markAsSelected();
                     this.goToNumberOfMeals();
                 }
@@ -178,7 +178,7 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
 
         let questions = this.ingredientPreferenceOptions[this.currentIngredientIndex].questions;
         this.currentIngredientID = this.ingredientPreferenceOptions[this.currentIngredientIndex].id;
-        
+
         if (currentQuestionIndex > 0) {
             prev = currentQuestionIndex - 1;
             questions[currentQuestionIndex].active = false;
@@ -186,8 +186,8 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
             this.currentQuestionIndex = prev;
         }
         this.currentIngredient = this.findCurrentIngredient(this.currentIngredientID);
-        this.currentQuestion = this.findCurrentQuestion();   
-        this.currentQuestionID = this.currentQuestion.id;         
+        this.currentQuestion = this.findCurrentQuestion();
+        this.currentQuestionID = this.currentQuestion.id;
 
         this.markAsSelected();
     }
