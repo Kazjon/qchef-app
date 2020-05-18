@@ -12,7 +12,7 @@ export class RecipeModalComponent {
     closeImgSrc: string;
 
     constructor(public modalController: ModalController) {
-        this.closeImgSrc = "../../../assets/images/icon-close.svg"
+        this.closeImgSrc = "../../../assets/images/icon-close.svg";
     }
 
     closeModal() {

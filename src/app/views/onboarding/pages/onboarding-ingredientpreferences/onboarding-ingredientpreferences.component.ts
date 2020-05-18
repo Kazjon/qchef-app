@@ -66,11 +66,16 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
 
         })
         .then(() => {
-            this.markAsSelected();
+            //this.markAsSelected();
         });
     }
 
-    selectPreference(ingredientID: number, questionID: number, preference: string, questionIndex: number, ingredientIndex: number) {
+    selectPreference(ingredientID: number, questionID: number, preference, questionIndex: number, ingredientIndex: number, optionIndex: number) {
+
+        this.ingredientPreferenceOptions[ingredientIndex].questions[questionIndex].options.forEach((option) => {
+            option.selected = false;
+        });
+        this.ingredientPreferenceOptions[ingredientIndex].questions[questionIndex].options[optionIndex].selected = true;
 
         let preferenceResponse = this.getIngredientPreferenceResponse(ingredientID);
         this.currentQuestionID = questionID;
@@ -86,14 +91,16 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
         }
 
         if (Object.entries(preferenceResponse).length > 0) {
-            preferenceResponse[questionID] = preference;
+            preferenceResponse[questionID] = preference.title;
         }
         else {
-            this.addIngredientPreferenceResponse(ingredientID, questionID, preference);
+            this.addIngredientPreferenceResponse(ingredientID, questionID, preference.title);
         }
 
-
-        this.showNextQuestion(questionIndex, ingredientIndex);
+        let timeout = setTimeout(() => {
+            this.showNextQuestion(questionIndex, ingredientIndex);
+            clearTimeout(timeout);
+        }, 300);
 
     }
 
@@ -148,7 +155,7 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
                     this.currentQuestion = this.findCurrentQuestion();
                     this.currentQuestionID = this.currentQuestion.id;
 
-                    this.markAsSelected();
+                    //this.markAsSelected();
                     this.goToNumberOfMeals();
                 }
                 else {
@@ -159,7 +166,7 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
 
     }
 
-    markAsSelected(){
+    /*markAsSelected(){
         this.ingredientPreferenceResponses.forEach(element => {
             if(element.ingredientID == this.currentIngredientID) {
                 for(let i = 0; i < this.currentQuestion.options.length; i++) {
@@ -171,9 +178,9 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
                 }
             }
         });
-    }
+    }*/
 
-    private backToPrevQuestion(currentQuestionIndex: number) {
+    backToPrevQuestion(currentQuestionIndex: number) {
         let prev: number;
 
         let questions = this.ingredientPreferenceOptions[this.currentIngredientIndex].questions;
@@ -189,14 +196,14 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
         this.currentQuestion = this.findCurrentQuestion();
         this.currentQuestionID = this.currentQuestion.id;
 
-        this.markAsSelected();
+        //this.markAsSelected();
     }
 
     private goToNumberOfMeals() {
         this.router.navigateByUrl("/onboarding/numberofmeals");
     }
 
-    private goBack() {
+    goBack() {
         this.router.navigateByUrl("/onboarding/mealpreferences");
     }
 

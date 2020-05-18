@@ -1,11 +1,11 @@
 <ion-header [translucent]="true">
     <ion-toolbar>
-        <ion-buttons slot="start">
+        <ion-buttons mode="ios" slot="start">
             <ion-back-button></ion-back-button>
         </ion-buttons>
     </ion-toolbar>
 </ion-header>
-<ion-content>
+<ion-content fullscreen>
     <h1>Meal Plan Summary</h1>
     <p>Review, edit & confirm your choices for this week</p>
     <ion-item *ngFor="let mealslot of mealSlots" (click)="changeMeal(mealslot)">
