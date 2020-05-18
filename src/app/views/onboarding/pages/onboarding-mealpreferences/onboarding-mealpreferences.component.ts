@@ -30,7 +30,7 @@ export class OnboardingMealPreferencesComponent implements OnInit {
     currentMeal: any;
     currentQuestion: any;
     currentOptionIndex: number;
-    
+
     percentage: any;
 
     constructor(private dataService: DataService, private router: Router) { }
@@ -69,7 +69,7 @@ export class OnboardingMealPreferencesComponent implements OnInit {
             this.currentQuestion = this.findCurrentQuestion();
         })
         .then(() => {
-            this.markAsSelected();
+           // this.markAsSelected();
         });
     }
 
@@ -78,13 +78,19 @@ export class OnboardingMealPreferencesComponent implements OnInit {
         this.percentage = (this.progressValue * 100).toFixed(0);
     }
 
-    selectPreference(mealID: number, questionID: number, preference: string, optionIndex: number,questionIndex: number, mealIndex: number) {
+    selectPreference(mealID: number, questionID: number, preference, optionIndex: number, questionIndex: number, mealIndex: number) {
+
+        this.mealPreferenceOptions[mealIndex].questions[questionIndex].options.forEach((option) => {
+            option.selected = false;
+        });
+        this.mealPreferenceOptions[mealIndex].questions[questionIndex].options[optionIndex].selected = true;
+
         let preferenceResponse = this.getMealPreferenceResponse(mealID);
         this.currentQuestionID = questionID;
         this.currentQuestionIndex = questionIndex;
         this.currentOptionIndex = optionIndex;
 
-        if(this.mealPreferenceOptions[mealIndex].questions.length == questionIndex + 1) {
+        if (this.mealPreferenceOptions[mealIndex].questions.length == questionIndex + 1) {
             let preference = this.mealPreferenceResponses[this.currentMealIndex]
 
             if (preference[this.currentQuestionID] == undefined) {
@@ -97,17 +103,21 @@ export class OnboardingMealPreferencesComponent implements OnInit {
             preferenceResponse[questionID] = preference;
         }
         else {
-            this.addMealPreferenceResponse(mealID, questionID, preference);
-        }       
+            this.addMealPreferenceResponse(mealID, questionID, preference.title);
+        }
 
-        this.showNextQuestion(questionIndex, mealIndex);
+        let timeout = setTimeout(() => {
+            this.showNextQuestion(questionIndex, mealIndex);
+            clearTimeout(timeout);
+        }, 300);
+
     }
 
     getCurrentQuestion(meal: any) {
         return meal.questions.find((element: any) => element.active == true)
     }
 
-    markAsSelected(){
+    /*markAsSelected(){
         this.mealPreferenceResponses.forEach(element => {
             if(element.recipeID == this.currentMealID) {
                 for(let i = 0; i < this.currentQuestion.options.length; i++) {
@@ -119,7 +129,7 @@ export class OnboardingMealPreferencesComponent implements OnInit {
                 }
             }
         });
-    }
+    }*/
 
     private addMealPreferenceQuestionsToMeals() {
         this.mealPreferenceOptions.forEach((meal) => {
@@ -157,7 +167,7 @@ export class OnboardingMealPreferencesComponent implements OnInit {
 
     }
 
-    private showNextQuestion(questionIndex: number, mealIndex: number) {     
+    private showNextQuestion(questionIndex: number, mealIndex: number) {
         let next = questionIndex + 1;
         if (next < this.mealPreferenceOptions[mealIndex].questions.length) {
             this.mealPreferenceOptions[mealIndex].questions[questionIndex].active = false;
@@ -167,10 +177,10 @@ export class OnboardingMealPreferencesComponent implements OnInit {
             this.mealSlides.isEnd().then((isEnd) => {
                 if (isEnd) {
                     this.currentMeal = this.findCurrentMeal(this.currentMealID);
-                    this.currentQuestion = this.findCurrentQuestion();   
-                    this.currentQuestionID = this.currentQuestion.id;         
+                    this.currentQuestion = this.findCurrentQuestion();
+                    this.currentQuestionID = this.currentQuestion.id;
 
-                    this.markAsSelected();
+                   // this.markAsSelected();
                     this.goToIngredients();
                 }
                 else {
@@ -181,11 +191,11 @@ export class OnboardingMealPreferencesComponent implements OnInit {
 
     }
 
-    private backToPrevQuestion(currentQuestionIndex: number) {
+    backToPrevQuestion(currentQuestionIndex: number) {
         let prev: number;
         let questions = this.mealPreferenceOptions[this.currentMealIndex].questions;
         this.currentMealID = this.mealPreferenceOptions[this.currentMealIndex].id;
-        
+
         if (currentQuestionIndex > 0) {
             prev = currentQuestionIndex - 1;
             questions[currentQuestionIndex].active = false;
@@ -193,10 +203,10 @@ export class OnboardingMealPreferencesComponent implements OnInit {
             this.currentQuestionIndex = prev;
         }
         this.currentMeal = this.findCurrentMeal(this.currentMealID);
-        this.currentQuestion = this.findCurrentQuestion();   
-        this.currentQuestionID = this.currentQuestion.id;         
+        this.currentQuestion = this.findCurrentQuestion();
+        this.currentQuestionID = this.currentQuestion.id;
 
-        this.markAsSelected();
+        //this.markAsSelected();
     }
 
     private goToIngredients() {

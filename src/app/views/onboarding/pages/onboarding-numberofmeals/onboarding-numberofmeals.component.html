@@ -1,11 +1,11 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-      <ion-buttons slot="start">
-          <ion-back-button></ion-back-button>
-      </ion-buttons>
-  </ion-toolbar>
+	<ion-toolbar>
+		<ion-buttons mode="ios" slot="start">
+			<ion-back-button></ion-back-button>
+		</ion-buttons>
+	</ion-toolbar>
 </ion-header>
-<ion-content>
+<ion-content fullscreen>
 
   <div class="content-wrapper column start">
 
@@ -21,7 +21,7 @@
 
               <ion-card-content>
                   <p>How many recipes do you want to prepare this week?</p>
-                  <ion-button color="primary" (click)="next()">Next</ion-button>
+                  <ion-button mode="ios" color="primary" (click)="next()">Next</ion-button>
               </ion-card-content>
 
               <div class="loading-overlay">

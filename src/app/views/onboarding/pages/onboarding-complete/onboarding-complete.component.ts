@@ -17,7 +17,7 @@ export class OnboardingCompleteComponent implements OnInit {
     imgSrc: string;
 
     constructor(private router: Router, private dataService: DataService) {
-        this.imgSrc = "../../../assets/images/splash.svg"
+        this.imgSrc = "../../../assets/images/splash.svg";
     }
 
     ngOnInit() {

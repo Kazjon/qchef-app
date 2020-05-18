@@ -1,6 +1,6 @@
 <ion-header [translucent]="true">
     <ion-toolbar>
-        <ion-buttons slot="start">
+        <ion-buttons mode="ios" slot="start">
             <ion-back-button></ion-back-button>
         </ion-buttons>
     </ion-toolbar>
@@ -43,8 +43,8 @@
                                     <span class="text">{{ meal.ingredients.length }} ingredients</span>
                                 </div>
                             </div>
-                            <ion-button mode="ios" class="small" color="font-button" *ngIf="!meal.selected" (click)="selectMeal(mealIndex)">Select Meal</ion-button>
-                            <ion-button mode="ios" class="small" color="primary" *ngIf="meal.selected" >Selected</ion-button>
+                            <ion-button mode="ios" class="small" color="font-button" *ngIf="!meal.selected" (click)="selectMeal(mealIndex)"><span>Select Meal</span></ion-button>
+                            <ion-button mode="ios" class="small" color="primary" *ngIf="meal.selected" ><span>Selected</span></ion-button>
 						</ion-card-content>
 					</ion-card>
 				</ion-slide>
