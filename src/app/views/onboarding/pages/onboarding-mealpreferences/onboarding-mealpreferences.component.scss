@@ -21,3 +21,41 @@
     font-size: 13px;
     line-height: 17px;
 }
+.fade {
+    // position: relative;
+    height: 2.8em;
+    // overflow: hidden;
+    // padding: 0;
+    overflow: hidden;
+    // white-space:nowrap;
+    text-overflow:hidden;
+    // display:inline-block;
+    text-overflow: ellipsis;
+-webkit-line-clamp: 2;
+display: -webkit-box;
+-webkit-box-orient: vertical;
+}
+.fade:after {
+    content: "";
+    text-align: right;
+    height: 1.2em;
+    width: 120px;
+    background-color: white;
+}
+.show-more {
+    position: absolute;
+    padding-right: 20px;
+    top: 4em;
+    float: right;
+    right: 0;
+}
+.butt-show-more {
+    font-family: var(--font-family-button);
+    font-style: var(--font-style-button);
+    font-weight: var(--font-weight-button);
+    font-size: 14px;
+    line-height: 17px;
+    text-transform: uppercase;
+
+    color: var(--ion-color-primary);
+}

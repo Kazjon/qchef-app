@@ -1,0 +1,28 @@
+.butt-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    margin: 9px;
+}
+
+.content {
+    margin: 29px;
+}
+
+.header {
+    font-size: 18px;
+    line-height: 23px;
+    color: var(--ion-color-font-main);
+    font-family: var(--font-family-logo);
+    font-weight: var(--font-weight-logo);
+    font-style: var(--font-style-logo);
+}
+
+p {
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--ion-color-font-main);
+    font-family: var(--font-family-body);
+    font-weight: var(--font-weight-body);
+    font-style: var(--font-style-body);
+}
