@@ -9,9 +9,10 @@
 
   <div class="content-wrapper column start">
 
-      <div class="progress">
-          <ion-progress-bar color="tertiary" value="0.5"></ion-progress-bar>
-      </div>
+    <div class="progress">
+        <ion-progress-bar indeterminate color="tertiary" value="{{progressValue}}"></ion-progress-bar>
+        <p class="progress-percentage"> {{progressValue * 100}}% Complete</p>
+    </div>
 
       <div class="content">
           <ion-card class="content-prompt">
@@ -21,6 +22,11 @@
 
               <ion-card-content>
                   <p>How many recipes do you want to prepare this week?</p>
+                  <div class="input-fields">
+                    <ion-img class="minus" [src]="iconMinus"></ion-img>
+                    <ion-input></ion-input>
+                    <ion-img class="plus" [src]="iconPlus"></ion-img>  
+                  </div>
                   <ion-button mode="ios" color="primary" (click)="next()">Next</ion-button>
               </ion-card-content>
 

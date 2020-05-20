@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { MealsPerWeekResponse } from  '../../../../core/objects/MealsPerWeekResponse';
 import { DataService } from 'src/app/services/data/data.service';
@@ -10,11 +10,20 @@ import { DataService } from 'src/app/services/data/data.service';
 })
 export class OnboardingNumberOfMealsComponent implements OnInit {
     mealsPerWeekResponse: MealsPerWeekResponse;
+    percentage: any;
+
+    @Input() progressValue: any;
+    @Input() iconMinus: string;
+    @Input() iconPlus: string;
 
     constructor(private router: Router, private dataService: DataService) { }
 
     ngOnInit() {
         this.setMealsPerWeekResponse(3);
+        this.progressValue = this.dataService.getProgressStage();
+        this.percentage = (this.progressValue * 100).toFixed(0);
+        this.iconMinus = '../../../assets/images/icon-minus.svg';
+        this.iconPlus = '../../../assets/images/icon-plus.svg';
     }
 
     next() {
