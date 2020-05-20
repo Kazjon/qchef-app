@@ -30,6 +30,10 @@ const routes: Routes = [
 		loadChildren: () => import('./views/mealselection/mealselection.module').then(m => m.MealSelectionModule),
 		canActivate: [AuthGuard]
 	},
+	{
+		path: 'dashboard',
+		loadChildren: () => import('./views/dashboard/dashboard.module').then(m => m.DashboardModule)
+	},
 	{ 	path: '**',
 		redirectTo: 'splash',
 		pathMatch: 'full'

@@ -131,11 +131,11 @@
     }
 
     ion-toolbar {
-        left: 24px;
         --opacity: 0;
 
         ion-back-button {
             padding-top: 24px;
+            padding-left: 15px;
         }
     }
 
