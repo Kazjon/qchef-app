@@ -11,6 +11,7 @@ import { DataService } from 'src/app/services/data/data.service';
 export class OnboardingNumberOfMealsComponent implements OnInit {
     mealsPerWeekResponse: MealsPerWeekResponse;
     percentage: any;
+    numberOfMeals: number = 0;
 
     @Input() progressValue: any;
     @Input() iconMinus: string;
@@ -27,6 +28,7 @@ export class OnboardingNumberOfMealsComponent implements OnInit {
     }
 
     next() {
+        this.setMealsPerWeekResponse(this.numberOfMeals);
         this.dataService.setMealsPerWeek(this.mealsPerWeekResponse);
         this.router.navigateByUrl("/onboarding/complete");
     }
@@ -37,4 +39,12 @@ export class OnboardingNumberOfMealsComponent implements OnInit {
         }
     }
 
+    setNumberOfMeals(type: string) {
+        if (type == 'minus') {
+            if (this.numberOfMeals > 0)
+                --this.numberOfMeals; 
+        } else if (type == 'plus') {
+            ++this.numberOfMeals;
+        }
+    }
 }
