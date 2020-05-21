@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from 'src/app/services/data/data.service';
-import { Subscription } from 'rxjs';
+import { combineLatest } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { MealSlot } from 'src/app/core/objects/MealSlot';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-recipes',
@@ -9,30 +11,33 @@ import { MealSlot } from 'src/app/core/objects/MealSlot';
     styleUrls: ['./recipes.component.scss'],
 })
 export class RecipesPage implements OnInit {
-    mealSlotsSubscription: Subscription;
     mealSlots: MealSlot[];
 
-    constructor(private dataService: DataService) { }
+    constructor(private dataService: DataService, private router: Router) { }
 
     ngOnInit() {
 
-        this.mealSlotsSubscription = this.dataService.mealSlotsObservable.subscribe((res) => {
-            this.checkData(res);
+        this.dataService.getMealSlotsFromLocal();
+
+        combineLatest(
+            this.dataService.mealSlotsObservable,
+        ).pipe(
+            take(2)
+        )
+        .subscribe(([mealSlots]) => {
+            this.checkData(mealSlots);
         });
+
 
     }
 
-    checkData(data) {
-        if (data.length <= 0) {
-            this.dataService.getMealSlotsFromLocal();
+    private checkData(data) {
+        if (data.length <= 0 || data[0].recipe == undefined) {
+           this.router.navigateByUrl('mealselection/meal/1', { replaceUrl: true });
         }
         else {
             this.mealSlots = data;
         }
-    }
-
-    ngOnDestroy() {
-        this.mealSlotsSubscription.unsubscribe();
     }
 
 }

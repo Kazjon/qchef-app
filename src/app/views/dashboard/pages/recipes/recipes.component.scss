@@ -1,0 +1,25 @@
+.mealslot {
+    width: 90%;
+    max-width: 400px;
+    margin-bottom: 50px;
+
+    &:last-child {
+        margin-bottom: 100px;
+    }
+
+    .image-wrap {
+        height: 225px;
+        overflow: hidden;
+        text-align: center;
+        box-shadow: inset 0px -6px 4px -5px rgba(0, 0, 0, 0.2);
+        border-bottom: 1px solid white;
+
+        img {
+            object-fit: cover;
+            width: 90%;
+            height: 100%;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+    }
+}

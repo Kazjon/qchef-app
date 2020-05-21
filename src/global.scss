@@ -28,6 +28,10 @@
 :root {
     ion-content {
         background-color: var(--ion-color-background);
+
+        &.has-tabs {
+            padding-bottom: 82px;
+        }
     }
 
     ion-input {
@@ -147,6 +151,28 @@
         line-height: 16px;
         text-transform: uppercase;
     }
+
+    ion-tab-bar {
+        height: 82px;
+        background: var(--ion-color-tabbar);
+
+        ion-tab-button {
+            background: var(--ion-color-tabbar);
+
+            ion-icon, ion-label {
+                color: var(--ion-color-list-node) !important;
+                --ion-color-base: var(--ion-color-list-node) !important;
+            }
+
+            &.tab-selected {
+                ion-icon, ion-label {
+                    color: var(--ion-color-font-main) !important;
+                    --ion-color-base: var(--ion-color-font-main) !important;
+                }
+            }
+        }
+    }
+
 
     .recipe-modal, .ingredient-modal {
         .modal-wrapper {
@@ -477,6 +503,45 @@ h1 {
 
 .details-wrapper {
     box-shadow: 3px 0px 4px rgba(0, 0, 0, 0.25);
+}
+
+.meal-details {
+    margin-bottom: 20px;
+    text-align: left;
+
+    .detail {
+        display: inline-block;
+        height: 23px;
+        margin-right: 15px;
+
+        .icon {
+            width: 23px;
+            height: 23px;
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 5px;
+
+            &.ingredients {
+                background: url(assets/images/icon-ingredients.svg) center center no-repeat;
+                background-size: 90%;
+            }
+
+            &.cooktime {
+                background: url(assets/images/icon-cooktime.svg) center center no-repeat;
+                background-size: contain;
+            }
+
+
+        }
+
+        .text {
+            vertical-align: bottom;
+            color: var(--ion-color-font-main);
+            font-family: var(--font-family-body);
+        }
+
+    }
+
 }
 
 /** Font **/
