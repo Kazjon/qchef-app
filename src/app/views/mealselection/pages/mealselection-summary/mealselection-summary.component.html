@@ -7,16 +7,16 @@
 </ion-header>
 <ion-content fullscreen>
     <h1>Meal Plan Summary</h1>
-    <p>Review, edit & confirm your choices for this week</p>
-    <ion-item *ngFor="let mealslot of mealSlots" (click)="changeMeal(mealslot)">
+    <p class="summary-description">Review, edit & confirm your choices for this week</p>
+    <ion-item *ngFor="let mealslot of mealSlots" (click)="changeMeal(mealslot)" lines="none" class="ion-no-padding">
         <ion-thumbnail slot="start">
             <img src="{{ mealslot.recipe.image }}">
         </ion-thumbnail>
-        <ion-label>
-          <h2>{{ mealslot.recipe.title }}</h2>
-          <p>{{ mealslot.recipe.description }}</p>
-          <p>Change Meal</p>
+        <ion-label text-wrap>
+            <h2>{{ mealslot.recipe.title }}</h2>
+            <div class="description">{{ mealslot.recipe.description }}</div>
+            <p class="text-button">Change Meal</p>
         </ion-label>
-      </ion-item>
+    </ion-item>
     <ion-button color="primary" (click)="goToNext()">Confirm</ion-button>
 </ion-content>
