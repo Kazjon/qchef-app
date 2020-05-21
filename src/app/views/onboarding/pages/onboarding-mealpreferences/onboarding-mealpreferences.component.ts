@@ -4,7 +4,8 @@ import { mealPreferenceQuestions } from '../../../../../assets/data/mealpreferen
 import { MealPreference } from '../../../../core/objects/MealPreference';
 import { MealPreferenceQuestion } from '../../../../core/objects/MealPreferenceQuestion';
 import { MealPreferenceResponse } from 'src/app/core/objects/MealPreferenceResponse';
-import { IonSlides } from '@ionic/angular';
+import { IngredientmodalComponent } from '../../../../core/components/ingredientmodal/ingredientmodal.component';
+import { IonSlides, ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
 
 @Component({
@@ -33,7 +34,11 @@ export class OnboardingMealPreferencesComponent implements OnInit {
 
     percentage: any;
 
-    constructor(private dataService: DataService, private router: Router) { }
+    constructor(
+        private dataService: DataService, 
+        public modalController: ModalController,
+        private router: Router
+    ) { }
 
     ngOnInit() {
         this.imgSrc = "../../../assets/images/icon-ingredient.svg"
@@ -207,6 +212,19 @@ export class OnboardingMealPreferencesComponent implements OnInit {
         this.currentQuestionID = this.currentQuestion.id;
 
         //this.markAsSelected();
+    }
+
+    async openIngredients(recipe: MealPreference) {
+
+        const modal = await this.modalController.create({
+            component: IngredientmodalComponent,
+            cssClass: 'ingredient-modal',
+            componentProps: {
+                'recipe': recipe,
+            }
+        });
+        return await modal.present();
+
     }
 
     private goToIngredients() {
