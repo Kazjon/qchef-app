@@ -24,7 +24,7 @@
                   <p>How many recipes do you want to prepare this week?</p>
                   <div class="input-fields">
                     <ion-img class="minus" [src]="iconMinus" (click)="setNumberOfMeals('minus')"></ion-img>
-                    <ion-input [(ngModel)]="numberOfMeals"></ion-input>
+                    <div class="number-box"><p>{{numberOfMeals}}</p></div>
                     <ion-img class="plus" [src]="iconPlus" (click)="setNumberOfMeals('plus')"></ion-img>  
                   </div>
                   <ion-button mode="ios" color="primary" (click)="next()">Next</ion-button>
