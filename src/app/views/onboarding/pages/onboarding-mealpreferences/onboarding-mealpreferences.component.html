@@ -30,7 +30,7 @@
 									<span class="sub-heading">Ingredients</span>
 								</div>
 							</div>
-							<p class="description-detail"><span class="fade">{{ meal.description }}</span></p>
+							<p class="description-detail"><span class="fade">{{ meal.ingredients }}</span></p>
 							<p class="description-detail show-more" ><span (click)="openIngredients(meal)">SHOW MORE</span></p>
 							<div class="preference-question-group" *ngFor="let question of meal.questions; let questionIndex = index" [ngClass]="{'visible': question.active}">
 								<p class="sub-heading">Question {{ questionIndex + 1 }} of {{ meal.questions.length }}:</p>
