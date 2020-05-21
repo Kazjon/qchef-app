@@ -69,6 +69,19 @@ ion-content {
                 margin-top: 9px;
             }
         }
+
+        .description {
+            display: block;
+            display: -webkit-box;
+            max-width: 100%;
+            height: 43px;
+            margin: 0 auto;
+            font-size: 14px;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis; 
+        }
     }
 }
 
