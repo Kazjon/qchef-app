@@ -8,5 +8,9 @@
     </ion-toolbar>
   </ion-header>
 <ion-content fullscreen>
-    hello
+
+    <div *ngFor="let meal of mealSlots">
+        {{ meal.recipe.title }}
+    </div>
+
 </ion-content>

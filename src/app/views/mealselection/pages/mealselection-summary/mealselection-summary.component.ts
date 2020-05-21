@@ -51,7 +51,7 @@ export class MealSelectionSummaryComponent implements OnInit {
     }
 
     goToNext() {
-        this.router.navigateByUrl('home', { replaceUrl: true });
+        this.router.navigateByUrl('dashboard', { replaceUrl: true });
     }
 
 }
