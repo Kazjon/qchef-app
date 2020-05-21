@@ -4,7 +4,11 @@
   </div>
   <div class="content">
       <p class="header">Ingredients</p>
-      <p>{{ recipe.description }}</p>
+      <div class="ingredients details-box">
+        <div class="ingredient-item" *ngFor="let ingredient of recipe.ingredients">
+            <span class="text">{{ ingredient }}</span>
+        </div>
+      </div>
   </div>
 
 </ion-content>
