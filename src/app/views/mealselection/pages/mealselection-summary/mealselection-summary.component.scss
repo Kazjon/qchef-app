@@ -12,15 +12,22 @@ ion-content {
         padding-right: 6px;
     }
 
+    p.summary-description {
+        margin-bottom: 15px;
+    }
+
     ion-item {
         padding-inline-start: 0;
         padding-inline-end: 0;
         border: 1px solid var(--ion-color-input-border);
         border-radius: 8px;
-        margin: 9px auto;
+        margin: 18px auto;
 
         height: 126px;
 
+        &:last-of-type {
+            margin-bottom: 56px;
+        }
 
         ion-thumbnail {
             border-radius: 8px 0px 0px 8px;
@@ -34,8 +41,8 @@ ion-content {
         ion-label {
             h2, p {
                 font-family: var(--font-family-body);
-                font-style: var(--font-family-style);
-                font-weight: var(--font-family-weight);
+                font-style: var(--font-style-body);
+                font-weight: var(--font-weight-body);
                 color: var(--ion-color-font-main);
             }
 
@@ -48,6 +55,18 @@ ion-content {
             p {
                 font-size: 14px;
                 line-height: 18px;
+            }
+
+            .text-button {
+                font-family: var(--font-family-question-button);
+                font-style: var(--font-style-question-button);
+                font-weight: var(--font-weight-question-button);
+                font-size: 14px;
+                line-height: 16px;
+                text-transform: uppercase;
+
+                color: var(--ion-color-primary);
+                margin-top: 9px;
             }
         }
     }
