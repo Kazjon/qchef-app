@@ -1,3 +1,28 @@
-<p>
-  shoppinglist works!
-</p>
+<ion-header [translucent]="false">
+  <ion-toolbar>
+      <ion-buttons mode="ios" slot="end">
+          <ion-buttons slot="start">
+              <ion-menu-button autoHide="false"></ion-menu-button>
+          </ion-buttons>
+      </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content fullscreen class="has-tabs">
+
+  <div class="content-wrapper column start">
+      <h1>Shopping List</h1>
+      
+      <div class="mealslot" *ngFor="let meal of mealSlots">
+          <div class="meal-content">
+              <h2>{{ meal.recipe.title }}</h2>
+
+              <div class="ingredients details-box">
+                <div class="ingredient-item" *ngFor="let ingredient of meal.recipe.ingredients">
+                    <p class="text">{{ ingredient }}</p>
+                </div>
+              </div>
+          </div>
+      </div>
+  </div>
+
+</ion-content>
