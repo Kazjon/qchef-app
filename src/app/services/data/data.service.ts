@@ -19,7 +19,7 @@ export class DataService {
 
     private preferenceProgress = new BehaviorSubject<ProgressStage>({ stage: 0 });
     preferenceProgressObservable = this.preferenceProgress.asObservable();
-    
+
     recommendedMeals = new BehaviorSubject<MealPreference[]>([]);
     recommendedMealsObservable = this.recommendedMeals.asObservable();
 
@@ -129,7 +129,7 @@ export class DataService {
 
         return (Math.round((mark/this.totalStages) * 100) / 100).toFixed(2);
     }
-    
+
     setRecommendedMeals(recommendedMeals: MealPreference[]) {
         this.saveRecommendedMealsToLocal(recommendedMeals);
         this.recommendedMeals.next(recommendedMeals);

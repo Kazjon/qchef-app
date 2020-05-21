@@ -1,4 +1,4 @@
-<ion-header [translucent]="true">
+<ion-header [translucent]="false">
     <ion-toolbar>
         <ion-buttons mode="ios" slot="end">
             <ion-buttons slot="start">
@@ -7,6 +7,38 @@
         </ion-buttons>
     </ion-toolbar>
   </ion-header>
-<ion-content fullscreen>
-    hello
+<ion-content fullscreen class="has-tabs">
+
+    <div class="content-wrapper column start">
+
+        <h1>Meal Plan</h1>
+        <p>Here is your personalised yummy meal plan with {{ mealSlots.length }} meals.</p>
+
+        <div class="mealslot" *ngFor="let meal of mealSlots">
+
+            <div class="image-wrap">
+                <img src="{{ meal.recipe.image }}" />
+            </div>
+            <div class="meal-content">
+                <h2>{{ meal.recipe.title }}</h2>
+                <p>{{ meal.recipe.description }}</p>
+                <div class="meal-details">
+                    <div class="detail">
+                        <span class="icon cooktime"></span>
+                        <span class="text">{{ meal.recipe.cookTime }}</span>
+                    </div>
+                    <div class="detail">
+                        <span class="icon ingredients"></span>
+                        <span class="text">{{ meal.recipe.ingredients.length }} ingredients</span>
+                    </div>
+                </div>
+                <ion-button mode="ios" color="primary">View &amp; Cook Meal</ion-button>
+            </div>
+
+
+        </div>
+    </div>
+
+
+
 </ion-content>
