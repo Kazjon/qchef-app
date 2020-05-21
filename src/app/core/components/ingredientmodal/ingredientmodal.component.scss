@@ -13,8 +13,8 @@
     font-size: 18px;
     line-height: 23px;
     color: var(--ion-color-font-main);
-    font-family: var(--font-family-logo);
-    font-weight: var(--font-weight-logo);
+    font-family: var(--font-family-meal-subheading);
+    font-weight: var(--font-weight-heading);
     font-style: var(--font-style-logo);
 }
 
@@ -25,4 +25,16 @@ p {
     font-family: var(--font-family-body);
     font-weight: var(--font-weight-body);
     font-style: var(--font-style-body);
+}
+
+.ingredient-item {
+    .text {
+        vertical-align: bottom;
+        color: var(--ion-color-font-main);
+        font-family: var(--font-family-body);
+        font-weight: var(--font-weight-body);
+        font-style: var(--font-style-body);
+        font-size: 14px;
+        line-height: 20px;
+    }
 }
