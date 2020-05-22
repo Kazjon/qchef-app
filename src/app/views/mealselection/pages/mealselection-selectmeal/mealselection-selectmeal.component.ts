@@ -180,6 +180,7 @@ export class MealSelectionSelectMealComponent implements OnInit {
             cssClass: 'recipe-modal',
             componentProps: {
                 'recipe': recipe,
+                'showReview': false
             }
         });
         return await modal.present();

@@ -68,6 +68,14 @@
         font-style: var(--font-style-meal-subheading);
     }
 
+    .review {
+        text-align: center;
+
+        ion-button {
+            width: 240px;
+        }
+    }
+
     &.details-box {
         padding-right: 0;
         padding-left: 0;
@@ -109,7 +117,7 @@
 
     }
 
-    
+
     .ingredient-item, .method-steps {
         .text {
             vertical-align: bottom;

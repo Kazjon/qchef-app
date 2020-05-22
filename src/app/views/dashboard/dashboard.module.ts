@@ -7,6 +7,7 @@ import { RecipesPage } from './pages/recipes/recipes.component';
 import { ShoppingListPage } from './pages/shoppinglist/shoppinglist.component';
 import { ReviewsPage } from './pages/reviews/reviews.component';
 import { DashboardPage } from './pages/dashboard/dashboard.component';
+import { RecipeModalComponent } from 'src/app/core/components/recipemodal/recipemodal.component';
 
 
 const routes: Routes = [
@@ -61,7 +62,11 @@ const routes: Routes = [
         RecipesPage,
         ShoppingListPage,
         ReviewsPage,
-        DashboardPage
+        DashboardPage,
+        RecipeModalComponent
+    ],
+    entryComponents: [
+        RecipeModalComponent
     ]
 })
 export class DashboardModule { }

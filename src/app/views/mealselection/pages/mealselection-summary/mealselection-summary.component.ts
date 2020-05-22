@@ -50,7 +50,13 @@ export class MealSelectionSummaryComponent implements OnInit {
         this.router.navigateByUrl('/mealselection/meal/' + mealSlot.id + '/change');
     }
 
-    goToNext() {
+    setWeekStartDate() {
+        let todayDate = new Date();
+        this.dataService.setWeekStartDate(todayDate);
+        this.goToNext();
+    }
+
+    private goToNext() {
         this.router.navigateByUrl('dashboard', { replaceUrl: true });
     }
 

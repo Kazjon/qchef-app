@@ -1,5 +1,12 @@
 <ion-header [translucent]="false">
-    <ion-toolbar>
+    <ion-toolbar class="with-border">
+        <ion-item lines="none">
+          <ion-thumbnail>
+              <img src="../../../../../assets/images/splash.svg">
+          </ion-thumbnail>
+          <ion-label>Chef</ion-label>
+        </ion-item>
+
         <ion-buttons mode="ios" slot="end">
             <ion-buttons slot="start">
                 <ion-menu-button autoHide="false"></ion-menu-button>
@@ -7,12 +14,18 @@
         </ion-buttons>
     </ion-toolbar>
   </ion-header>
-<ion-content fullscreen class="has-tabs">
+<ion-content fullscreen class="has-tabs" [ngClass]="{'loading': isLoading}">
 
-    <div class="content-wrapper column start">
+    <div class="loading-overlay">
+        <ion-spinner name="crescent" color="primary"></ion-spinner>
+    </div>
 
-        <h1>Meal Plan</h1>
-        <p>Here is your personalised yummy meal plan with {{ mealSlots.length }} meals.</p>
+    <div class="content-wrapper column start" *ngIf="!isNewWeek && !isLoading">
+
+        <div class="page-info">
+            <h1>Meal Plan</h1>
+            <p>Here is your personalised yummy meal plan with {{ mealSlots.length }} meals.</p>
+        </div>
 
         <div class="mealslot" *ngFor="let meal of mealSlots">
 
@@ -32,11 +45,18 @@
                         <span class="text">{{ meal.recipe.ingredients.length }} ingredients</span>
                     </div>
                 </div>
-                <ion-button mode="ios" color="primary">View &amp; Cook Meal</ion-button>
+                <ion-button mode="ios" color="primary" (click)="openRecipe(meal.recipe)">View &amp; Cook Meal</ion-button>
             </div>
 
-
         </div>
+
+    </div>
+
+    <div class="content-wrapper column" *ngIf="isNewWeek && !isLoading">
+
+        <p>You have no selected meals for this week.</p>
+        <ion-button mode="ios" color="primary" (click)="startWeeklyFlow()">Pick Weekly Meals</ion-button>
+
     </div>
 
 

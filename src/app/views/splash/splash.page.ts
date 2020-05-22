@@ -23,7 +23,7 @@ export class SplashPage implements OnInit {
 		let timeout = setTimeout(() => {
 			this.firebaseService.isUserAuthenticated()
 				.then(() => {
-					this.router.navigateByUrl('home', { replaceUrl: true });
+					this.router.navigateByUrl('dashboard', { replaceUrl: true });
 				})
 				.catch(() => {
 					this.router.navigateByUrl('login', { replaceUrl: true });

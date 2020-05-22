@@ -29,6 +29,10 @@
                 <div class="list-content"><p class="text">{{ step }}</p></div>
             </div>
         </div>
+        <div class="review details-box" *ngIf="showReview">
+            <h2>Let us know what you thought of this meal!</h2>
+            <ion-button mode="ios" color="primary">Start Review</ion-button>
+        </div>
     </div>
 
 </ion-content>
