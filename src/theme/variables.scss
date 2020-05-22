@@ -195,6 +195,10 @@
   --font-style-meal-subheading: normal;
   --font-weight-meal-subheading: normal;
 
+  /** title font **/
+  --font-family-title: rubikbold;
+  --font-style-title: normal;
+  --font-weight-title: 500;
 }
 
 @media (prefers-color-scheme: dark) {
