@@ -138,7 +138,13 @@
         &::after{
             background-image: none;
         }
+
+        ion-item ion-thumbnail {
+            width: 30px;
+            height: 30px;
+        }
     }
+
 
     ion-toolbar {
         --opacity: 0;
@@ -146,6 +152,23 @@
         ion-back-button {
             padding-top: 24px;
             padding-left: 15px;
+        }
+    }
+
+    ion-toolbar.with-border {
+        --opacity: 1;
+        height: 82px;
+        padding-top: 30px;
+        padding-bottom: 13px;
+
+        ion-label {
+            color: var(--ion-color-main);
+            font-family: var(--font-family-button);
+            font-style: var(--font-style-button);
+            font-weight: var(--font-weight-button);
+            padding-left: 5px;
+            font-size: 22px;
+            line-height: 26px;
         }
     }
 
@@ -596,3 +619,4 @@ h1 {
     font-style: normal;
 
 }
+

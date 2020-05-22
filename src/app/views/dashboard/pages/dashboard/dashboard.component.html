@@ -1,15 +1,15 @@
 <ion-tabs mode="ios">
     <ion-tab-bar slot="bottom">
-        <ion-tab-button tab="recipes">
-            <ion-icon name="pizza-outline"></ion-icon>
+        <ion-tab-button tab="recipes" (click)="changeTabs('recipes')">
+            <ion-icon [src]="isRecipesActive ? recipe : recipeInactive"></ion-icon>
             <ion-label>Recipes</ion-label>
         </ion-tab-button>
-        <ion-tab-button tab="shoppinglist">
-            <ion-icon name="reader-outline"></ion-icon>
+        <ion-tab-button tab="shoppinglist" (click)="changeTabs('shoppinglist')">
+            <ion-icon [src]="isShoppingListActive ? shoppingList : shoppingListInactive"></ion-icon>
             <ion-label>Shopping List</ion-label>
         </ion-tab-button>
-        <ion-tab-button tab="reviews">
-            <ion-icon name="thumbs-up-outline"></ion-icon>
+        <ion-tab-button tab="reviews" (click)="changeTabs('reviews')">
+            <ion-icon [src]="isReviewsActive ? reviews : reviewsInactive"></ion-icon>
             <ion-label>Reviews</ion-label>
         </ion-tab-button>
     </ion-tab-bar>
