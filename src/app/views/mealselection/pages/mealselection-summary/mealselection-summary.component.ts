@@ -53,7 +53,16 @@ export class MealSelectionSummaryComponent implements OnInit {
     setWeekStartDate() {
         let todayDate = new Date();
         this.dataService.setWeekStartDate(todayDate);
+        this.updateMealSlots();
         this.goToNext();
+    }
+
+    private updateMealSlots() {
+        for (let i = 0; i < this.mealSlots.length; i++) {
+                this.mealSlots[i].reviewed = true;
+                this.dataService.setMealSlots(this.mealSlots);
+        }
+
     }
 
     private goToNext() {

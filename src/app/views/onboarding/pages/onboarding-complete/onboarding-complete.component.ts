@@ -43,6 +43,7 @@ export class OnboardingCompleteComponent implements OnInit {
             let mealSlot: MealSlot = {
                 id: (i + 1),
                 selected: false,
+                reviewed: false,
                 active: false
             }
             this.mealSlots.push(mealSlot);
