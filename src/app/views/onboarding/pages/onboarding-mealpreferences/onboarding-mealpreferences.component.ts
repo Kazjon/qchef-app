@@ -7,6 +7,7 @@ import { MealPreferenceResponse } from 'src/app/core/objects/MealPreferenceRespo
 import { IngredientmodalComponent } from '../../../../core/components/ingredientmodal/ingredientmodal.component';
 import { IonSlides, ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { DataHandlingService } from 'src/app/services/datahandling/datahandling.service';
 
 @Component({
     selector: 'app-onboarding-mealpreferences',
@@ -19,13 +20,13 @@ export class OnboardingMealPreferencesComponent implements OnInit {
     @Input() imgSrc: string;
     @Input() isSelected: boolean = false;
     @Input() page: number = 1;
-
+    isLoading: boolean = true;
     mealPreferenceOptions: MealPreference[];
     preferenceQuestions: MealPreferenceQuestion[] = mealPreferenceQuestions;
     mealPreferenceResponses: MealPreferenceResponse[] = [];
     currentMealIndex: number = 0;
     currentQuestionIndex: number;
-    currentMealID: number;
+    currentMealID: string;
     currentQuestionID: number;
     currentPreference: string;
     currentMeal: any;
@@ -35,7 +36,8 @@ export class OnboardingMealPreferencesComponent implements OnInit {
     percentage: any;
 
     constructor(
-        private dataService: DataService, 
+        private dataService: DataService,
+        private dataHandlingService: DataHandlingService,
         public modalController: ModalController,
         private router: Router
     ) { }
@@ -45,8 +47,11 @@ export class OnboardingMealPreferencesComponent implements OnInit {
 
         this.dataService.getMealsFromServer()
             .subscribe((res) => {
-                this.mealPreferenceOptions = res;
-                this.addMealPreferenceQuestionsToMeals();
+                this.dataHandlingService.handleMealPreferenceData(res)
+                    .then((organisedData: MealPreference[]) => {
+                        this.mealPreferenceOptions = organisedData;
+                        this.isLoading = false;
+                    });
             });
         this.progressValue = this.dataService.getProgressStage();
         this.percentage = (this.progressValue * 100).toFixed(0);
@@ -57,7 +62,7 @@ export class OnboardingMealPreferencesComponent implements OnInit {
 
     }
 
-    findCurrentMeal(id: number) {
+    findCurrentMeal(id: string) {
         return this.mealPreferenceOptions.find((element: any) => element.id == id )
     }
 
@@ -136,12 +141,6 @@ export class OnboardingMealPreferencesComponent implements OnInit {
         });
     }*/
 
-    private addMealPreferenceQuestionsToMeals() {
-        this.mealPreferenceOptions.forEach((meal) => {
-            let questions = JSON.stringify(this.preferenceQuestions);
-            meal.questions = JSON.parse(questions);
-        });
-    }
 
     private getMealPreferenceResponse(mealID: number) {
 

@@ -63,10 +63,10 @@ const routes: Routes = [
         ShoppingListPage,
         ReviewsPage,
         DashboardPage,
-        RecipeModalComponent
+        //RecipeModalComponent
     ],
     entryComponents: [
-        RecipeModalComponent
+        //RecipeModalComponent
     ]
 })
 export class DashboardModule { }
