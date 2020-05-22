@@ -6,6 +6,7 @@ import { IonSlides } from '@ionic/angular';
 import { IngredientPreferenceResponse } from 'src/app/core/objects/IngredientPreferenceResponse';
 import { DataService } from 'src/app/services/data/data.service';
 import { Router } from '@angular/router';
+import { DataHandlingService } from 'src/app/services/datahandling/datahandling.service';
 
 @Component({
     selector: 'app-onboarding-ingredientpreferences',
@@ -16,10 +17,11 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
     @ViewChild('ingredientSlides', { static: false }) ingredientSlides: IonSlides;
     @Input() progressValue: any;
     @Input() page: number = 1;
+    isLoading: boolean = true;
 
     percentage: any
     currentIngredientIndex: number = 0;
-    currentIngredientID: number;
+    currentIngredientID: string;
     currentQuestionID: number;
     currentIngredient: any;
 
@@ -30,14 +32,17 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
     preferenceQuestions: IngredientPreferenceQuestion[] = ingredientPreferenceQuestions;
     ingredientPreferenceResponses: IngredientPreferenceResponse[] = [];
 
-    constructor(private dataService: DataService, private router: Router) { }
+    constructor(private dataService: DataService, private router: Router, private dataHandlingService: DataHandlingService) { }
 
     ngOnInit() {
 
         this.dataService.getIngredientsFromServer().subscribe((res) => {
             //console.log(res);
-            this.ingredientPreferenceOptions = res;
-            this.addIngredientPreferenceQuestionsToIngredients();
+            this.dataHandlingService.handleIngredientPreferenceData(res)
+                .then((organisedData: IngredientPreference[]) => {
+                    this.ingredientPreferenceOptions = organisedData;
+                    this.isLoading = false;
+                });
         });
         this.progressValue = this.dataService.getProgressStage();
         this.percentage = (this.progressValue * 100).toFixed(0);
@@ -48,7 +53,7 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
         this.percentage = (this.progressValue * 100).toFixed(0);
     }
 
-    findCurrentIngredient(id: number) {
+    findCurrentIngredient(id: string) {
         return this.ingredientPreferenceOptions.find((element: any) => element.id == id )
     }
 

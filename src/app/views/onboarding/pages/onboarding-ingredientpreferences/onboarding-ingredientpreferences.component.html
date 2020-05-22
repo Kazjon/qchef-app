@@ -5,9 +5,13 @@
 		</ion-buttons>
 	</ion-toolbar>
 </ion-header>
-<ion-content fullscreen>
+<ion-content fullscreen [ngClass]="{'loading': isLoading}">
 
-	<div class="content-wrapper column start preferences">
+	<div class="loading-overlay">
+		<ion-spinner name="crescent" color="primary"></ion-spinner>
+	</div>
+
+	<div class="content-wrapper column start preferences" *ngIf="!isLoading">
 		<div class="progress">
             <ion-progress-bar indeterminate color="tertiary" value="{{progressValue}}"></ion-progress-bar>
 			<p class="progress-percentage"> {{ percentage }}% Complete</p>
@@ -35,7 +39,7 @@
 				</ion-slide>
 			</ion-slides>
 		</div>
-		<div class="pager">{{ page }} of 30 meals</div>
+		<div class="pager">{{ page }} of {{ ingredientPreferenceOptions.length }} meals</div>
 	</div>
 
 </ion-content>

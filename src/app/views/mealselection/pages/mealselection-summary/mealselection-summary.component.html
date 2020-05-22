@@ -6,17 +6,23 @@
     </ion-toolbar>
 </ion-header>
 <ion-content fullscreen>
-    <h1>Meal Plan Summary</h1>
-    <p class="summary-description">Review, edit & confirm your choices for this week</p>
-    <ion-item *ngFor="let mealslot of mealSlots" (click)="changeMeal(mealslot)" lines="none" class="ion-no-padding">
-        <ion-thumbnail slot="start">
-            <img src="{{ mealslot.recipe.image }}">
-        </ion-thumbnail>
-        <ion-label text-wrap>
-            <h2>{{ mealslot.recipe.title }}</h2>
-            <div class="description">{{ mealslot.recipe.description }}</div>
-            <p class="text-button">Change Meal</p>
-        </ion-label>
-    </ion-item>
-    <ion-button color="primary" (click)="setWeekStartDate()">Confirm</ion-button>
+    <div class="content-wrapper column start">
+
+        <div class="page-info">
+            <h1>Meal Plan Summary</h1>
+            <p class="summary-description">Review, edit & confirm your choices for this week</p>
+        </div>
+
+        <ion-item *ngFor="let mealslot of mealSlots" (click)="changeMeal(mealslot)" lines="none" class="ion-no-padding">
+            <ion-thumbnail slot="start">
+                <img src="{{ mealslot.recipe.image }}">
+            </ion-thumbnail>
+            <ion-label text-wrap>
+                <h2>{{ mealslot.recipe.title }}</h2>
+                <div class="description">{{ mealslot.recipe.description }}</div>
+                <p class="text-button">Change Meal</p>
+            </ion-label>
+        </ion-item>
+        <ion-button mode="ios" color="primary" (click)="setWeekStartDate()">Confirm</ion-button>
+    </div>
 </ion-content>

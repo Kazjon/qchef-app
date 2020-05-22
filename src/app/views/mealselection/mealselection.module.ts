@@ -34,11 +34,11 @@ const routes: Routes = [
     declarations: [
         MealSelectionSelectMealComponent,
         MealSelectionSummaryComponent,
-        RecipeModalComponent,
+       // RecipeModalComponent,
         MealSlotComponent
     ],
     entryComponents: [
-        RecipeModalComponent
+       // RecipeModalComponent
     ]
 })
 export class MealSelectionModule { }
