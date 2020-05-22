@@ -7,9 +7,13 @@
         </ion-buttons>
     </ion-toolbar>
   </ion-header>
-<ion-content fullscreen class="has-tabs">
+<ion-content fullscreen class="has-tabs" [ngClass]="{'loading': isLoading}">
 
-    <div class="content-wrapper column start">
+    <div class="loading-overlay">
+        <ion-spinner name="crescent" color="primary"></ion-spinner>
+    </div>
+
+    <div class="content-wrapper column start" *ngIf="!isNewWeek && !isLoading">
 
         <h1>Meal Plan</h1>
         <p>Here is your personalised yummy meal plan with {{ mealSlots.length }} meals.</p>
@@ -35,8 +39,15 @@
                 <ion-button mode="ios" color="primary">View &amp; Cook Meal</ion-button>
             </div>
 
-
         </div>
+
+    </div>
+
+    <div class="content-wrapper column" *ngIf="isNewWeek && !isLoading">
+
+        <p>It's the start of a new week! Time to pick a new meal plan!</p>
+        <ion-button mode="ios" color="primary">Pick Meals</ion-button>
+
     </div>
 
 

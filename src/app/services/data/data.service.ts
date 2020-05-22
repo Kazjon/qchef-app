@@ -26,6 +26,9 @@ export class DataService {
     mealSlots = new BehaviorSubject<MealSlot[]>([]);
     mealSlotsObservable = this.mealSlots.asObservable();
 
+    weekStartDate = new BehaviorSubject<Date>(undefined);
+    weekStartDateObservable = this.weekStartDate.asObservable();
+
     constructor(private http: HttpClient) { }
 
     getMealsFromServer(): Observable<MealPreference[]> {
@@ -73,16 +76,6 @@ export class DataService {
 
     }
 
-    saveRecommendedMealsToLocal(recommendedMeals: MealPreference[]) {
-        let recommendedMealsString = JSON.stringify(recommendedMeals);
-        localStorage.setItem("localRecommendedMeals", recommendedMealsString);
-    }
-
-    saveMealSlotsToLocal(mealSlots: MealSlot[]) {
-        let mealSlotsString = JSON.stringify(mealSlots);
-        localStorage.setItem("localMealSlots", mealSlotsString);
-    }
-
     getMealsPerWeekFromLocal() {
 
         let mealsPerWeek: MealsPerWeekResponse;
@@ -99,8 +92,20 @@ export class DataService {
 
     }
 
-    setMealsPerWeek(meals: MealsPerWeekResponse) {
-        this.mealsPerWeek.next(meals);
+    getWeekStartDateFromLocal() {
+
+        let date: Date;
+        let localWeekStartDateString = localStorage.getItem("localWeekStartDate");
+
+        if (localWeekStartDateString != undefined) {
+            date = new Date(localWeekStartDateString);
+        }
+        else {
+            date = undefined;
+        }
+
+        this.setWeekStartDate(date);
+
     }
 
     getProgressStage() {
@@ -112,10 +117,6 @@ export class DataService {
         let progressPercentage = (Math.round((progressStage.stage/this.totalStages) * 100) / 100).toFixed(2);
         console.log(progressPercentage)
         return progressPercentage
-    }
-
-    setProgressStage(progressStage: ProgressStage){
-        this.preferenceProgress.next(progressStage);
     }
 
     getProgressMark(markLabel: string) {
@@ -130,6 +131,29 @@ export class DataService {
         return (Math.round((mark/this.totalStages) * 100) / 100).toFixed(2);
     }
 
+    saveRecommendedMealsToLocal(recommendedMeals: MealPreference[]) {
+        let recommendedMealsString = JSON.stringify(recommendedMeals);
+        localStorage.setItem("localRecommendedMeals", recommendedMealsString);
+    }
+
+    saveMealSlotsToLocal(mealSlots: MealSlot[]) {
+        let mealSlotsString = JSON.stringify(mealSlots);
+        localStorage.setItem("localMealSlots", mealSlotsString);
+    }
+
+    saveWeekStartDateToLocal(date: Date) {
+        let dateString = date.toDateString();
+        localStorage.setItem("localWeekStartDate", dateString);
+    }
+
+    setMealsPerWeek(meals: MealsPerWeekResponse) {
+        this.mealsPerWeek.next(meals);
+    }
+
+    setProgressStage(progressStage: ProgressStage){
+        this.preferenceProgress.next(progressStage);
+    }
+
     setRecommendedMeals(recommendedMeals: MealPreference[]) {
         this.saveRecommendedMealsToLocal(recommendedMeals);
         this.recommendedMeals.next(recommendedMeals);
@@ -138,5 +162,10 @@ export class DataService {
     setMealSlots(mealSlots: MealSlot[]) {
         this.saveMealSlotsToLocal(mealSlots);
         this.mealSlots.next(mealSlots);
+    }
+
+    setWeekStartDate(date: Date) {
+        this.saveWeekStartDateToLocal(date);
+        this.weekStartDate.next(date);
     }
 }
