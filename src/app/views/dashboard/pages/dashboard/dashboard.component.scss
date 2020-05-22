@@ -1,0 +1,24 @@
+.review-notification {
+    width: 18px;
+    height: 18px;
+    background: var(--ion-color-background-notification);
+    border-radius: 50%;
+
+    position: absolute;
+    margin-left: 15px;
+    margin-top: 2px;
+
+    span {
+        width: 18px;
+        height: 18px;
+        color: var(--ion-color-font-button);
+        font-family: var(--font-family-question-button);
+        font-style: var(--font-style-question-button);
+        font-weight: var(--font-weight-question-button);
+        font-size: 11px;
+        line-height: 18px;
+
+        position: relative;
+        left: 1px;
+    }
+}

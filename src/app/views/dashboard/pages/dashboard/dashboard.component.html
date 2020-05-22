@@ -10,6 +10,11 @@
         </ion-tab-button>
         <ion-tab-button tab="reviews" (click)="changeTabs('reviews')">
             <ion-icon [src]="isReviewsActive ? reviews : reviewsInactive"></ion-icon>
+            <div class="review-notification">
+                <span>
+                    {{ notReviewedNum }}
+                </span>
+            </div>
             <ion-label>Reviews</ion-label>
         </ion-tab-button>
     </ion-tab-bar>

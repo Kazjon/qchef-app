@@ -172,4 +172,24 @@ export class DataService {
         this.saveWeekStartDateToLocal(date);
         this.weekStartDate.next(date);
     }
+
+    getNotReviewedMealNum() {
+        let mealSlots: MealSlot[];
+        let notReviewed: number = 0;
+        let localMealSlotsString = localStorage.getItem("localMealSlots");
+
+        if (localMealSlotsString != undefined) {
+            mealSlots = JSON.parse(localMealSlotsString);
+        }
+        else {
+            mealSlots = [];
+        }
+
+        mealSlots.forEach(element => {
+            if (element.reviewed == false) {
+                notReviewed++;
+            }
+        });
+        return notReviewed
+    }
 }
