@@ -1,0 +1,48 @@
+ion-content {
+    --padding-start: 24px;
+    --padding-end: 24px;
+    --padding-top: 53px;
+
+    .content-wrapper {
+        align-items: flex-start;
+
+        h1 {
+            font-size: 36px;
+            line-height: 45px;
+            font-family: var(--font-family-heading);
+            font-style: var(--font-style-heading);
+            font-weight: var(--font-weight-heading);
+
+            margin-bottom: 7px;
+        }
+
+        h2 {
+            font-size: 18px;
+            line-height: 23px;
+            font-family: var(--font-family-title);
+            font-style: var(--font-style-title);
+            font-weight: var(--font-weight-title);
+            margin-top: 22px;
+            margin-bottom: 12px;
+        }
+
+
+        .ingredient-item {
+            .text {
+                vertical-align: bottom;
+                color: var(--ion-color-font-main);
+                font-family: var(--font-family-body);
+                font-weight: var(--font-weight-body);
+                font-style: var(--font-style-body);
+                font-size: 20px;
+                line-height: 26px;
+                margin: 0 0 8px;
+            }
+        }
+
+        .mealslot:last-of-type {
+            margin-bottom: 100px;
+        }
+    }
+    
+}
