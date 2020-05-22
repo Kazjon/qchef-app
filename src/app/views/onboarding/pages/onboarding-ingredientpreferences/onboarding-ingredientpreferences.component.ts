@@ -35,6 +35,7 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
     ngOnInit() {
 
         this.dataService.getIngredientsFromServer().subscribe((res) => {
+            //console.log(res);
             this.ingredientPreferenceOptions = res;
             this.addIngredientPreferenceQuestionsToIngredients();
         });

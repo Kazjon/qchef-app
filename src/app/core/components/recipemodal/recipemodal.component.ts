@@ -9,6 +9,7 @@ import { MealPreference } from '../../objects/MealPreference';
 })
 export class RecipeModalComponent {
     @Input() recipe: MealPreference;
+    @Input() showReview: boolean;
     closeImgSrc: string;
 
     constructor(public modalController: ModalController) {

@@ -3,7 +3,10 @@ import { DataService } from 'src/app/services/data/data.service';
 import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { MealSlot } from 'src/app/core/objects/MealSlot';
+import { MealPreference } from 'src/app/core/objects/MealPreference';
 import { Router } from '@angular/router';
+import { ModalController } from '@ionic/angular';
+import { RecipeModalComponent } from 'src/app/core/components/recipemodal/recipemodal.component';
 
 @Component({
     selector: 'app-recipes',
@@ -15,7 +18,10 @@ export class RecipesPage implements OnInit {
     isLoading: boolean = true;
     isNewWeek: boolean = false;
 
-    constructor(private dataService: DataService, private router: Router) { }
+    constructor(
+        private dataService: DataService,
+        private router: Router,
+        private modalController: ModalController) { }
 
     ngOnInit() {
 
@@ -46,12 +52,8 @@ export class RecipesPage implements OnInit {
     }
 
     private checkIfWeekIsComplete(weekStartDate: Date) {
-
-        console.log(weekStartDate);
         let todayDate = new Date();
         let daysBetweenDates = this.getDaysBetweenDates(weekStartDate, todayDate);
-
-        console.log("days between dates: ", daysBetweenDates);
 
         if (daysBetweenDates >= 7) {
             this.isNewWeek = true;
@@ -68,6 +70,26 @@ export class RecipesPage implements OnInit {
         let differenceInTime = dateTwo.getTime() - dateOne.getTime();
         let differenceInDays = differenceInTime / (1000 * 3600 * 24);
         return differenceInDays;
+    }
+
+    startWeeklyFlow() {
+        this.dataService.setMealSlots([]);
+        this.dataService.setWeekStartDate(undefined);
+        this.router.navigateByUrl('onboarding/numberofmeals', { replaceUrl: true });
+    }
+
+    async openRecipe(recipe: MealPreference) {
+
+        const modal = await this.modalController.create({
+            component: RecipeModalComponent,
+            cssClass: 'recipe-modal',
+            componentProps: {
+                'recipe': recipe,
+                'showReview': true
+            }
+        });
+        return await modal.present();
+
     }
 
 }

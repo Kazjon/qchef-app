@@ -51,7 +51,7 @@ export class MealSelectionSummaryComponent implements OnInit {
     }
 
     setWeekStartDate() {
-        let todayDate = new Date(2020, 4, 15);
+        let todayDate = new Date();
         this.dataService.setWeekStartDate(todayDate);
         this.goToNext();
     }

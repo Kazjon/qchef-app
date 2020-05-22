@@ -37,6 +37,7 @@ export class DataService {
 
     getIngredientsFromServer(): Observable<IngredientPreference[]> {
         return this.http.get<IngredientPreference[]>('assets/data/ingredientpreferences.json');
+       //return this.http.get<IngredientPreference[]>('https://q-chef-test-back-end.herokuapp.com/onboarding_ingredient_rating');
     }
 
     getRecommendedMealsFromServer(): Observable<MealPreference[]> {
@@ -142,7 +143,10 @@ export class DataService {
     }
 
     saveWeekStartDateToLocal(date: Date) {
-        let dateString = date.toDateString();
+        let dateString = undefined;
+        if (date != undefined) {
+            dateString = date.toDateString();
+        }
         localStorage.setItem("localWeekStartDate", dateString);
     }
 
