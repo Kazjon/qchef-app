@@ -32,12 +32,13 @@ export class DataService {
     constructor(private http: HttpClient) { }
 
     getMealsFromServer(): Observable<MealPreference[]> {
-        return this.http.get<MealPreference[]>('assets/data/mealpreferences.json');
+        //return this.http.get<MealPreference[]>('assets/data/mealpreferences.json');
+        return this.http.get<MealPreference[]>('https://q-chef-test-back-end.herokuapp.com/onboarding_recipe_rating');
     }
 
     getIngredientsFromServer(): Observable<IngredientPreference[]> {
-        return this.http.get<IngredientPreference[]>('assets/data/ingredientpreferences.json');
-       //return this.http.get<IngredientPreference[]>('https://q-chef-test-back-end.herokuapp.com/onboarding_ingredient_rating');
+        //return this.http.get<IngredientPreference[]>('assets/data/ingredientpreferences.json');
+        return this.http.get<IngredientPreference[]>('https://q-chef-test-back-end.herokuapp.com/onboarding_ingredient_rating');
     }
 
     getRecommendedMealsFromServer(): Observable<MealPreference[]> {
@@ -59,6 +60,7 @@ export class DataService {
         this.setRecommendedMeals(recommendedMeals);
 
     }
+
 
     getMealSlotsFromLocal() {
 
@@ -112,12 +114,9 @@ export class DataService {
     getProgressStage() {
         let progressStage: ProgressStage;
         progressStage = {stage: ++this.preferenceProgress.value.stage};
-
         this.setProgressStage(progressStage);
-
         let progressPercentage = (Math.round((progressStage.stage/this.totalStages) * 100) / 100).toFixed(2);
-        console.log(progressPercentage)
-        return progressPercentage
+        return progressPercentage;
     }
 
     getProgressMark(markLabel: string) {

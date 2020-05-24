@@ -12,9 +12,9 @@ export class IngredientmodalComponent implements OnInit {
   constructor(public modalController: ModalController) { }
 
   ngOnInit() {
-    console.log(this.recipe.description)
+    //console.log(this.recipe.description)
   }
-  
+
   closeModal() {
     this.modalController.dismiss();
   }

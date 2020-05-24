@@ -1,7 +1,7 @@
 import { MealPreferenceQuestion } from './MealPreferenceQuestion';
 
 export interface MealPreference {
-    id: number,
+    id: string,
     title: string,
     description: string,
     cookTime: string,
