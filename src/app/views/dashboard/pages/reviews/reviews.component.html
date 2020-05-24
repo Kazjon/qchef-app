@@ -20,7 +20,7 @@
     <h1>Review</h1>
     <p>Help us suggest more yummy dishes in your next meal plan by completing these reviews.</p>
     <div class="mealslot">
-      <ion-card *ngFor="let meal of mealSlots">
+      <ion-card *ngFor="let meal of mealSlots" [ngClass]="{'not-display': meal.reviewed}">
         <div class="image-wrap">
           <img src="{{ meal.recipe.image }}"/>
         </div>
