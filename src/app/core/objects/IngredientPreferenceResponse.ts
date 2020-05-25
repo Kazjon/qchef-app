@@ -1,6 +1,5 @@
 export interface IngredientPreferenceResponse {
-    ingredientID: number,
-    taste?: string,
-    eat?: string,
-    scale?: string
+    userID: string,
+    taste_ratings: Object,
+    familiarity_ratings: Object
 }

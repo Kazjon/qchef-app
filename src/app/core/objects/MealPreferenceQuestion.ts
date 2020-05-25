@@ -1,4 +1,5 @@
 export interface MealPreferenceQuestionOption {
+    id: number,
     title: string,
     selected: boolean
 }

@@ -18,11 +18,11 @@
 		</div>
 		<h1 class="content-prompt">Meal Preferences</h1>
 		<div class="slide-options">
-			<ion-slides #mealSlides (ionSlideDidChange)="onSlideChange()" >
+			<ion-slides #mealSlides>
 				<ion-slide *ngFor="let meal of mealPreferenceOptions; let mealIndex = index">
 					<ion-card>
 						<div class="image-wrap">
-							<img src="{{ meal.image }}" />
+							<img src="{{ meal.image }}" (load)="imageLoaded(meal)" [ngClass]="{'loaded': meal.loaded }"/>
 						</div>
 						<ion-card-header>
 							<ion-card-title>{{ meal.title }}</ion-card-title>
@@ -44,8 +44,8 @@
 							<p class="description-detail show-more" ><span (click)="openIngredients(meal)">SHOW MORE</span></p>
 							<div class="preference-question-group" *ngFor="let question of meal.questions; let questionIndex = index" [ngClass]="{'visible': question.active}">
 								<p class="sub-heading">Question {{ questionIndex + 1 }} of {{ meal.questions.length }}:</p>
-								<ion-button *ngFor="let option of question.options; let optionIndex = index" (click)="selectPreference(meal.id, question.id, option, optionIndex, questionIndex, mealIndex)" class="butt-preference" [ngClass]="{'selected': option.selected}" color="{{ option.selected ? 'secondary' : 'primary'}}" slot="start" mode="ios" id="option-{{meal.id}}{{questionIndex}}{{optionIndex}}"><span>{{ option.title }}</span></ion-button>
-								<ion-button class="transparent-butt" [ngClass]="{'hidden': questionIndex == 0}" (click)="backToPrevQuestion(questionIndex)"> &#60; Back to Previous Question</ion-button>
+								<ion-button *ngFor="let option of question.options; let optionIndex = index" (click)="selectPreference(meal.id, question, option, optionIndex, questionIndex, mealIndex)" class="butt-preference" [ngClass]="{'selected': option.selected}" color="{{ option.selected ? 'secondary' : 'primary'}}" slot="start" mode="ios" id="option-{{meal.id}}{{questionIndex}}{{optionIndex}}"><span>{{ option.title }}</span></ion-button>
+								<ion-button class="transparent-butt" [ngClass]="{'hidden': questionIndex == 0}" (click)="backToPrevQuestion(questionIndex, mealIndex)"> &#60; Back to Previous Question</ion-button>
 
 							</div>
 						</ion-card-content>

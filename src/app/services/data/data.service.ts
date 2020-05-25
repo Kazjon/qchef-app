@@ -7,6 +7,8 @@ import { MealPlanSelectionResponse } from 'src/app/core/objects/MealPlanSelectio
 import { MealsPerWeekResponse } from 'src/app/core/objects/MealsPerWeekResponse';
 import { ProgressStage } from 'src/app/core/objects/ProgressStage';
 import { MealSlot } from 'src/app/core/objects/MealSlot';
+import { MealPreferenceResponse } from 'src/app/core/objects/MealPreferenceResponse';
+import { IngredientPreferenceResponse } from 'src/app/core/objects/IngredientPreferenceResponse';
 
 @Injectable({
     providedIn: 'root'
@@ -43,6 +45,14 @@ export class DataService {
 
     getRecommendedMealsFromServer(): Observable<MealPreference[]> {
         return this.http.get<MealPreference[]>('assets/data/mealpreferences.json');
+    }
+
+    postMealRatingsToServer(mealPreferenceResponse: MealPreferenceResponse): Observable<MealPreferenceResponse> {
+        return this.http.post<MealPreferenceResponse>('https://q-chef-test-back-end.herokuapp.com/onboarding_recipe_rating', mealPreferenceResponse);
+    }
+
+    postIngredientRatingsToServer(ingredientPreferenceResponse: IngredientPreferenceResponse): Observable<IngredientPreferenceResponse> {
+        return this.http.post<IngredientPreferenceResponse>('https://q-chef-test-back-end.herokuapp.com/onboarding_ingredient_rating', ingredientPreferenceResponse);
     }
 
     getRecommendedMealsFromLocal() {

@@ -7,6 +7,7 @@ export interface MealPreference {
     cookTime: string,
     match: string,
     image: string,
+    loaded: boolean,
     ingredients: Array<string>,
     method: Array<string>,
     questions?: Array<MealPreferenceQuestion>,

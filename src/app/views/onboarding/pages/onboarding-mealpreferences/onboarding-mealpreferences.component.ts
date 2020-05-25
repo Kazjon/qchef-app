@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, Input} from '@angular/core';
 import { DataService } from '../../../../services/data/data.service';
 import { mealPreferenceQuestions } from '../../../../../assets/data/mealpreferencequestions';
 import { MealPreference } from '../../../../core/objects/MealPreference';
-import { MealPreferenceQuestion } from '../../../../core/objects/MealPreferenceQuestion';
+import { MealPreferenceQuestion, MealPreferenceQuestionOption } from '../../../../core/objects/MealPreferenceQuestion';
 import { MealPreferenceResponse } from 'src/app/core/objects/MealPreferenceResponse';
 import { IngredientmodalComponent } from '../../../../core/components/ingredientmodal/ingredientmodal.component';
 import { IonSlides, ModalController } from '@ionic/angular';
@@ -23,16 +23,7 @@ export class OnboardingMealPreferencesComponent implements OnInit {
     isLoading: boolean = true;
     mealPreferenceOptions: MealPreference[];
     preferenceQuestions: MealPreferenceQuestion[] = mealPreferenceQuestions;
-    mealPreferenceResponses: MealPreferenceResponse[] = [];
-    currentMealIndex: number = 0;
-    currentQuestionIndex: number;
-    currentMealID: string;
-    currentQuestionID: number;
-    currentPreference: string;
-    currentMeal: any;
-    currentQuestion: any;
-    currentOptionIndex: number;
-
+    mealPreferenceResponse: MealPreferenceResponse;
     percentage: any;
 
     constructor(
@@ -43,7 +34,14 @@ export class OnboardingMealPreferencesComponent implements OnInit {
     ) { }
 
     ngOnInit() {
-        this.imgSrc = "../../../assets/images/icon-ingredient.svg"
+        this.imgSrc = "../../../assets/images/icon-ingredient.svg";
+
+        this.mealPreferenceResponse = {
+            userID: "9999",
+            cook_ratings: {},
+            taste_ratings: {},
+            familiarity_ratings: {}
+        }
 
         this.dataService.getMealsFromServer()
             .subscribe((res) => {
@@ -58,29 +56,9 @@ export class OnboardingMealPreferencesComponent implements OnInit {
 
     }
 
-    ionViewWillEnter() {
-
-    }
-
-    findCurrentMeal(id: string) {
-        return this.mealPreferenceOptions.find((element: any) => element.id == id )
-    }
-
-    findCurrentQuestion() {
-        return this.currentMeal.questions.find((element: any) => element.active == true)
-    }
-
-    onSlideChange() {
-        this.mealSlides.getActiveIndex().then((index)=> {
-            this.page = index + 1;
-            this.currentMealIndex = index;
-            this.currentMealID = this.mealPreferenceOptions[this.currentMealIndex].id;
-            this.currentMeal = this.findCurrentMeal(this.currentMealID);
-            this.currentQuestion = this.findCurrentQuestion();
-        })
-        .then(() => {
-           // this.markAsSelected();
-        });
+    imageLoaded(meal: MealPreference) {
+        console.log("loaded!");
+        meal.loaded = true;
     }
 
     prevStage() {
@@ -88,34 +66,16 @@ export class OnboardingMealPreferencesComponent implements OnInit {
         this.percentage = (this.progressValue * 100).toFixed(0);
     }
 
-    selectPreference(mealID: number, questionID: number, preference, optionIndex: number, questionIndex: number, mealIndex: number) {
+    selectPreference(mealID: string, question: MealPreferenceQuestion, option: MealPreferenceQuestionOption, optionIndex: number, questionIndex: number, mealIndex: number) {
 
-        this.mealPreferenceOptions[mealIndex].questions[questionIndex].options.forEach((option) => {
-            option.selected = false;
-        });
+        // Set answer to selected
+        this.deselectAllAnswers(mealIndex, questionIndex);
         this.mealPreferenceOptions[mealIndex].questions[questionIndex].options[optionIndex].selected = true;
 
-        let preferenceResponse = this.getMealPreferenceResponse(mealID);
-        this.currentQuestionID = questionID;
-        this.currentQuestionIndex = questionIndex;
-        this.currentOptionIndex = optionIndex;
+        // Set meal preference answer
+        this.setMealPreferenceAnswer(mealID, question, option);
 
-        if (this.mealPreferenceOptions[mealIndex].questions.length == questionIndex + 1) {
-            let preference = this.mealPreferenceResponses[this.currentMealIndex]
-
-            if (preference[this.currentQuestionID] == undefined) {
-                this.progressValue = this.dataService.getProgressStage();
-                this.percentage = (this.progressValue * 100).toFixed(0);
-            }
-        }
-
-        if (Object.entries(preferenceResponse).length > 0) {
-            preferenceResponse[questionID] = preference;
-        }
-        else {
-            this.addMealPreferenceResponse(mealID, questionID, preference.title);
-        }
-
+        // Show the next question
         let timeout = setTimeout(() => {
             this.showNextQuestion(questionIndex, mealIndex);
             clearTimeout(timeout);
@@ -123,56 +83,20 @@ export class OnboardingMealPreferencesComponent implements OnInit {
 
     }
 
-    getCurrentQuestion(meal: any) {
-        return meal.questions.find((element: any) => element.active == true)
-    }
-
-    /*markAsSelected(){
-        this.mealPreferenceResponses.forEach(element => {
-            if(element.recipeID == this.currentMealID) {
-                for(let i = 0; i < this.currentQuestion.options.length; i++) {
-                    if (element[this.currentQuestionID] == this.currentQuestion.options[i]) {
-                        document.getElementById('option-'+this.currentMealID+''+this.currentQuestionIndex+''+i).classList.add('selected');
-                    } else {
-                        document.getElementById('option-'+this.currentMealID+''+this.currentQuestionIndex+''+i).classList.remove('selected');
-                    }
-                }
-            }
+    private deselectAllAnswers(mealIndex: number, questionIndex: number) {
+        this.mealPreferenceOptions[mealIndex].questions[questionIndex].options.forEach((option) => {
+            option.selected = false;
         });
-    }*/
-
-
-    private getMealPreferenceResponse(mealID: number) {
-
-        let response = {};
-
-        for (let i = 0; i < this.mealPreferenceResponses.length; i++) {
-
-            if (mealID == this.mealPreferenceResponses[i].recipeID) {
-                response = this.mealPreferenceResponses[i];
-                break;
-            }
-
-        }
-
-        return response;
-
     }
 
-    private addMealPreferenceResponse(mealID: number, questionID: number, preference: string) {
-
-        let response: MealPreferenceResponse = {
-            recipeID: mealID
-        };
-
-        response[questionID] = preference;
-
-        this.mealPreferenceResponses.push(response);
-
+    private setMealPreferenceAnswer(mealID: string, question: MealPreferenceQuestion, option: MealPreferenceQuestionOption) {
+        this.mealPreferenceResponse[question.id][mealID] = option.id;
     }
 
     private showNextQuestion(questionIndex: number, mealIndex: number) {
+
         let next = questionIndex + 1;
+
         if (next < this.mealPreferenceOptions[mealIndex].questions.length) {
             this.mealPreferenceOptions[mealIndex].questions[questionIndex].active = false;
             this.mealPreferenceOptions[mealIndex].questions[next].active = true;
@@ -180,14 +104,11 @@ export class OnboardingMealPreferencesComponent implements OnInit {
         else {
             this.mealSlides.isEnd().then((isEnd) => {
                 if (isEnd) {
-                    this.currentMeal = this.findCurrentMeal(this.currentMealID);
-                    this.currentQuestion = this.findCurrentQuestion();
-                    this.currentQuestionID = this.currentQuestion.id;
-
-                   // this.markAsSelected();
-                    this.goToIngredients();
+                    this.savePreferences();
                 }
                 else {
+                    this.progressValue = this.dataService.getProgressStage();
+                    this.percentage = (this.progressValue * 100).toFixed(0);
                     this.mealSlides.slideNext();
                 }
             });
@@ -195,22 +116,14 @@ export class OnboardingMealPreferencesComponent implements OnInit {
 
     }
 
-    backToPrevQuestion(currentQuestionIndex: number) {
+    backToPrevQuestion(questionIndex: number, mealIndex: number) {
         let prev: number;
-        let questions = this.mealPreferenceOptions[this.currentMealIndex].questions;
-        this.currentMealID = this.mealPreferenceOptions[this.currentMealIndex].id;
 
-        if (currentQuestionIndex > 0) {
-            prev = currentQuestionIndex - 1;
-            questions[currentQuestionIndex].active = false;
-            questions[prev].active = true;
-            this.currentQuestionIndex = prev;
+        if (questionIndex > 0) {
+            prev = questionIndex - 1;
+            this.mealPreferenceOptions[mealIndex].questions[questionIndex].active = false;
+            this.mealPreferenceOptions[mealIndex].questions[prev].active = true;
         }
-        this.currentMeal = this.findCurrentMeal(this.currentMealID);
-        this.currentQuestion = this.findCurrentQuestion();
-        this.currentQuestionID = this.currentQuestion.id;
-
-        //this.markAsSelected();
     }
 
     async openIngredients(recipe: MealPreference) {
@@ -224,6 +137,14 @@ export class OnboardingMealPreferencesComponent implements OnInit {
         });
         return await modal.present();
 
+    }
+
+    private savePreferences() {
+        this.dataService.postMealRatingsToServer(this.mealPreferenceResponse)
+            .subscribe((res) => {
+                console.log(res);
+                this.goToIngredients();
+            });
     }
 
     private goToIngredients() {

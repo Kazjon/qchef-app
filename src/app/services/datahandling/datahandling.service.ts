@@ -28,6 +28,7 @@ export class DataHandlingService {
                     cookTime: data[key].cookTime.toString,
                     match: "MISSING",
                     image: "https://q-chef-images.herokuapp.com/image/" + key,
+                    loaded: false,
                     ingredients: ["MISSING"], // should be data[key].ingredient_names
                     method: data[key].steps,
                     questions: JSON.parse(questions)
@@ -59,6 +60,7 @@ export class DataHandlingService {
                     id: key,
                     image: "https://q-chef-images.herokuapp.com/ingredient_image/" + key,
                     title: data[key],
+                    loaded: false,
                     questions: JSON.parse(questions)
                 }
 
