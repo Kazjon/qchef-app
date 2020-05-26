@@ -18,13 +18,13 @@
 
   <div class="content-wrapper column start">
       <h1>Shopping List</h1>
-      
+
       <div class="mealslot" *ngFor="let meal of mealSlots">
           <div class="meal-content">
               <h2>{{ meal.recipe.title }}</h2>
 
               <div class="ingredients details-box">
-                <div class="ingredient-item" *ngFor="let ingredient of meal.recipe.ingredients">
+                <div class="ingredient-item" *ngFor="let ingredient of meal.recipe.ingredientsFull">
                     <p class="text">{{ ingredient }}</p>
                 </div>
               </div>

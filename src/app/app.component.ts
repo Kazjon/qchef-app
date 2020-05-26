@@ -5,6 +5,8 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import * as firebase from 'firebase/app';
 import { firebaseConfig } from '../../firebaseconfig';
+import { FirebaseService } from './services/firebase/firebase.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-root',
@@ -15,7 +17,9 @@ export class AppComponent {
     constructor(
         private platform: Platform,
         private splashScreen: SplashScreen,
-        private statusBar: StatusBar
+        private statusBar: StatusBar,
+        private firebaseService: FirebaseService,
+        private router: Router
     ) {
         this.initializeApp();
 
@@ -29,5 +33,15 @@ export class AppComponent {
             this.statusBar.styleDefault();
             this.splashScreen.hide();
         });
+    }
+
+    logout() {
+        this.firebaseService.logout()
+            .then(() => {
+                this.router.navigateByUrl('splash');
+            })
+            .catch(() => {
+                //
+            });
     }
 }

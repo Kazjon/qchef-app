@@ -4,6 +4,8 @@ import { DataService } from 'src/app/services/data/data.service';
 import { Subscription } from 'rxjs';
 import { MealsPerWeekResponse } from 'src/app/core/objects/MealsPerWeekResponse';
 import { MealSlot } from 'src/app/core/objects/MealSlot';
+import { DataHandlingService } from 'src/app/services/datahandling/datahandling.service';
+import { MealPreference } from 'src/app/core/objects/MealPreference';
 
 @Component({
     selector: 'app-onboarding-complete',
@@ -16,30 +18,33 @@ export class OnboardingCompleteComponent implements OnInit {
     mealSlots: MealSlot[] = [];
     imgSrc: string;
 
-    constructor(private router: Router, private dataService: DataService) {
+    constructor(private router: Router, private dataService: DataService, private dataHandlingService: DataHandlingService) {
         this.imgSrc = "../../../assets/images/splash.svg";
     }
 
     ngOnInit() {
 
-        console.log("on init complete");
-
         // Get how many meals per week the user has selected
         this.mealsPerWeekSubscription = this.dataService.mealsPerWeekObservable.subscribe((res) => {
-            this.mealsPerWeek = res;
-        });
 
-        // Pull down all recommended meals from the server then create meal slots
-        this.dataService.getRecommendedMealsFromServer().subscribe((res) => {
-            this.dataService.setRecommendedMeals(res);
-            this.createMealSlots();
+            this.mealsPerWeek = res;
+
+            // Pull down all recommended meals from the server then create meal slots
+            this.dataService.getMealPlanSelectionFromServer(this.mealsPerWeek).subscribe((res) => {
+                this.dataHandlingService.handleMealPreferenceData(res)
+                    .then((organisedData: MealPreference[]) => {
+                        this.dataService.setRecommendedMeals(organisedData);
+                    });
+                this.createMealSlots();
+            });
+
         });
 
     }
 
     private createMealSlots() {
 
-        for (let i = 0; i < this.mealsPerWeek.mealsPerWeek; i++) {
+        for (let i = 0; i < this.mealsPerWeek.number_of_recipes; i++) {
             let mealSlot: MealSlot = {
                 id: (i + 1),
                 selected: false,

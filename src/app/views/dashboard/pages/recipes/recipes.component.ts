@@ -32,7 +32,7 @@ export class RecipesPage implements OnInit {
             this.dataService.mealSlotsObservable,
             this.dataService.weekStartDateObservable
         ).pipe(
-            take(2)
+            take(3)
         )
         .subscribe(([mealSlots, weekStartDate]) => {
             this.checkData(mealSlots);
@@ -43,6 +43,7 @@ export class RecipesPage implements OnInit {
     }
 
     private checkData(data) {
+        console.log(data);
         if (data.length <= 0 || data[0].recipe == undefined) {
            this.router.navigateByUrl('mealselection/meal/1', { replaceUrl: true });
         }
@@ -52,8 +53,16 @@ export class RecipesPage implements OnInit {
     }
 
     private checkIfWeekIsComplete(weekStartDate: Date) {
+        console.log(weekStartDate);
+        let startDate = weekStartDate;
+
+        if (isNaN(weekStartDate.getTime())) {
+            startDate = new Date();
+        }
+
         let todayDate = new Date();
-        let daysBetweenDates = this.getDaysBetweenDates(weekStartDate, todayDate);
+
+        let daysBetweenDates = this.getDaysBetweenDates(startDate, todayDate);
 
         if (daysBetweenDates >= 7) {
             this.isNewWeek = true;
