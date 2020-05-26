@@ -155,7 +155,7 @@
   --ion-color-tabbar-shade: #dcdcdc;
   --ion-color-tabbar-tint: #fbfbfb;
 
-  /** **/
+  /** notification **/
   --ion-color-background-notification: #CE7BF5;
   --ion-color-background-notification-rgb: 206,123,245;
   --ion-color-background-notification-contrast: #000000;
@@ -163,6 +163,14 @@
   --ion-color-background-notification-shade: #b56cd8;
   --ion-color-background-notification-tint: #d388f6;
   
+  /** invalid form **/
+  --ion-color-form-invalid: #E44040;
+  --ion-color-form-invalid-rgb: 228,64,64;
+  --ion-color-form-invalid-contrast: #ffffff;
+  --ion-color-form-invalid-contrast-rgb: 255,255,255;
+  --ion-color-form-invalid-shade: #c93838;
+  --ion-color-form-invalid-tint: #e75353;
+
   /** logo font **/
   --font-family-logo: rubikbold;
   --font-style-logo: normal;
@@ -207,6 +215,10 @@
   --font-family-title: rubikbold;
   --font-style-title: normal;
   --font-weight-title: 500;
+
+  --font-family-italic: robotoregular;
+  --font-style-italic: italic;
+  --font-weight-italic: 300;
 }
 
 @media (prefers-color-scheme: dark) {

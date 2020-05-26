@@ -41,7 +41,8 @@ export class ReviewsPage implements OnInit {
 
     /** TODO: navigate to review page **/
     reviewMeal(meal: any) {
-        this.router.navigateByUrl('http://localhost:8100/dashboard/');
+        console.log(meal)
+        this.router.navigate(['/dashboard/reviews-form/'+meal.id],  {state: {data: {title: meal.title}}});
     }
 
 }

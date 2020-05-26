@@ -25,7 +25,9 @@ ion-content {
         width: 100%;
         max-width: 400px;
         margin-bottom: 50px;
-    
+        margin-left: auto;
+        margin-right: auto;
+
         &:last-child {
             margin-bottom: 100px;
         }

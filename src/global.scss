@@ -574,6 +574,11 @@ h1 {
 
 }
 
+.invalid {
+    color: var(--ion-color-form-invalid) !important;
+}
+
+
 /** Font **/
 @font-face {
     font-family: 'robotomedium';
