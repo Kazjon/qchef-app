@@ -103,6 +103,7 @@ export class DataHandlingService {
                     id: (index + 1),
                     selected: false,
                     active: false,
+                    reviewed: false,
                     recipe: recipe
                 }
 
