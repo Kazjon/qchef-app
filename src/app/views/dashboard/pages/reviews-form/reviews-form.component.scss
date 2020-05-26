@@ -41,7 +41,11 @@ ion-content {
         height: 200px;
         border-radius: 8px;
         margin: 10px 0 27px;
-        box-shadow: 0px 4px 4px ;
+        box-shadow: 0px 4px 4px;
+        background-image: url(../../../../../assets/images/icon-camera.svg);
+        background-repeat: no-repeat;
+        background-position: center;
+        
         ion-card-content {
             margin: 58px 0;
 

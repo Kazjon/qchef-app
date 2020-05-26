@@ -1,11 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DataService } from 'src/app/services/data/data.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { MealSlot } from 'src/app/core/objects/MealSlot';
 import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
-import { EventManager } from '@angular/platform-browser';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-reviews-form',
@@ -31,14 +31,13 @@ export class ReviewsFormComponent implements OnInit {
   enjoyValue: string = '';
   tryAgainValue: string = '';
 
-  @Input() iconSrc: string;
+  photo: SafeResourceUrl;
 
   constructor(
     private dataService: DataService,
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router) { 
-      this.iconSrc = '../../../../assets/images/icon-camera.svg';
     }
 
   ngOnInit() {
@@ -191,4 +190,10 @@ export class ReviewsFormComponent implements OnInit {
     }
 
   }
+
+  uploadPhoto() {
+    
+  }
+
+  
 }
