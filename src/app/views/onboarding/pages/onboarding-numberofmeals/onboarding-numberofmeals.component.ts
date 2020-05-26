@@ -35,14 +35,15 @@ export class OnboardingNumberOfMealsComponent implements OnInit {
 
     setMealsPerWeekResponse(meals: number) {
         this.mealsPerWeekResponse = {
-            mealsPerWeek: meals
+            userID: "9999",
+            number_of_recipes: meals
         }
     }
 
     setNumberOfMeals(type: string) {
         if (type == 'minus') {
             if (this.numberOfMeals > 1)
-                --this.numberOfMeals; 
+                --this.numberOfMeals;
         } else if (type == 'plus') {
             if (this.numberOfMeals < 7)
                 ++this.numberOfMeals;

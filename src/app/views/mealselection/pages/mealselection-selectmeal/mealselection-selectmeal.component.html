@@ -22,11 +22,11 @@
 
         <div class="slide-options">
 			<ion-slides #mealSlides pager="true">
-				<ion-slide *ngFor="let meal of visibleMealOptions; let mealIndex = index" [ngClass]="{'selected': meal.selected}">
+				<ion-slide *ngFor="let meal of visibleMealOptions; let mealIndex = index" [ngClass]="{'selected': meal.selected }">
 					<ion-card>
                         <div class="selected-border"></div>
-                        <div class="image-wrap">
-                            <img src="{{ meal.image }}" (click)="openRecipe(meal)"/>
+                        <div class="image-wrap" >
+                            <img src="{{ meal.image }}" (load)="imageLoaded(meal)" [ngClass]="{'loaded': meal.loaded }" (click)="openRecipe(meal)"/>
                         </div>
 						<ion-card-header>
 							<ion-card-title>{{ meal.title }}</ion-card-title>
@@ -51,8 +51,8 @@
 			</ion-slides>
         </div>
 
-        <ion-button class="butt-continue" mode="ios" *ngIf="!changeMeal" color="primary" [disabled]="!currentMealSlot.selected" (click)="goToNext()">Continue</ion-button>
-        <ion-button class="butt-continue" mode="ios" *ngIf="changeMeal" color="primary" [disabled]="!currentMealSlot.selected" (click)="goToSummary()">View Summary</ion-button>
+        <ion-button class="butt-continue" mode="ios" *ngIf="!changeMeal" color="primary" [disabled]="!currentMealSlot?.selected" (click)="goToNext()">Continue</ion-button>
+        <ion-button class="butt-continue" mode="ios" *ngIf="changeMeal" color="primary" [disabled]="!currentMealSlot?.selected" (click)="goToSummary()">View Summary</ion-button>
 
     </div>
 

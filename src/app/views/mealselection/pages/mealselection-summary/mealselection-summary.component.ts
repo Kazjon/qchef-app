@@ -4,6 +4,7 @@ import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { MealSlot } from 'src/app/core/objects/MealSlot';
 import { Router } from '@angular/router';
+import { MealPlanSelectionResponse } from 'src/app/core/objects/MealPlanSelectionResponse';
 
 @Component({
     selector: 'app-mealselection-summary',
@@ -53,7 +54,29 @@ export class MealSelectionSummaryComponent implements OnInit {
     setWeekStartDate() {
         let todayDate = new Date();
         this.dataService.setWeekStartDate(todayDate);
-        this.goToNext();
+        this.saveMealSelection();
+    }
+
+    private saveMealSelection() {
+
+        let picked: string[] = [];
+
+        for (let i = 0; i < this.mealSlots.length; i++) {
+            picked.push(this.mealSlots[i].recipe.id);
+        }
+
+        let selectedMealPlan: MealPlanSelectionResponse = {
+            userID: "9999",
+            picked: picked
+        }
+
+        // TODO: Have a loading spinner here to show that something's happening
+        this.dataService.postMealPlanSelectionToServer(selectedMealPlan)
+            .subscribe((res) => {
+                console.log(res);
+                this.goToNext();
+            });
+
     }
 
     private goToNext() {

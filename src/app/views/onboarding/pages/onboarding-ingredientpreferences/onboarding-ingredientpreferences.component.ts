@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { IngredientPreference } from 'src/app/core/objects/IngredientPreference';
-import { IngredientPreferenceQuestion } from 'src/app/core/objects/IngredientPreferenceQuestion';
+import { IngredientPreferenceQuestion, IngredientPreferenceQuestionOption } from 'src/app/core/objects/IngredientPreferenceQuestion';
 import { ingredientPreferenceQuestions } from '../../../../../assets/data/ingredientpreferencequestions';
 import { IonSlides } from '@ionic/angular';
 import { IngredientPreferenceResponse } from 'src/app/core/objects/IngredientPreferenceResponse';
@@ -18,26 +18,22 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
     @Input() progressValue: any;
     @Input() page: number = 1;
     isLoading: boolean = true;
-
-    percentage: any
-    currentIngredientIndex: number = 0;
-    currentIngredientID: string;
-    currentQuestionID: number;
-    currentIngredient: any;
-
-    currentQuestion: any;
-    currentQuestionIndex: number;
-
     ingredientPreferenceOptions: IngredientPreference[];
     preferenceQuestions: IngredientPreferenceQuestion[] = ingredientPreferenceQuestions;
-    ingredientPreferenceResponses: IngredientPreferenceResponse[] = [];
+    ingredientPreferenceResponse: IngredientPreferenceResponse;
+    percentage: any;
 
     constructor(private dataService: DataService, private router: Router, private dataHandlingService: DataHandlingService) { }
 
     ngOnInit() {
 
+        this.ingredientPreferenceResponse = {
+            userID: "9999",
+            taste_ratings: {},
+            familiarity_ratings: {}
+        }
+
         this.dataService.getIngredientsFromServer().subscribe((res) => {
-            //console.log(res);
             this.dataHandlingService.handleIngredientPreferenceData(res)
                 .then((organisedData: IngredientPreference[]) => {
                     this.ingredientPreferenceOptions = organisedData;
@@ -53,56 +49,20 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
         this.percentage = (this.progressValue * 100).toFixed(0);
     }
 
-    findCurrentIngredient(id: string) {
-        return this.ingredientPreferenceOptions.find((element: any) => element.id == id )
+    imageLoaded(ingredient: IngredientPreference) {
+        ingredient.loaded = true;
     }
 
-    findCurrentQuestion() {
-        return this.currentIngredient.questions.find((element: any) => element.active == true)
-    }
+    selectPreference(ingredientID: string, question: IngredientPreferenceQuestion, option: IngredientPreferenceQuestionOption, optionIndex: number, questionIndex: number, ingredientIndex: number) {
 
-    onSlideChange() {
-
-        this.ingredientSlides.getActiveIndex().then((index)=> {
-            this.page = index + 1;
-            this.currentIngredientIndex = index;
-            this.currentIngredientID = this.ingredientPreferenceOptions[this.currentIngredientIndex].id;
-            this.currentIngredient = this.findCurrentIngredient(this.currentIngredientID);
-            this.currentQuestion = this.findCurrentQuestion();
-
-        })
-        .then(() => {
-            //this.markAsSelected();
-        });
-    }
-
-    selectPreference(ingredientID: number, questionID: number, preference, questionIndex: number, ingredientIndex: number, optionIndex: number) {
-
-        this.ingredientPreferenceOptions[ingredientIndex].questions[questionIndex].options.forEach((option) => {
-            option.selected = false;
-        });
+        // Set answer to selected
+        this.deselectAllAnswers(ingredientIndex, questionIndex);
         this.ingredientPreferenceOptions[ingredientIndex].questions[questionIndex].options[optionIndex].selected = true;
 
-        let preferenceResponse = this.getIngredientPreferenceResponse(ingredientID);
-        this.currentQuestionID = questionID;
-        this.currentQuestionIndex = questionIndex;
+        // Set ingredient preference answer
+        this.setIngredientPreferenceAnswer(ingredientID, question, option);
 
-        if(this.ingredientPreferenceOptions[ingredientIndex].questions.length == questionIndex + 1) {
-            let preference = this.ingredientPreferenceResponses[this.currentIngredientIndex]
-
-            if (preference[this.currentQuestionID] == undefined) {
-                this.progressValue = this.dataService.getProgressStage();
-                this.percentage = (this.progressValue * 100).toFixed(0);
-            }
-        }
-
-        if (Object.entries(preferenceResponse).length > 0) {
-            preferenceResponse[questionID] = preference.title;
-        }
-        else {
-            this.addIngredientPreferenceResponse(ingredientID, questionID, preference.title);
-        }
-
+        // Show the next question
         let timeout = setTimeout(() => {
             this.showNextQuestion(questionIndex, ingredientIndex);
             clearTimeout(timeout);
@@ -110,61 +70,32 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
 
     }
 
-    private addIngredientPreferenceQuestionsToIngredients() {
-        this.ingredientPreferenceOptions.forEach((ingredient) => {
-            let questions = JSON.stringify(this.preferenceQuestions);
-            ingredient.questions = JSON.parse(questions);
+    private deselectAllAnswers(ingredientIndex: number, questionIndex: number) {
+        this.ingredientPreferenceOptions[ingredientIndex].questions[questionIndex].options.forEach((option) => {
+            option.selected = false;
         });
     }
 
-    private getIngredientPreferenceResponse(ingredientID) {
-
-        let response = {};
-
-        for (let i = 0; i < this.ingredientPreferenceResponses.length; i++) {
-
-            if (ingredientID == this.ingredientPreferenceResponses[i].ingredientID) {
-                response = this.ingredientPreferenceResponses[i];
-                break;
-            }
-
-        }
-
-        return response;
-
+    private setIngredientPreferenceAnswer(ingredientID: string, question: IngredientPreferenceQuestion, option: IngredientPreferenceQuestionOption) {
+        this.ingredientPreferenceResponse[question.id][ingredientID] = option.id;
     }
 
-    private addIngredientPreferenceResponse(ingredientID: number, questionID: number, preference: string) {
-
-        let response: IngredientPreferenceResponse = {
-            ingredientID: ingredientID
-        };
-
-        response[questionID] = preference;
-
-        this.ingredientPreferenceResponses.push(response);
-
-    }
-
-    private showNextQuestion(questionIndex: number, mealIndex: number) {
+    private showNextQuestion(questionIndex: number, ingredientIndex: number) {
 
         let next = questionIndex + 1;
 
-        if (next < this.ingredientPreferenceOptions[mealIndex].questions.length) {
-            this.ingredientPreferenceOptions[mealIndex].questions[questionIndex].active = false;
-            this.ingredientPreferenceOptions[mealIndex].questions[next].active = true;
+        if (next < this.ingredientPreferenceOptions[ingredientIndex].questions.length) {
+            this.ingredientPreferenceOptions[ingredientIndex].questions[questionIndex].active = false;
+            this.ingredientPreferenceOptions[ingredientIndex].questions[next].active = true;
         }
         else {
             this.ingredientSlides.isEnd().then((isEnd) => {
                 if (isEnd) {
-                    this.currentIngredient = this.findCurrentIngredient(this.currentIngredientID);
-                    this.currentQuestion = this.findCurrentQuestion();
-                    this.currentQuestionID = this.currentQuestion.id;
-
-                    //this.markAsSelected();
-                    this.goToNumberOfMeals();
+                    this.savePreferences();
                 }
                 else {
+                    this.progressValue = this.dataService.getProgressStage();
+                    this.percentage = (this.progressValue * 100).toFixed(0);
                     this.ingredientSlides.slideNext();
                 }
             });
@@ -172,37 +103,23 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
 
     }
 
-    /*markAsSelected(){
-        this.ingredientPreferenceResponses.forEach(element => {
-            if(element.ingredientID == this.currentIngredientID) {
-                for(let i = 0; i < this.currentQuestion.options.length; i++) {
-                    if (element[this.currentQuestionID] == this.currentQuestion.options[i]) {
-                        document.getElementById('ingredient-'+this.currentIngredientID+''+this.currentQuestionIndex+''+i).classList.add('selected');
-                    } else {
-                        document.getElementById('ingredient-'+this.currentIngredientID+''+this.currentQuestionIndex+''+i).classList.remove('selected');
-                    }
-                }
-            }
-        });
-    }*/
 
-    backToPrevQuestion(currentQuestionIndex: number) {
+    backToPrevQuestion(questionIndex: number, ingredientIndex: number) {
         let prev: number;
 
-        let questions = this.ingredientPreferenceOptions[this.currentIngredientIndex].questions;
-        this.currentIngredientID = this.ingredientPreferenceOptions[this.currentIngredientIndex].id;
-
-        if (currentQuestionIndex > 0) {
-            prev = currentQuestionIndex - 1;
-            questions[currentQuestionIndex].active = false;
-            questions[prev].active = true;
-            this.currentQuestionIndex = prev;
+        if (questionIndex > 0) {
+            prev = questionIndex - 1;
+            this.ingredientPreferenceOptions[ingredientIndex].questions[questionIndex].active = false;
+            this.ingredientPreferenceOptions[ingredientIndex].questions[prev].active = true;
         }
-        this.currentIngredient = this.findCurrentIngredient(this.currentIngredientID);
-        this.currentQuestion = this.findCurrentQuestion();
-        this.currentQuestionID = this.currentQuestion.id;
+    }
 
-        //this.markAsSelected();
+    private savePreferences() {
+        this.dataService.postIngredientRatingsToServer(this.ingredientPreferenceResponse)
+            .subscribe((res) => {
+                console.log(res);
+                this.goToNumberOfMeals();
+            });
     }
 
     private goToNumberOfMeals() {

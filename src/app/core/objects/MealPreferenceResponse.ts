@@ -1,7 +1,6 @@
 export interface MealPreferenceResponse {
-    recipeID: number,
-    taste?: string,
-    enjoy?: string,
-    ingredients?: string,
-    scale?: string
+    userID: string,
+    cook_ratings: Object,
+    taste_ratings: Object,
+    familiarity_ratings: Object
 }

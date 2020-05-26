@@ -1,3 +1,4 @@
 export interface MealsPerWeekResponse {
-    mealsPerWeek: number
+    userID: string,
+    number_of_recipes: number
 }

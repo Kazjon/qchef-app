@@ -7,6 +7,9 @@ import { MealPlanSelectionResponse } from 'src/app/core/objects/MealPlanSelectio
 import { MealsPerWeekResponse } from 'src/app/core/objects/MealsPerWeekResponse';
 import { ProgressStage } from 'src/app/core/objects/ProgressStage';
 import { MealSlot } from 'src/app/core/objects/MealSlot';
+import { MealPreferenceResponse } from 'src/app/core/objects/MealPreferenceResponse';
+import { IngredientPreferenceResponse } from 'src/app/core/objects/IngredientPreferenceResponse';
+import { DataHandlingService } from '../datahandling/datahandling.service';
 
 @Injectable({
     providedIn: 'root'
@@ -14,7 +17,7 @@ import { MealSlot } from 'src/app/core/objects/MealSlot';
 export class DataService {
     private totalStages:number = 53;
 
-    mealsPerWeek = new BehaviorSubject<MealsPerWeekResponse>({ mealsPerWeek: 3 });
+    mealsPerWeek = new BehaviorSubject<MealsPerWeekResponse>({ userID: "", number_of_recipes: 3 });
     mealsPerWeekObservable = this.mealsPerWeek.asObservable();
 
     private preferenceProgress = new BehaviorSubject<ProgressStage>({ stage: 0 });
@@ -29,7 +32,7 @@ export class DataService {
     weekStartDate = new BehaviorSubject<Date>(undefined);
     weekStartDateObservable = this.weekStartDate.asObservable();
 
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient, private dataHandlingService: DataHandlingService) { }
 
     getMealsFromServer(): Observable<MealPreference[]> {
         //return this.http.get<MealPreference[]>('assets/data/mealpreferences.json');
@@ -41,8 +44,26 @@ export class DataService {
         return this.http.get<IngredientPreference[]>('https://q-chef-test-back-end.herokuapp.com/onboarding_ingredient_rating');
     }
 
-    getRecommendedMealsFromServer(): Observable<MealPreference[]> {
-        return this.http.get<MealPreference[]>('assets/data/mealpreferences.json');
+    getMealPlanSelectionFromServer(numberOfMeals: MealsPerWeekResponse): Observable<MealPreference[]> {
+        //return this.http.get<MealPreference[]>('assets/data/mealpreferences.json');
+        return this.http.post<MealPreference[]>('https://q-chef-test-back-end.herokuapp.com/get_meal_plan_selection', numberOfMeals);
+    }
+
+    getMealPlanFromServer(): Observable<Object> {
+        let userID = { userID: "9999" }
+        return this.http.post<Object>('https://q-chef-test-back-end.herokuapp.com/get_meal_plan_selection', userID);
+    }
+
+    postMealRatingsToServer(mealPreferenceResponse: MealPreferenceResponse): Observable<MealPreferenceResponse> {
+        return this.http.post<MealPreferenceResponse>('https://q-chef-test-back-end.herokuapp.com/onboarding_recipe_rating', mealPreferenceResponse);
+    }
+
+    postIngredientRatingsToServer(ingredientPreferenceResponse: IngredientPreferenceResponse): Observable<IngredientPreferenceResponse> {
+        return this.http.post<IngredientPreferenceResponse>('https://q-chef-test-back-end.herokuapp.com/onboarding_ingredient_rating', ingredientPreferenceResponse);
+    }
+
+    postMealPlanSelectionToServer(mealPlanSelectionResponse: MealPlanSelectionResponse): Observable<MealPlanSelectionResponse> {
+        return this.http.post<MealPlanSelectionResponse>('https://q-chef-test-back-end.herokuapp.com/save_meal_plan', mealPlanSelectionResponse)
     }
 
     getRecommendedMealsFromLocal() {
@@ -64,18 +85,22 @@ export class DataService {
 
     getMealSlotsFromLocal() {
 
-
         let mealSlots: MealSlot[];
         let localMealSlotsString = localStorage.getItem("localMealSlots");
 
-        if (localMealSlotsString != undefined) {
+        if (localMealSlotsString != undefined && localMealSlotsString != "undefined") {
             mealSlots = JSON.parse(localMealSlotsString);
+            this.setMealSlots(mealSlots);
         }
         else {
-            mealSlots = [];
+            this.getMealPlanFromServer().subscribe((res) => {
+                this.dataHandlingService.handleMealSlotData(res)
+                    .then((organisedData: MealSlot[]) => {
+                        mealSlots = organisedData;
+                        this.setMealSlots(mealSlots);
+                    });
+            });
         }
-
-        this.setMealSlots(mealSlots);
 
     }
 
@@ -88,7 +113,7 @@ export class DataService {
             mealsPerWeek = JSON.parse(localMealsPerWeekString);
         }
         else {
-            mealsPerWeek = { mealsPerWeek: 3 };
+            mealsPerWeek = { userID: "", number_of_recipes: 3 };
         }
 
         this.setMealsPerWeek(mealsPerWeek);
@@ -163,6 +188,7 @@ export class DataService {
     }
 
     setMealSlots(mealSlots: MealSlot[]) {
+        console.log("set meal slots");
         this.saveMealSlotsToLocal(mealSlots);
         this.mealSlots.next(mealSlots);
     }
