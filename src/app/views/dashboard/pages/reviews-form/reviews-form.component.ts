@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { DataService } from 'src/app/services/data/data.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { combineLatest } from 'rxjs';
-import { take } from 'rxjs/operators';
-import { MealSlot } from 'src/app/core/objects/MealSlot';
 import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { Plugins, CameraResultType, CameraSource, LocalNotificationScheduleResult } from '@capacitor/core';
+import { ActionSheetController } from '@ionic/angular';
+import { combineLatest } from 'rxjs';
+import { take } from 'rxjs/operators';
+import { DataService } from 'src/app/services/data/data.service';
+import { MealSlot } from 'src/app/core/objects/MealSlot';
 
 @Component({
   selector: 'app-reviews-form',
@@ -34,8 +36,10 @@ export class ReviewsFormComponent implements OnInit {
   photo: SafeResourceUrl;
 
   constructor(
+    public actionSheetController: ActionSheetController,
     private dataService: DataService,
     private formBuilder: FormBuilder,
+    private sanitizer: DomSanitizer,
     private route: ActivatedRoute,
     private router: Router) { 
     }
@@ -191,8 +195,47 @@ export class ReviewsFormComponent implements OnInit {
 
   }
 
-  uploadPhoto() {
-    
+  async takePhoto() {
+    const image = await Plugins.Camera.getPhoto({
+        quality: 100,
+        allowEditing: false,
+        resultType: CameraResultType.DataUrl,
+        source: CameraSource.Camera
+    });
+
+    this.photo = this.sanitizer.bypassSecurityTrustResourceUrl(image && (image.dataUrl));
+}
+
+
+  chooseFromGallery() {
+
+  }
+
+  async updatePhotoFrom() {
+    const actionSheet = await this.actionSheetController.create({
+      header: 'Albums',
+      cssClass: 'my-custom-class',
+      buttons: [{
+        text: 'Camera',
+        handler: () => {
+          console.log('Delete clicked');
+          this.takePhoto();
+        }
+      }, {
+        text: 'Gallery',
+        handler: () => {
+          console.log('Share clicked');
+          this.chooseFromGallery();
+        }
+      }, {
+        text: 'Cancel',
+        role: 'cancel',
+        handler: () => {
+          console.log('Cancel clicked');
+        }
+      }]
+    });
+    await actionSheet.present();
   }
 
   
