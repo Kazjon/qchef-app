@@ -3,6 +3,7 @@ import { MealPreference } from 'src/app/core/objects/MealPreference';
 import { mealPreferenceQuestions } from '../../../assets/data/mealpreferencequestions';
 import { IngredientPreference } from 'src/app/core/objects/IngredientPreference';
 import { ingredientPreferenceQuestions } from 'src/assets/data/ingredientpreferencequestions';
+import { MealSlot } from 'src/app/core/objects/MealSlot';
 
 @Injectable({
     providedIn: 'root'
@@ -25,10 +26,12 @@ export class DataHandlingService {
                     id: key,
                     title: data[key].title,
                     description: "MISSING",
-                    cookTime: data[key].cookTime.toString,
+                    cookTime: data[key].cookTime.toString(),
                     match: "MISSING",
                     image: "https://q-chef-images.herokuapp.com/image/" + key,
-                    ingredients: ["MISSING"], // should be data[key].ingredient_names
+                    loaded: false,
+                    ingredients: ["MISSING"], // should be data[key].ingredient_names,
+                    ingredientsFull: data[key].ingredient_phrases,
                     method: data[key].steps,
                     questions: JSON.parse(questions)
                 }
@@ -59,6 +62,7 @@ export class DataHandlingService {
                     id: key,
                     image: "https://q-chef-images.herokuapp.com/ingredient_image/" + key,
                     title: data[key],
+                    loaded: false,
                     questions: JSON.parse(questions)
                 }
 
@@ -67,6 +71,48 @@ export class DataHandlingService {
             });
 
             resolve(ingredientPreferenceOptions);
+
+        });
+
+        return resolver;
+
+    }
+
+    handleMealSlotData(data: Object) {
+
+        let resolver = new Promise((resolve, reject) => {
+
+            let mealSlots: MealSlot[] = [];
+
+            Object.keys(data).forEach(function(key, index) {
+
+                let recipe: MealPreference = {
+                    id: key,
+                    title: data[key].title,
+                    description: "MISSING",
+                    cookTime: data[key].cookTime.toString(),
+                    match: "MISSING",
+                    image: "https://q-chef-images.herokuapp.com/image/" + key,
+                    loaded: false,
+                    ingredients: ["MISSING"], // should be data[key].ingredient_names
+                    ingredientsFull: data[key].ingredient_phrases,
+                    method: data[key].steps
+                }
+
+                let mealSlot: MealSlot = {
+                    id: (index + 1),
+                    selected: false,
+                    active: false,
+                    recipe: recipe
+                }
+
+                mealSlots.push(mealSlot);
+
+            });
+
+            console.log(mealSlots);
+
+            resolve(mealSlots);
 
         });
 

@@ -1,11 +1,11 @@
 <ion-app>
-    <ion-menu side="end" type="push" contentId="main">
+    <ion-menu side="end" type="push" contentId="main" swipe-gesture="false">
         <ion-content>
             <ion-list>
                 <ion-item>Meal Plan</ion-item>
                 <ion-item>Shopping List</ion-item>
                 <ion-item>Reviews</ion-item>
-                <ion-item>Logout</ion-item>
+                <ion-item (click)="logout()">Logout</ion-item>
             </ion-list>
         </ion-content>
     </ion-menu>

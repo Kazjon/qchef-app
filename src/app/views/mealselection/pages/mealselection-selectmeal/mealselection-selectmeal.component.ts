@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MealPlanSelectionResponse } from 'src/app/core/objects/MealPlanSelectionResponse';
 import { DataService } from 'src/app/services/data/data.service';
 import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
@@ -16,6 +15,7 @@ import { MealSlot } from 'src/app/core/objects/MealSlot';
     styleUrls: ['./mealselection-selectmeal.component.scss'],
 })
 export class MealSelectionSelectMealComponent implements OnInit {
+    isLoading: boolean = true;
     currentMealSlot: MealSlot;
     mealsPerWeek: MealsPerWeekResponse;
     mealOptions: MealPreference[];
@@ -24,6 +24,7 @@ export class MealSelectionSelectMealComponent implements OnInit {
     paramMealSlot: number;
     visibleMealOptions: MealPreference[] = [];
     changeMeal: boolean = false;
+    selected: boolean = false;
 
     constructor(
         private route: ActivatedRoute,
@@ -63,6 +64,10 @@ export class MealSelectionSelectMealComponent implements OnInit {
         this.organiseMealOptions();
     }
 
+    imageLoaded(meal: MealPreference) {
+        meal.loaded = true;
+    }
+
     private checkData(mealsPerWeek, mealSlots, recommendedMeals) {
         if (mealSlots.length <= 0) {
             this.dataService.getMealSlotsFromLocal();
@@ -76,14 +81,12 @@ export class MealSelectionSelectMealComponent implements OnInit {
     }
 
     private initialiseData(mealsPerWeek, mealSlots, recommendedMeals) {
-
         this.mealsPerWeek = mealsPerWeek;
         this.mealSlots = mealSlots;
         this.mealOptions = recommendedMeals;
-
         this.setCurrentMealSlot();
         this.organiseMealOptions();
-
+        this.isLoading = false;
     }
 
     private organiseMealOptions() {
@@ -148,10 +151,14 @@ export class MealSelectionSelectMealComponent implements OnInit {
 
         this.visibleMealOptions[mealIndex].selected = true;
 
+        this.selected = true;
+
         this.currentMealSlot.selected = true;
         this.currentMealSlot.recipe = this.visibleMealOptions[mealIndex];
 
         console.log(this.currentMealSlot);
+
+        console.log(this.visibleMealOptions);
 
 
         this.updateMealSlots(this.currentMealSlot);
