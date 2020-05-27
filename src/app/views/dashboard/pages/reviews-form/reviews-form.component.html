@@ -24,9 +24,7 @@
     
     <form (ngSubmit)="submitReview()" [formGroup]="reviewForm">
       <ion-card>
-        <ion-card-content>
-          <ion-img *ngIf="photo" [src]="photo"></ion-img>
-        </ion-card-content>
+        <ion-img class="photo" *ngIf="photo" [src]="photo.changingThisBreaksApplicationSecurity"></ion-img>
       </ion-card>
 
       <div class="btn-wrapper">

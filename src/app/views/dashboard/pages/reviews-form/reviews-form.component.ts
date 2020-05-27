@@ -195,21 +195,23 @@ export class ReviewsFormComponent implements OnInit {
 
   }
 
-  async takePhoto() {
+  async takePhoto(type: string) {
+    let source: any; 
+    if (type == 'camera') {
+      source = CameraSource.Camera
+    } else if (type == 'photo'){
+      source = CameraSource.Photos
+    }
+
     const image = await Plugins.Camera.getPhoto({
         quality: 100,
         allowEditing: false,
         resultType: CameraResultType.DataUrl,
-        source: CameraSource.Camera
+        source: source
     });
 
     this.photo = this.sanitizer.bypassSecurityTrustResourceUrl(image && (image.dataUrl));
 }
-
-
-  chooseFromGallery() {
-
-  }
 
   async updatePhotoFrom() {
     const actionSheet = await this.actionSheetController.create({
@@ -218,14 +220,12 @@ export class ReviewsFormComponent implements OnInit {
       buttons: [{
         text: 'Camera',
         handler: () => {
-          console.log('Delete clicked');
-          this.takePhoto();
+          this.takePhoto('camera');
         }
       }, {
         text: 'Gallery',
         handler: () => {
-          console.log('Share clicked');
-          this.chooseFromGallery();
+          this.takePhoto('photo');
         }
       }, {
         text: 'Cancel',
