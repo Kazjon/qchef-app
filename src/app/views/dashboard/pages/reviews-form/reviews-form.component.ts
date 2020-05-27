@@ -3,11 +3,12 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Plugins, CameraResultType, CameraSource, LocalNotificationScheduleResult } from '@capacitor/core';
-import { ActionSheetController } from '@ionic/angular';
+import { ActionSheetController, ModalController } from '@ionic/angular';
 import { combineLatest } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { DataService } from 'src/app/services/data/data.service';
 import { MealSlot } from 'src/app/core/objects/MealSlot';
+import { IncompleteReviewModalComponent } from 'src/app/core/components/incompletereviewmodal/incompletereviewmodal.component';
 
 @Component({
   selector: 'app-reviews-form',
@@ -28,6 +29,7 @@ export class ReviewsFormComponent implements OnInit {
   isTasteValid: boolean = true;
   isEnjoyValid: boolean = true;
   isTryAgainValid: boolean = true;
+  isPhotoValid: boolean = true;
 
   tasteValue: string = '';
   enjoyValue: string = '';
@@ -39,6 +41,7 @@ export class ReviewsFormComponent implements OnInit {
     public actionSheetController: ActionSheetController,
     private dataService: DataService,
     private formBuilder: FormBuilder,
+    private modalController: ModalController,
     private sanitizer: DomSanitizer,
     private route: ActivatedRoute,
     private router: Router) { 
@@ -105,7 +108,7 @@ export class ReviewsFormComponent implements OnInit {
 
   submitReview() {
     if (this.reviewForm.valid) {
-      console.log('valid.....')
+      this.isPhotoValid = true;
       this.isReasonValid = true;
       this.isFeelingValid = true;
       this.isTasteValid = true;
@@ -113,9 +116,13 @@ export class ReviewsFormComponent implements OnInit {
       this.isTryAgainValid = true;
     } else {
       Object.keys(this.reviewForm.controls).forEach(key => {
-        console.log('key.. ', key)
         let abstractControl: AbstractControl = this.reviewForm.get(key);
-        console.log('abstractControl.. ', abstractControl)
+        if (key == "photo") {
+          if (abstractControl.status == 'INVALID') 
+            this.isPhotoValid = false;
+          else
+            this.isPhotoValid = true;
+        }
 
         if (key == "reason") {
           if (abstractControl.status == 'INVALID') 
@@ -151,7 +158,9 @@ export class ReviewsFormComponent implements OnInit {
           else
             this.isTryAgainValid = true;
         }
-			})
+      })
+      
+      this.openSubmissionInvalidModal()
     }
   }
 
@@ -238,5 +247,13 @@ export class ReviewsFormComponent implements OnInit {
     await actionSheet.present();
   }
 
+
+  async openSubmissionInvalidModal() {
+    const modal = await this.modalController.create({
+      component: IncompleteReviewModalComponent,
+      cssClass: 'submit-invalid-modal'
+    });
+    return await modal.present();
+  }
   
 }

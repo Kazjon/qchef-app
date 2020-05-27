@@ -23,71 +23,71 @@
     <div class="review-form">
     
     <form (ngSubmit)="submitReview()" [formGroup]="reviewForm">
-      <ion-card>
-        <ion-img class="photo" *ngIf="photo" [src]="photo.changingThisBreaksApplicationSecurity"></ion-img>
+      <ion-card [ngClass]="{'invalid-photo': !isPhotoValid}">
+        <ion-img class="photo" *ngIf="photo" formControlName="photo" [src]="photo.changingThisBreaksApplicationSecurity"></ion-img>
       </ion-card>
 
       <div class="btn-wrapper">
         <ion-button mode="ios" color="secondary" class="btn-add-photo" (click)="updatePhotoFrom()">ADD PHOTO</ion-button>
       </div>
 
-      <p class="questions" [ngClass]="{'invalid': !this.isReasonValid}">Why did you include this recipe in your meal plan?</p>
+      <p class="questions" [ngClass]="{'invalid': !isReasonValid}">Why did you include this recipe in your meal plan?</p>
       <ion-textarea formControlName="reason" placeholder="Type response here..." required (ionChange)="updateTextarea('reason', $event)"></ion-textarea>
 
-      <p class="questions" [ngClass]="{'invalid': !this.isFeelingValid}">How was it?</p>
+      <p class="questions" [ngClass]="{'invalid': !isFeelingValid}">How was it?</p>
       <ion-textarea formControlName="feeling" placeholder="Type response here..." required (ionChange)="updateTextarea('feeling', $event)"></ion-textarea>
 
-      <p class="questions" [ngClass]="{'invalid': !this.isTasteValid}">It tasted...</p>
+      <p class="questions" [ngClass]="{'invalid': !isTasteValid}">It tasted...</p>
       <ion-list>
         <ion-radio-group   (ionChange)="updateRadioValue('taste', $event)" formControlName="taste">
           <ion-item lines="none">
-            <ion-label [ngClass]="{'invalid': !this.isTasteValid}">like other things I've had before</ion-label>
+            <ion-label [ngClass]="{'invalid': !isTasteValid}">like other things I've had before</ion-label>
             <ion-radio mode="md" slot="start" value="1" ></ion-radio>
 
           </ion-item>
           <ion-item lines="none">
-            <ion-label [ngClass]="{'invalid': !this.isTasteValid}">a bit like something I've had before </ion-label>
+            <ion-label [ngClass]="{'invalid': !isTasteValid}">a bit like something I've had before </ion-label>
             <ion-radio mode="md" slot="start" value="2" ></ion-radio>
 
           </ion-item>
           <ion-item lines="none">
-            <ion-label [ngClass]="{'invalid': !this.isTasteValid}">unlike anything else I've had before</ion-label>
+            <ion-label [ngClass]="{'invalid': !isTasteValid}">unlike anything else I've had before</ion-label>
             <ion-radio mode="md" slot="start" value="3"></ion-radio>
           </ion-item>
         </ion-radio-group>
       </ion-list>
 
-      <p class="questions" [ngClass]="{'invalid': !this.isEnjoyValid}">Eating it...</p>
+      <p class="questions" [ngClass]="{'invalid': !isEnjoyValid}">Eating it...</p>
       <ion-list >
         <ion-radio-group (ionChange)="updateRadioValue('enjoy', $event)" formControlName="enjoy">
           <ion-item lines="none">
-            <ion-label [ngClass]="{'invalid': !this.isEnjoyValid}">was enjoyable</ion-label>
+            <ion-label [ngClass]="{'invalid': !isEnjoyValid}">was enjoyable</ion-label>
             <ion-radio mode="md" slot="start" value="1"></ion-radio>
           </ion-item>
           <ion-item lines="none">
-            <ion-label [ngClass]="{'invalid': !this.isEnjoyValid}">was somewhat enjoyable</ion-label>
+            <ion-label [ngClass]="{'invalid': !isEnjoyValid}">was somewhat enjoyable</ion-label>
             <ion-radio mode="md" slot="start" value="2"></ion-radio>
           </ion-item>
           <ion-item lines="none">
-            <ion-label [ngClass]="{'invalid': !this.isEnjoyValid}">wasn’t really something I enjoyed</ion-label>
+            <ion-label [ngClass]="{'invalid': !isEnjoyValid}">wasn’t really something I enjoyed</ion-label>
             <ion-radio mode="md" slot="start" value="3"></ion-radio>
           </ion-item>
         </ion-radio-group>
       </ion-list>
 
-      <p  class="questions" [ngClass]="{'invalid': !this.isTryAgainValid}">Would you cook this again?</p>
+      <p  class="questions" [ngClass]="{'invalid': !isTryAgainValid}">Would you cook this again?</p>
       <ion-list >
         <ion-radio-group (ionChange)="updateRadioValue('tryAgain', $event)" formControlName="tryAgain">
           <ion-item lines="none">
-            <ion-label [ngClass]="{'invalid': !this.isTryAgainValid}">Yes</ion-label>
+            <ion-label [ngClass]="{'invalid': !isTryAgainValid}">Yes</ion-label>
             <ion-radio mode="md" slot="start" value="1"></ion-radio>
           </ion-item>
           <ion-item lines="none">
-            <ion-label [ngClass]="{'invalid': !this.isTryAgainValid}">Only for the right occasione</ion-label>
+            <ion-label [ngClass]="{'invalid': !isTryAgainValid}">Only for the right occasione</ion-label>
             <ion-radio mode="md" slot="start" value="2"></ion-radio>
           </ion-item>
           <ion-item lines="none">
-            <ion-label [ngClass]="{'invalid': !this.isTryAgainValid}">Probably not</ion-label>
+            <ion-label [ngClass]="{'invalid': !isTryAgainValid}">Probably not</ion-label>
             <ion-radio mode="md" slot="start" value="3"></ion-radio>
           </ion-item>
         </ion-radio-group>

@@ -210,6 +210,12 @@
         }
     }
 
+    .submit-invalid-modal .modal-wrapper {
+        margin: auto 24px !important;
+        min-height: 340px;
+        height: auto;
+    }
+
     .slide-options {
         ion-card {
             border-radius: 8px;

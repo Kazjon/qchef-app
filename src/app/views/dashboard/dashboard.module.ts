@@ -8,7 +8,7 @@ import { ShoppingListPage } from './pages/shoppinglist/shoppinglist.component';
 import { ReviewsPage } from './pages/reviews/reviews.component';
 import { ReviewsFormComponent } from './pages/reviews-form/reviews-form.component';
 import { DashboardPage } from './pages/dashboard/dashboard.component';
-
+import { IncompleteReviewModalComponent } from 'src/app/core/components/incompletereviewmodal/incompletereviewmodal.component';
 
 const routes: Routes = [
     {
@@ -68,9 +68,11 @@ const routes: Routes = [
         ShoppingListPage,
         ReviewsPage,
         DashboardPage,
-        ReviewsFormComponent
+        ReviewsFormComponent,
+        IncompleteReviewModalComponent
     ],
     entryComponents: [
+        IncompleteReviewModalComponent
     ]
 })
 export class DashboardModule { }
