@@ -48,17 +48,17 @@ export const mealPreferenceQuestions = [
         "options": [
             {
                 "id": 0,
-                "title": "The ingredients are what I expect",
+                "title": "These ingredients are what I expected",
                 "selected": false
             },
             {
                 "id": 1,
-                "title": "I didn't have any expectations about ingredients",
+                "title": "I had no idea what ingredients to expect",
                 "selected": false
             },
             {
                 "id": 2,
-                "title": "The ingredients are not what I expect",
+                "title": "Some ingredients weren’t what I expected",
                 "selected": false
             },
 
