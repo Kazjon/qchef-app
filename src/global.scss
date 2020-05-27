@@ -210,9 +210,14 @@
         }
     }
 
-    .submit-invalid-modal .modal-wrapper {
+    .submit-invalid-modal .modal-wrapper{
         margin: auto 24px !important;
         min-height: 340px;
+        height: auto;
+    }
+    .exit-review-modal .modal-wrapper {
+        margin: auto 24px !important;
+        min-height: 370px;
         height: auto;
     }
 
