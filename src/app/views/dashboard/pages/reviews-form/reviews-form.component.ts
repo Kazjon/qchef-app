@@ -9,6 +9,7 @@ import { take } from 'rxjs/operators';
 import { DataService } from 'src/app/services/data/data.service';
 import { MealSlot } from 'src/app/core/objects/MealSlot';
 import { IncompleteReviewModalComponent } from 'src/app/core/components/incompletereviewmodal/incompletereviewmodal.component';
+// import { ExitReviewModalComponent } from 'src/app/core/components/exitreviewmodal/exitreviewmodal.component';
 
 @Component({
   selector: 'app-reviews-form',
@@ -23,6 +24,7 @@ export class ReviewsFormComponent implements OnInit {
   formSubmitted: boolean = false;
   formDisabled: boolean = false;
   errorMessage: string = undefined;
+  // disableMenuBtn: boolean = true;
 
   isReasonValid: boolean = true;
   isFeelingValid: boolean = true;
@@ -255,5 +257,15 @@ export class ReviewsFormComponent implements OnInit {
     });
     return await modal.present();
   }
+
+  // async openExitReviewModal() {
+
+  //   const modal = await this.modalController.create({
+  //       component: ExitReviewModalComponent,
+  //       cssClass: 'exit-review-modal',
+  //   });
+
+  //   return await modal.present();
+  // }
   
 }
