@@ -22,11 +22,13 @@ export class DataHandlingService {
 
                 let questions = JSON.stringify(mealPreferenceQuestions);
 
+                let cookTime = (data[key].cookTime != null) ? data[key].cookTime.toString() : "NULL";
+
                 let mealPreference: MealPreference = {
                     id: key,
                     title: data[key].title,
                     description: "MISSING",
-                    cookTime: data[key].cookTime.toString(),
+                    cookTime: cookTime,
                     match: "MISSING",
                     image: "https://q-chef-images.herokuapp.com/image/" + key,
                     loaded: false,
@@ -86,11 +88,13 @@ export class DataHandlingService {
 
             Object.keys(data).forEach(function(key, index) {
 
+                let cookTime = (data[key].cookTime != null) ? data[key].cookTime.toString() : "NULL";
+
                 let recipe: MealPreference = {
                     id: key,
                     title: data[key].title,
                     description: "MISSING",
-                    cookTime: data[key].cookTime.toString(),
+                    cookTime: cookTime,
                     match: "MISSING",
                     image: "https://q-chef-images.herokuapp.com/image/" + key,
                     loaded: false,
