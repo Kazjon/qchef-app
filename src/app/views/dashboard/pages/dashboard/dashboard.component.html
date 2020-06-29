@@ -10,7 +10,7 @@
         </ion-tab-button>
         <ion-tab-button tab="reviews" (click)="changeTabs('reviews')">
             <ion-icon [src]="isReviewsActive ? reviews : reviewsInactive"></ion-icon>
-            <div class="review-notification">
+            <div class="review-notification" *ngIf="notReviewedNum > 0">
                 <span>
                     {{ notReviewedNum }}
                 </span>
