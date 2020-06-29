@@ -119,13 +119,7 @@ export class ReviewsFormComponent implements OnInit {
     } else {
       Object.keys(this.reviewForm.controls).forEach(key => {
         let abstractControl: AbstractControl = this.reviewForm.get(key);
-
         if (key == "photo") {
-
-          if (this.photo) {
-            abstractControl.setValue(this.photo)
-          }
-
           if (abstractControl.status == 'INVALID') 
             this.isPhotoValid = false;
           else
@@ -213,6 +207,7 @@ export class ReviewsFormComponent implements OnInit {
   }
 
   async takePhoto(type: string) {
+    console.log('pd')
     let source: any; 
     if (type == 'camera') {
       source = CameraSource.Camera
@@ -228,6 +223,13 @@ export class ReviewsFormComponent implements OnInit {
     });
 
     this.photo = this.sanitizer.bypassSecurityTrustResourceUrl(image && (image.dataUrl));
+
+    Object.keys(this.reviewForm.controls).forEach(key => {
+      let abstractControl: AbstractControl = this.reviewForm.get('photo');
+      if (this.photo) {
+        abstractControl.setValue(this.photo)
+      }
+    })
 }
 
   async updatePhotoFrom() {
