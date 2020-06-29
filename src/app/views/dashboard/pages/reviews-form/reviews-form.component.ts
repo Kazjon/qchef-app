@@ -119,7 +119,13 @@ export class ReviewsFormComponent implements OnInit {
     } else {
       Object.keys(this.reviewForm.controls).forEach(key => {
         let abstractControl: AbstractControl = this.reviewForm.get(key);
+
         if (key == "photo") {
+
+          if (this.photo) {
+            abstractControl.setValue(this.photo)
+          }
+
           if (abstractControl.status == 'INVALID') 
             this.isPhotoValid = false;
           else
