@@ -1,0 +1,28 @@
+ion-menu {
+    --min-width: 100%;
+
+    ion-menu-button {
+        --color: transparent;
+        background-image: url(/../assets/images/icon-close-blue.svg);
+    }
+
+    ion-content {
+        --padding-top: 25px;
+
+        ion-item {
+            --background: var(--ion-color-tabbar);
+            --min-height: 67px;
+            padding: 1px 0;
+
+            font-family: var(--font-family-body);
+            font-style: var(--font-style-body);
+            font-weight: var(--font-weight-body);
+            font-size: 18px;
+            line-height: 23px;
+
+            img {
+                padding-right: 18.5px;
+            }            
+        }
+    }
+}

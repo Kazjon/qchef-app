@@ -1,11 +1,27 @@
 <ion-app>
     <ion-menu side="end" type="push" contentId="main" swipe-gesture="false">
-        <ion-content>
+        <ion-header [translucent]="false">
+            <ion-toolbar class="with-border">
+                <ion-item lines="none">
+                  <ion-thumbnail>
+                      <img src="../../../../../assets/images/splash.svg">
+                  </ion-thumbnail>
+                  <ion-label>Chef</ion-label>
+                </ion-item>
+        
+                <ion-buttons mode="ios" slot="end">
+                    <ion-buttons slot="start">
+                        <ion-menu-button autoHide="false"></ion-menu-button>
+                    </ion-buttons>
+                </ion-buttons>
+            </ion-toolbar>
+          </ion-header>
+        <ion-content class="side-menu">
             <ion-list>
-                <ion-item>Meal Plan</ion-item>
-                <ion-item>Shopping List</ion-item>
-                <ion-item>Reviews</ion-item>
-                <ion-item (click)="logout()">Logout</ion-item>
+                <ion-item lines="none" (click)="goTo('recipes')"><img src="../../../../../assets/images/icon-recipes.svg">Meal Plan</ion-item>
+                <ion-item lines="none" (click)="goTo('shoppinglist')"><img src="../../../../../assets/images/icon-shopping-list.svg">Shopping List</ion-item>
+                <ion-item lines="none" (click)="goTo('reviews')"><img src="../../../../../assets/images/icon-review.svg">Reviews</ion-item>
+                <ion-item lines="none" (click)="logout()" ><img src="../../../../../assets/images/icon-logout.svg">Logout</ion-item>
             </ion-list>
         </ion-content>
     </ion-menu>
