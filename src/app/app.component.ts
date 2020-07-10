@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Platform } from '@ionic/angular';
+import { Platform, MenuController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
@@ -19,6 +19,7 @@ export class AppComponent {
         private splashScreen: SplashScreen,
         private statusBar: StatusBar,
         private firebaseService: FirebaseService,
+        private menu: MenuController,
         private router: Router
     ) {
         this.initializeApp();
@@ -26,6 +27,7 @@ export class AppComponent {
         if (firebase.apps.length <= 0) {
             firebase.initializeApp(firebaseConfig);
         }
+
     }
 
     initializeApp() {
@@ -35,6 +37,27 @@ export class AppComponent {
         });
     }
 
+    goTo(page: string) {
+        switch(page) {
+            case 'recipes': 
+                this.router.navigateByUrl('dashboard/recipes', { replaceUrl: true });
+                break;
+            case 'shoppinglist':
+                this.router.navigateByUrl('dashboard/shoppinglist', { replaceUrl: true });
+                break;
+            case 'reviews':
+                this.router.navigateByUrl('dashboard/reviews', { replaceUrl: true });
+                break;
+            case 'preferences':
+                // TODO: Navigate route
+                // this.router.navigateByUrl('dashboard/preferences', { replaceUrl: true });
+                break;
+        }
+
+        this.menu.close();
+
+    }
+    
     logout() {
         this.firebaseService.logout()
             .then(() => {

@@ -199,6 +199,10 @@
                     --ion-color-base: var(--ion-color-font-main) !important;
                 }
             }
+
+            &:not(.tab-selected) > ion-icon {
+                opacity: 0.2;
+            }
         }
     }
 
@@ -580,6 +584,8 @@ h1 {
     }
 
 }
+
+
 
 /** Font **/
 @font-face {
