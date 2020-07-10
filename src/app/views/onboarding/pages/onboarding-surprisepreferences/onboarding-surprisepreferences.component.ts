@@ -6,26 +6,25 @@ import { MealPreferenceQuestion, MealPreferenceQuestionOption } from '../../../.
 import { MealPreferenceResponse } from 'src/app/core/objects/MealPreferenceResponse';
 import { IngredientmodalComponent } from '../../../../core/components/ingredientmodal/ingredientmodal.component';
 import { IonSlides, ModalController } from '@ionic/angular';
-import { Router, NavigationExtras } from '@angular/router';
+import { Router } from '@angular/router';
 import { DataHandlingService } from 'src/app/services/datahandling/datahandling.service';
 
 @Component({
-    selector: 'app-onboarding-mealpreferences',
-    templateUrl: './onboarding-mealpreferences.component.html',
-    styleUrls: ['./onboarding-mealpreferences.component.scss'],
+    selector: 'app-onboarding-surprisepreferences',
+    templateUrl: './onboarding-surprisepreferences.component.html',
+    styleUrls: ['./onboarding-surprisepreferences.component.scss'],
 })
-export class OnboardingMealPreferencesComponent implements OnInit {
-    @ViewChild('mealSlides', { static: false }) mealSlides: IonSlides;
+export class OnboardingSurprisePreferencesComponent implements OnInit {
+    @ViewChild('surpriseSlides', { static: false }) surpriseSlides: IonSlides;
     @Input() progressValue: any;
     @Input() imgSrc: string;
     @Input() isSelected: boolean = false;
     @Input() page: number = 1;
     isLoading: boolean = true;
-    mealPreferenceOptions: MealPreference[];
+    surprisePreferenceOptions: MealPreference[];
     preferenceQuestions: MealPreferenceQuestion[] = mealPreferenceQuestions;
-    mealPreferenceResponse: MealPreferenceResponse;
+    surprisePreferenceResponse: MealPreferenceResponse;
     percentage: any;
-    mealRatingsToServerResponse: any;
 
     constructor(
         private dataService: DataService,
@@ -37,37 +36,34 @@ export class OnboardingMealPreferencesComponent implements OnInit {
     ngOnInit() {
         this.imgSrc = "../../../assets/images/icon-ingredient.svg";
 
-        this.mealPreferenceResponse = {
+        this.surprisePreferenceResponse = {
             userID: "9999",
             cook_ratings: {},
             taste_ratings: {},
             familiarity_ratings: {}
         }
 
-        this.dataService.getMealsFromServer()
-            .subscribe((res) => {
-                this.dataHandlingService.handleMealPreferenceData(res)
-                    .then((organisedData: MealPreference[]) => {
-                        this.mealPreferenceOptions = organisedData;
-                        this.isLoading = false;
-                    });
-            });
+        let meals;
+        meals = this.dataService.getSurprisePreferencesFromLocal()
+
+        this.dataHandlingService.handleMealPreferenceData(meals)
+            .then((organisedData: MealPreference[]) => {
+                this.surprisePreferenceOptions = organisedData;
+                this.isLoading = false;
+        });
+                
         this.progressValue = this.dataService.getProgressStage();
         this.percentage = this.progressValue;
 
     }
 
-    ionViewDidEnter() {
-        // this.mealSlides.lockSwipes(true);
-    }
-    
     imageLoaded(meal: MealPreference) {
         console.log("loaded!");
         meal.loaded = true;
     }
 
     prevStage() {
-        this.progressValue = this.dataService.getProgressMark('intro');
+        this.progressValue = this.dataService.getProgressMark('surprisePreference');
         this.percentage = this.progressValue;
     }
 
@@ -75,7 +71,7 @@ export class OnboardingMealPreferencesComponent implements OnInit {
 
         // Set answer to selected
         this.deselectAllAnswers(mealIndex, questionIndex);
-        this.mealPreferenceOptions[mealIndex].questions[questionIndex].options[optionIndex].selected = true;
+        this.surprisePreferenceOptions[mealIndex].questions[questionIndex].options[optionIndex].selected = true;
 
         // Set meal preference answer
         this.setMealPreferenceAnswer(mealID, question, option);
@@ -88,33 +84,40 @@ export class OnboardingMealPreferencesComponent implements OnInit {
 
     }
 
+    setPagerNum() {
+        this.surpriseSlides.getActiveIndex().then(
+            (index)=>{
+                this.page = ++index;
+        });
+    }
+
     private deselectAllAnswers(mealIndex: number, questionIndex: number) {
-        this.mealPreferenceOptions[mealIndex].questions[questionIndex].options.forEach((option) => {
+        this.surprisePreferenceOptions[mealIndex].questions[questionIndex].options.forEach((option) => {
             option.selected = false;
         });
     }
 
     private setMealPreferenceAnswer(mealID: string, question: MealPreferenceQuestion, option: MealPreferenceQuestionOption) {
-        this.mealPreferenceResponse[question.id][mealID] = option.id;
+        this.surprisePreferenceResponse[question.id][mealID] = option.id;
     }
 
     private showNextQuestion(questionIndex: number, mealIndex: number) {
 
         let next = questionIndex + 1;
 
-        if (next < this.mealPreferenceOptions[mealIndex].questions.length) {
-            this.mealPreferenceOptions[mealIndex].questions[questionIndex].active = false;
-            this.mealPreferenceOptions[mealIndex].questions[next].active = true;
+        if (next < this.surprisePreferenceOptions[mealIndex].questions.length) {
+            this.surprisePreferenceOptions[mealIndex].questions[questionIndex].active = false;
+            this.surprisePreferenceOptions[mealIndex].questions[next].active = true;
         }
         else {
-            this.mealSlides.isEnd().then((isEnd) => {
+            this.surpriseSlides.isEnd().then((isEnd) => {
                 if (isEnd) {
                     this.savePreferences();
                 }
                 else {
                     this.progressValue = this.dataService.getProgressStage();
                     this.percentage = this.progressValue;
-                    this.mealSlides.slideNext();
+                    this.surpriseSlides.slideNext();
                 }
             });
         }
@@ -126,8 +129,8 @@ export class OnboardingMealPreferencesComponent implements OnInit {
 
         if (questionIndex > 0) {
             prev = questionIndex - 1;
-            this.mealPreferenceOptions[mealIndex].questions[questionIndex].active = false;
-            this.mealPreferenceOptions[mealIndex].questions[prev].active = true;
+            this.surprisePreferenceOptions[mealIndex].questions[questionIndex].active = false;
+            this.surprisePreferenceOptions[mealIndex].questions[prev].active = true;
         }
     }
 
@@ -144,32 +147,16 @@ export class OnboardingMealPreferencesComponent implements OnInit {
 
     }
 
-    setPagerNum() {
-        this.mealSlides.getActiveIndex().then(
-            (index)=>{
-                this.page = ++index;
-        });
-    }
-
     private savePreferences() {
-        this.dataService.postMealRatingsToServer(this.mealPreferenceResponse)
+        this.dataService.postSurpriseMealRatingsToServer(this.surprisePreferenceResponse)
             .subscribe((res) => {
-                this.dataHandlingService.handleMealPreferenceData(res)
-                .then((organisedData: MealPreference[]) => {
-                    this.dataService.saveSurprisePreferencesToLocal(organisedData);
-                });
-                
-                this.goToIngredients();
+                console.log(res);
+                this.goToNumberOfMeals();
             });
     }
 
-    private goToIngredients() {
-        let navigationExtras: NavigationExtras = {
-            queryParams: {
-                mealRatingsToServerResponse: this.mealRatingsToServerResponse
-            }
-        };
-        this.router.navigateByUrl("/onboarding/ingredientpreferences", navigationExtras);
+    private goToNumberOfMeals() {
+        this.router.navigateByUrl("/onboarding/numberofmeals");
     }
 
 }

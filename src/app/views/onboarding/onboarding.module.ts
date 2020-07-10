@@ -9,8 +9,9 @@ import { OnboardingMealPreferencesComponent } from './pages/onboarding-mealprefe
 import { OnboardingIngredientPreferencesComponent } from './pages/onboarding-ingredientpreferences/onboarding-ingredientpreferences.component';
 import { OnboardingNumberOfMealsComponent } from './pages/onboarding-numberofmeals/onboarding-numberofmeals.component';
 import { OnboardingCompleteComponent } from './pages/onboarding-complete/onboarding-complete.component';
+import { OnboardingLoadingScreenComponent } from './pages/onboarding-loadingscreen/onboarding-loadingscreen.component';
+import { OnboardingSurprisePreferencesComponent } from './pages/onboarding-surprisepreferences/onboarding-surprisepreferences.component';
 import { IngredientmodalComponent } from '../../core/components/ingredientmodal/ingredientmodal.component';
-
 
 const routes: Routes = [
     {
@@ -27,6 +28,12 @@ const routes: Routes = [
     },
     {
         path: 'ingredientpreferences', component: OnboardingIngredientPreferencesComponent
+    },
+    {
+        path: 'loadingscreen', component: OnboardingLoadingScreenComponent
+    },
+    {
+        path: 'surprisepreferences', component: OnboardingSurprisePreferencesComponent
     },
     {
         path: 'numberofmeals', component: OnboardingNumberOfMealsComponent
@@ -50,7 +57,9 @@ const routes: Routes = [
         OnboardingIngredientPreferencesComponent,
         OnboardingNumberOfMealsComponent,
         OnboardingCompleteComponent,
-        IngredientmodalComponent
+        IngredientmodalComponent,
+        OnboardingLoadingScreenComponent,
+        OnboardingSurprisePreferencesComponent
     ],
     entryComponents: [
         IngredientmodalComponent

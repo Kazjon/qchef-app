@@ -15,7 +15,7 @@ import { DataHandlingService } from '../datahandling/datahandling.service';
     providedIn: 'root'
 })
 export class DataService {
-    private totalStages:number = 53;
+    private totalStages:number = 93;
 
     mealsPerWeek = new BehaviorSubject<MealsPerWeekResponse>({ userID: "", number_of_recipes: 3 });
     mealsPerWeekObservable = this.mealsPerWeek.asObservable();
@@ -64,6 +64,10 @@ export class DataService {
 
     postMealPlanSelectionToServer(mealPlanSelectionResponse: MealPlanSelectionResponse): Observable<MealPlanSelectionResponse> {
         return this.http.post<MealPlanSelectionResponse>('https://q-chef-test-back-end.herokuapp.com/save_meal_plan', mealPlanSelectionResponse)
+    }
+
+    postSurpriseMealRatingsToServer(mealPreferenceResponse: MealPreferenceResponse): Observable<MealPreferenceResponse> {
+        return this.http.post<MealPreferenceResponse>('https://q-chef-test-back-end.herokuapp.com/validation_recipe_rating', mealPreferenceResponse);
     }
 
     getRecommendedMealsFromLocal() {
@@ -120,6 +124,21 @@ export class DataService {
 
     }
 
+    getSurprisePreferencesFromLocal() {
+
+        let surprisePreferences: MealPreference[];
+        let localSurprisePreferencesString = localStorage.getItem("localSurprisePreferences");
+
+        if (localSurprisePreferencesString != undefined) {
+            surprisePreferences = JSON.parse(localSurprisePreferencesString);
+        }
+        else {
+            surprisePreferences = [];
+        }
+
+        return surprisePreferences;
+    }
+
     getWeekStartDateFromLocal() {
 
         let date: Date;
@@ -140,7 +159,7 @@ export class DataService {
         let progressStage: ProgressStage;
         progressStage = {stage: ++this.preferenceProgress.value.stage};
         this.setProgressStage(progressStage);
-        let progressPercentage = (Math.round((progressStage.stage/this.totalStages) * 100) / 100).toFixed(2);
+        let progressPercentage = (Math.round((progressStage.stage/this.totalStages) * 10000) / 100).toFixed(0);
         return progressPercentage;
     }
 
@@ -149,11 +168,12 @@ export class DataService {
         switch(markLabel) {
             case "intro": mark = 1; break;
             case "mealPreference": mark = 31; break;
-            case "ingredientPreference": mark = 51; break;
+            case "ingredientPreference": mark = 61; break;
+            case "surprisePreference": mark = 91; break;
         }
         this.setProgressStage({ stage: mark })
 
-        return (Math.round((mark/this.totalStages) * 100) / 100).toFixed(2);
+        return (Math.round((mark/this.totalStages) * 10000) / 100).toFixed(2);
     }
 
     saveRecommendedMealsToLocal(recommendedMeals: MealPreference[]) {
@@ -196,5 +216,12 @@ export class DataService {
     setWeekStartDate(date: Date) {
         this.saveWeekStartDateToLocal(date);
         this.weekStartDate.next(date);
+    }
+
+    saveSurprisePreferencesToLocal(surprisePreferences: MealPreference[]) {
+        
+        let surprisePreferencesString = JSON.stringify(surprisePreferences);
+        console.log('surprisePreferencesString... ', surprisePreferencesString)
+        localStorage.setItem("localSurprisePreferences", surprisePreferencesString);
     }
 }
