@@ -57,8 +57,8 @@ const routes: Routes = [
         OnboardingIngredientPreferencesComponent,
         OnboardingNumberOfMealsComponent,
         OnboardingCompleteComponent,
-        IngredientmodalComponent,
         OnboardingLoadingScreenComponent,
+        IngredientmodalComponent,
         OnboardingSurprisePreferencesComponent
     ],
     entryComponents: [
