@@ -15,7 +15,7 @@ import { DataHandlingService } from '../datahandling/datahandling.service';
     providedIn: 'root'
 })
 export class DataService {
-    private totalStages:number = 93;
+    private totalStages:number = 94;
 
     mealsPerWeek = new BehaviorSubject<MealsPerWeekResponse>({ userID: "", number_of_recipes: 3 });
     mealsPerWeekObservable = this.mealsPerWeek.asObservable();
