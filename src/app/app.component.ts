@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { Platform } from '@ionic/angular';
+import { Component, ViewChild } from '@angular/core';
+import { Platform, IonMenu } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
     styleUrls: ['app.component.scss']
 })
 export class AppComponent {
+    @ViewChild('sideMenu', { static: false }) sideMenu: IonMenu;
     constructor(
         private platform: Platform,
         private splashScreen: SplashScreen,
@@ -38,6 +39,7 @@ export class AppComponent {
     logout() {
         this.firebaseService.logout()
             .then(() => {
+                this.sideMenu.close();
                 this.router.navigateByUrl('splash');
             })
             .catch(() => {
