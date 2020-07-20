@@ -41,12 +41,12 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
                 });
         });
         this.progressValue = this.dataService.getProgressStage();
-        this.percentage = (this.progressValue * 100).toFixed(0);
+        this.percentage = this.progressValue;
     }
 
     prevStage() {
         this.progressValue = this.dataService.getProgressMark('mealPreference');
-        this.percentage = (this.progressValue * 100).toFixed(0);
+        this.percentage = this.progressValue;
     }
 
     imageLoaded(ingredient: IngredientPreference) {
@@ -95,7 +95,7 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
                 }
                 else {
                     this.progressValue = this.dataService.getProgressStage();
-                    this.percentage = (this.progressValue * 100).toFixed(0);
+                    this.percentage = this.progressValue;
                     this.ingredientSlides.slideNext();
                 }
             });
@@ -114,16 +114,23 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
         }
     }
 
+    setPagerNum() {
+        this.ingredientSlides.getActiveIndex().then(
+            (index)=>{
+                this.page = ++index;
+        });
+    }
+
     private savePreferences() {
         this.dataService.postIngredientRatingsToServer(this.ingredientPreferenceResponse)
             .subscribe((res) => {
-                console.log(res);
-                this.goToNumberOfMeals();
+                console.log('post ingredirent', res);
+                this.goToLoadingScreen();
             });
     }
 
-    private goToNumberOfMeals() {
-        this.router.navigateByUrl("/onboarding/numberofmeals");
+    private goToLoadingScreen() {
+        this.router.navigateByUrl("/onboarding/loadingscreen");
     }
 
     goBack() {

@@ -602,6 +602,10 @@ h1 {
 }
 
 
+.safe-top {
+    margin-top: env(safe-area-inset-top, 20px)
+}
+
 /** Font **/
 @font-face {
     font-family: 'robotomedium';
