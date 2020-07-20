@@ -23,23 +23,11 @@ export class OnboardingLoadingScreenComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.goToMealSelection();
+    }
 
-        // Get how many meals per week the user has selected
-        this.mealsPerWeekSubscription = this.dataService.mealsPerWeekObservable.subscribe((res) => {
-
-            this.mealsPerWeek = res;
-
-            // Pull down all recommended meals from the server then create meal slots
-            this.dataService.getMealPlanSelectionFromServer(this.mealsPerWeek).subscribe((res) => {
-                this.dataHandlingService.handleMealPreferenceData(res)
-                    .then((organisedData: MealPreference[]) => {
-                        this.dataService.setRecommendedMeals(organisedData);
-                    });
-                this.createMealSlots();
-            });
-
-        });
-
+    ionViewWillEnter() {
+        console.log('loading');
     }
 
     private createMealSlots() {
@@ -61,7 +49,6 @@ export class OnboardingLoadingScreenComponent implements OnInit {
 
     private goToMealSelection() {
         let arbitraryTimeout = setTimeout(() => {
-            // this.router.navigateByUrl("/mealselection/meal/1");
             this.router.navigateByUrl("/onboarding/surprisepreferences");
             clearTimeout(arbitraryTimeout);
         }, 2000);
