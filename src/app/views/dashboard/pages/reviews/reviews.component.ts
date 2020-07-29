@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { combineLatest } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { DataService } from 'src/app/services/data/data.service';
+import { MealSlot } from 'src/app/core/objects/MealSlot';
 
 @Component({
     selector: 'app-reviews',
@@ -7,11 +11,38 @@ import { DataService } from 'src/app/services/data/data.service';
     styleUrls: ['./reviews.component.scss'],
 })
 export class ReviewsPage implements OnInit {
+    mealSlots: MealSlot[];
 
-    constructor() { }
+    constructor(private dataService: DataService, private router: Router) { }
 
     ngOnInit() {
 
+        this.dataService.getMealSlotsFromLocal();
+        combineLatest(
+            this.dataService.mealSlotsObservable,
+        ).pipe(
+            take(2)
+        )
+        .subscribe(([mealSlots]) => {
+            this.checkData(mealSlots);
+        });
+
+        console.log(this.mealSlots)
+    }
+
+    private checkData(data) {
+        if (data.length <= 0 || data[0].recipe == undefined) {
+           this.router.navigateByUrl('mealselection/meal/1', { replaceUrl: true });
+        }
+        else {
+            this.mealSlots = data;
+        }
+    }
+
+    /** TODO: navigate to review page **/
+    reviewMeal(meal: any) {
+        console.log(meal)
+        this.router.navigate(['/dashboard/reviews-form/'+meal.id],  {state: {data: {title: meal.title}}});
     }
 
 }

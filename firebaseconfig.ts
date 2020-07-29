@@ -1,10 +1,10 @@
 export const firebaseConfig = {
-    apiKey: "AIzaSyDiZlldrRL1Yt6GyxDx2BrEXTjjdQAXLfM",
-    authDomain: "shib-test-e525c.firebaseapp.com",
-    databaseURL: "https://shib-test-e525c.firebaseio.com",
-    projectId: "shib-test-e525c",
-    storageBucket: "shib-test-e525c.appspot.com",
-    messagingSenderId: "228604764374",
-    appId: "1:228604764374:web:7bf52ef1958a545c2ba977",
-    measurementId: "G-24X3MVE6KE"
-}
+    apiKey: "AIzaSyBVGYhfRW3WcnI-YLYfTWVBtqfG5HKZ-yQ",
+    authDomain: "q-chef.firebaseapp.com",
+    databaseURL: "https://q-chef.firebaseio.com",
+    projectId: "q-chef",
+    storageBucket: "q-chef.appspot.com",
+    messagingSenderId: "554806346445",
+    appId: "1:554806346445:web:4a3ce4f57557557a165f84",
+    measurementId: "G-G0YD881P7F"
+ };

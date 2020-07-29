@@ -10,8 +10,8 @@
     <div class="content-wrapper column start">
 
         <div class="progress">
-            <ion-progress-bar indeterminate color="tertiary" value="{{progressValue}}"></ion-progress-bar>
-            <p class="progress-percentage"> {{progressValue * 100}}% Complete</p>
+            <ion-progress-bar indeterminate color="tertiary" value="{{progressValue/100}}"></ion-progress-bar>
+            <p class="progress-percentage"> {{progressValue}}% Complete</p>
         </div>
 
         <div class="content">

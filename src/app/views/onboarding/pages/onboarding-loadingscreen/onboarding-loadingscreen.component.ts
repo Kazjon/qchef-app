@@ -8,11 +8,11 @@ import { DataHandlingService } from 'src/app/services/datahandling/datahandling.
 import { MealPreference } from 'src/app/core/objects/MealPreference';
 
 @Component({
-    selector: 'app-onboarding-complete',
-    templateUrl: './onboarding-complete.component.html',
-    styleUrls: ['./onboarding-complete.component.scss'],
+    selector: 'app-onboarding-loadingscreen',
+    templateUrl: './onboarding-loadingscreen.component.html',
+    styleUrls: ['./onboarding-loadingscreen.component.scss'],
 })
-export class OnboardingCompleteComponent implements OnInit {
+export class OnboardingLoadingScreenComponent implements OnInit {
     mealsPerWeekSubscription: Subscription;
     mealsPerWeek: MealsPerWeekResponse;
     mealSlots: MealSlot[] = [];
@@ -23,23 +23,11 @@ export class OnboardingCompleteComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.goToMealSelection();
+    }
 
-        // Get how many meals per week the user has selected
-        this.mealsPerWeekSubscription = this.dataService.mealsPerWeekObservable.subscribe((res) => {
-
-            this.mealsPerWeek = res;
-
-            // Pull down all recommended meals from the server then create meal slots
-            this.dataService.getMealPlanSelectionFromServer(this.mealsPerWeek).subscribe((res) => {
-                this.dataHandlingService.handleMealPreferenceData(res)
-                    .then((organisedData: MealPreference[]) => {
-                        this.dataService.setRecommendedMeals(organisedData);
-                    });
-                this.createMealSlots();
-            });
-
-        });
-
+    ionViewWillEnter() {
+        console.log('loading');
     }
 
     private createMealSlots() {
@@ -48,7 +36,6 @@ export class OnboardingCompleteComponent implements OnInit {
             let mealSlot: MealSlot = {
                 id: (i + 1),
                 selected: false,
-                reviewed: false,
                 active: false
             }
             this.mealSlots.push(mealSlot);
@@ -62,7 +49,7 @@ export class OnboardingCompleteComponent implements OnInit {
 
     private goToMealSelection() {
         let arbitraryTimeout = setTimeout(() => {
-            this.router.navigateByUrl("/mealselection/meal/1");
+            this.router.navigateByUrl("/onboarding/surprisepreferences");
             clearTimeout(arbitraryTimeout);
         }, 2000);
     }

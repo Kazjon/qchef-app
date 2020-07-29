@@ -13,12 +13,12 @@
 
 	<div class="content-wrapper column start preferences" *ngIf="!isLoading">
 		<div class="progress">
-            <ion-progress-bar indeterminate color="tertiary" value="{{progressValue}}"></ion-progress-bar>
+            <ion-progress-bar indeterminate color="tertiary" value="{{progressValue/100}}"></ion-progress-bar>
 			<p class="progress-percentage"> {{ percentage }}% Complete</p>
 		</div>
 		<h1 class="content-prompt">Ingredient Preferences</h1>
 		<div class="slide-options">
-			<ion-slides #ingredientSlides>
+			<ion-slides #ingredientSlides (ionSlideDidChange)="setPagerNum()">
 				<ion-slide *ngFor="let ingredient of ingredientPreferenceOptions; let ingredientIndex = index">
 					<ion-card>
 						<div class="image-wrap">

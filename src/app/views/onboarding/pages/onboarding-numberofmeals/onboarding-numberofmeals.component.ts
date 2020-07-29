@@ -22,7 +22,7 @@ export class OnboardingNumberOfMealsComponent implements OnInit {
     ngOnInit() {
         this.setMealsPerWeekResponse(3);
         this.progressValue = this.dataService.getProgressStage();
-        this.percentage = (this.progressValue * 100).toFixed(0);
+        this.percentage = this.progressValue;
         this.iconMinus = '../../../assets/images/icon-minus.svg';
         this.iconPlus = '../../../assets/images/icon-plus.svg';
     }

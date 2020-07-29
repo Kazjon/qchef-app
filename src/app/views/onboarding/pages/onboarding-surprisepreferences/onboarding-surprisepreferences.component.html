@@ -18,8 +18,8 @@
 		</div>
 		<h1 class="content-prompt">Meal Preferences</h1>
 		<div class="slide-options">
-			<ion-slides #mealSlides noSwiping (ionSlideDidChange)="setPagerNum()">
-				<ion-slide *ngFor="let meal of mealPreferenceOptions; let mealIndex = index">
+			<ion-slides #surpriseSlides (ionSlideDidChange)="setPagerNum()">
+				<ion-slide *ngFor="let meal of surprisePreferenceOptions; let mealIndex = index">
 					<ion-card>
 						<div class="image-wrap">
 							<img src="{{ meal.image }}" (load)="imageLoaded(meal)" [ngClass]="{'loaded': meal.loaded }"/>
@@ -53,7 +53,7 @@
 				</ion-slide>
 			</ion-slides>
 		</div>
-		<div class="pager">{{ page }} of {{ mealPreferenceOptions?.length }} meals</div>
+		<div class="pager">{{ page }} of {{ surprisePreferenceOptions?.length }} meals</div>
 	</div>
 
 </ion-content>

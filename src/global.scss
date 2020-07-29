@@ -214,6 +214,17 @@
         }
     }
 
+    .submit-invalid-modal .modal-wrapper{
+        margin: auto 24px !important;
+        min-height: 340px;
+        height: auto;
+    }
+    .exit-review-modal .modal-wrapper {
+        margin: auto 24px !important;
+        min-height: 370px;
+        height: auto;
+    }
+
     .slide-options {
         ion-card {
             border-radius: 8px;
@@ -344,7 +355,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-
+    margin-top: env(safe-area-inset-top);
+    
     &.row {
         flex-direction: row;
     }
@@ -585,7 +597,14 @@ h1 {
 
 }
 
+.invalid {
+    color: var(--ion-color-form-invalid) !important;
+}
 
+
+.safe-top {
+    margin-top: env(safe-area-inset-top, 20px)
+}
 
 /** Font **/
 @font-face {

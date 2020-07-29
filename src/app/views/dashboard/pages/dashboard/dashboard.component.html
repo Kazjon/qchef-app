@@ -8,8 +8,13 @@
             <ion-icon [src]="shoppingList"></ion-icon>
             <ion-label>Shopping List</ion-label>
         </ion-tab-button>
-        <ion-tab-button tab="reviews">
+        <ion-tab-button tab="reviews" (click)="changeTabs('reviews')">
             <ion-icon [src]="reviews"></ion-icon>
+            <div class="review-notification" *ngIf="notReviewedNum > 0">
+                <span>
+                    {{ notReviewedNum }}
+                </span>
+            </div>
             <ion-label>Reviews</ion-label>
         </ion-tab-button>
     </ion-tab-bar>

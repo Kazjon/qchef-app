@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { RecipesPage } from './pages/recipes/recipes.component';
 import { ShoppingListPage } from './pages/shoppinglist/shoppinglist.component';
 import { ReviewsPage } from './pages/reviews/reviews.component';
+import { ReviewsFormComponent } from './pages/reviews-form/reviews-form.component';
 import { DashboardPage } from './pages/dashboard/dashboard.component';
-import { RecipeModalComponent } from 'src/app/core/components/recipemodal/recipemodal.component';
-
+import { IncompleteReviewModalComponent } from 'src/app/core/components/incompletereviewmodal/incompletereviewmodal.component';
 
 const routes: Routes = [
     {
@@ -43,6 +43,10 @@ const routes: Routes = [
                 ]
             },
             {
+                path: 'reviews-form/:id',  
+                component: ReviewsFormComponent  
+            },
+            {
                 path: '',
                 redirectTo: 'recipes',
                 pathMatch: 'full'
@@ -55,6 +59,7 @@ const routes: Routes = [
     imports: [
         CommonModule,
         FormsModule,
+        ReactiveFormsModule,
         IonicModule,
         RouterModule.forChild(routes)
     ],
@@ -63,10 +68,11 @@ const routes: Routes = [
         ShoppingListPage,
         ReviewsPage,
         DashboardPage,
-        //RecipeModalComponent
+        ReviewsFormComponent,
+        IncompleteReviewModalComponent
     ],
     entryComponents: [
-        //RecipeModalComponent
+        IncompleteReviewModalComponent
     ]
 })
 export class DashboardModule { }
