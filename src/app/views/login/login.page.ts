@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { FirebaseService } from '../../services/firebase/firebase.service';
 import { Router } from '@angular/router';
+import { DataService } from 'src/app/services/data/data.service';
 
 @Component({
     selector: 'app-login',
@@ -23,7 +24,8 @@ export class LoginPage implements OnInit {
     constructor(
         private formBuilder: FormBuilder,
         private firebaseService: FirebaseService,
-        private router: Router) { }
+        private router: Router,
+        private dataService: DataService) { }
 
     ngOnInit() {
 
@@ -52,8 +54,12 @@ export class LoginPage implements OnInit {
             this.firebaseService.loginWithEmailAndPassword(this.loginForm.value.email, this.loginForm.value.password)
                 .then((res) => {
                     console.log(res);
-                    this.state = this.loginStates.ready;
-                    this.router.navigateByUrl('onboarding', { replaceUrl: true });
+                    this.firebaseService.getUserIDToken()
+                        .then((res) => {
+                            this.dataService.initAuthToken(res);
+                            this.state = this.loginStates.ready;
+                            this.router.navigateByUrl('onboarding', { replaceUrl: true });
+                        })
                 })
                 .catch((error) => {
                     this.state = this.loginStates.error;

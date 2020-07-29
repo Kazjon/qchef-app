@@ -36,8 +36,10 @@ export class OnboardingSurprisePreferencesComponent implements OnInit {
     ngOnInit() {
         this.imgSrc = "../../../assets/images/icon-ingredient.svg";
 
+        let uid = localStorage.getItem("userID");
+
         this.surprisePreferenceResponse = {
-            userID: "9999",
+            userID: uid,
             cook_ratings: {},
             taste_ratings: {},
             familiarity_ratings: {}
@@ -51,7 +53,7 @@ export class OnboardingSurprisePreferencesComponent implements OnInit {
                 this.surprisePreferenceOptions = organisedData;
                 this.isLoading = false;
         });
-                
+
         this.progressValue = this.dataService.getProgressStage();
         this.percentage = this.progressValue;
 

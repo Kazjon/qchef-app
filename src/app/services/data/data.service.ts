@@ -16,6 +16,8 @@ import { DataHandlingService } from '../datahandling/datahandling.service';
 })
 export class DataService {
     private totalStages:number = 94;
+    private baseURL:string = "https://q-chef-backend-api-server.web.app";
+    httpOptions = {};
 
     mealsPerWeek = new BehaviorSubject<MealsPerWeekResponse>({ userID: "", number_of_recipes: 3 });
     mealsPerWeekObservable = this.mealsPerWeek.asObservable();
@@ -34,40 +36,53 @@ export class DataService {
 
     constructor(private http: HttpClient, private dataHandlingService: DataHandlingService) { }
 
+    initAuthToken(idToken) {
+
+        console.log(idToken);
+
+        this.httpOptions = {
+            headers: new HttpHeaders({
+              'Content-Type':  'application/json',
+              'Authorization': 'Bearer ' + idToken
+            })
+        };
+    }
+
     getMealsFromServer(): Observable<MealPreference[]> {
+        console.log((this.httpOptions as any).headers);
         //return this.http.get<MealPreference[]>('assets/data/mealpreferences.json');
-        return this.http.get<MealPreference[]>('https://q-chef-test-back-end.herokuapp.com/onboarding_recipe_rating');
+        return this.http.get<MealPreference[]>(this.baseURL + '/onboarding_recipe_rating', this.httpOptions);
     }
 
     getIngredientsFromServer(): Observable<IngredientPreference[]> {
         //return this.http.get<IngredientPreference[]>('assets/data/ingredientpreferences.json');
-        return this.http.get<IngredientPreference[]>('https://q-chef-test-back-end.herokuapp.com/onboarding_ingredient_rating');
+        return this.http.get<IngredientPreference[]>(this.baseURL + '/onboarding_ingredient_rating', this.httpOptions);
     }
 
     getMealPlanSelectionFromServer(numberOfMeals: MealsPerWeekResponse): Observable<MealPreference[]> {
         //return this.http.get<MealPreference[]>('assets/data/mealpreferences.json');
-        return this.http.post<MealPreference[]>('https://q-chef-test-back-end.herokuapp.com/get_meal_plan_selection', numberOfMeals);
+        return this.http.post<MealPreference[]>(this.baseURL + '/get_meal_plan_selection', numberOfMeals, this.httpOptions);
     }
 
     getMealPlanFromServer(): Observable<Object> {
         let userID = { userID: "9999" }
-        return this.http.post<Object>('https://q-chef-test-back-end.herokuapp.com/get_meal_plan_selection', userID);
+        return this.http.post<Object>(this.baseURL + '/get_meal_plan_selection', userID, this.httpOptions);
     }
 
     postMealRatingsToServer(mealPreferenceResponse: MealPreferenceResponse): Observable<MealPreferenceResponse> {
-        return this.http.post<MealPreferenceResponse>('https://q-chef-test-back-end.herokuapp.com/onboarding_recipe_rating', mealPreferenceResponse);
+        return this.http.post<MealPreferenceResponse>(this.baseURL + '/onboarding_recipe_rating', mealPreferenceResponse, this.httpOptions);
     }
 
     postIngredientRatingsToServer(ingredientPreferenceResponse: IngredientPreferenceResponse): Observable<IngredientPreferenceResponse> {
-        return this.http.post<IngredientPreferenceResponse>('https://q-chef-test-back-end.herokuapp.com/onboarding_ingredient_rating', ingredientPreferenceResponse);
+        return this.http.post<IngredientPreferenceResponse>(this.baseURL + '/onboarding_ingredient_rating', ingredientPreferenceResponse, this.httpOptions);
     }
 
     postMealPlanSelectionToServer(mealPlanSelectionResponse: MealPlanSelectionResponse): Observable<MealPlanSelectionResponse> {
-        return this.http.post<MealPlanSelectionResponse>('https://q-chef-test-back-end.herokuapp.com/save_meal_plan', mealPlanSelectionResponse)
+        return this.http.post<MealPlanSelectionResponse>(this.baseURL + '/save_meal_plan', mealPlanSelectionResponse, this.httpOptions)
     }
 
     postSurpriseMealRatingsToServer(mealPreferenceResponse: MealPreferenceResponse): Observable<MealPreferenceResponse> {
-        return this.http.post<MealPreferenceResponse>('https://q-chef-test-back-end.herokuapp.com/validation_recipe_rating', mealPreferenceResponse);
+        return this.http.post<MealPreferenceResponse>(this.baseURL + '/validation_recipe_rating', mealPreferenceResponse, this.httpOptions);
     }
 
     getRecommendedMealsFromLocal() {

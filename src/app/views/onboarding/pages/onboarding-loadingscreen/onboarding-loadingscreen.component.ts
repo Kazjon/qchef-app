@@ -36,7 +36,8 @@ export class OnboardingLoadingScreenComponent implements OnInit {
             let mealSlot: MealSlot = {
                 id: (i + 1),
                 selected: false,
-                active: false
+                active: false,
+                reviewed: false
             }
             this.mealSlots.push(mealSlot);
         }

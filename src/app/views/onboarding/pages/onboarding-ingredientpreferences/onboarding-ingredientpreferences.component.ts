@@ -27,8 +27,10 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
 
     ngOnInit() {
 
+        let uid = localStorage.getItem("userID");
+
         this.ingredientPreferenceResponse = {
-            userID: "9999",
+            userID: uid,
             taste_ratings: {},
             familiarity_ratings: {}
         }

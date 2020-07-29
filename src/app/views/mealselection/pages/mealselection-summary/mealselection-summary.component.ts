@@ -65,8 +65,10 @@ export class MealSelectionSummaryComponent implements OnInit {
             picked.push(this.mealSlots[i].recipe.id);
         }
 
+        let uid = localStorage.getItem("userID");
+
         let selectedMealPlan: MealPlanSelectionResponse = {
-            userID: "9999",
+            userID: uid,
             picked: picked
         }
 

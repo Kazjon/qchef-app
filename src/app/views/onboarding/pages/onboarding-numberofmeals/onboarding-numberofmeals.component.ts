@@ -34,8 +34,9 @@ export class OnboardingNumberOfMealsComponent implements OnInit {
     }
 
     setMealsPerWeekResponse(meals: number) {
+        let uid = localStorage.getItem("userID");
         this.mealsPerWeekResponse = {
-            userID: "9999",
+            userID: uid,
             number_of_recipes: meals
         }
     }

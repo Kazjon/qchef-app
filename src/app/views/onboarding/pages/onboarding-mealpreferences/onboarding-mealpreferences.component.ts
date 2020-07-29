@@ -37,8 +37,10 @@ export class OnboardingMealPreferencesComponent implements OnInit {
     ngOnInit() {
         this.imgSrc = "../../../assets/images/icon-ingredient.svg";
 
+        let uid = localStorage.getItem("userID");
+
         this.mealPreferenceResponse = {
-            userID: "9999",
+            userID: uid,
             cook_ratings: {},
             taste_ratings: {},
             familiarity_ratings: {}
@@ -60,7 +62,7 @@ export class OnboardingMealPreferencesComponent implements OnInit {
     ionViewDidEnter() {
         // this.mealSlides.lockSwipes(true);
     }
-    
+
     imageLoaded(meal: MealPreference) {
         console.log("loaded!");
         meal.loaded = true;
@@ -158,7 +160,7 @@ export class OnboardingMealPreferencesComponent implements OnInit {
                 .then((organisedData: MealPreference[]) => {
                     this.dataService.saveSurprisePreferencesToLocal(organisedData);
                 });
-                
+
                 this.goToIngredients();
             });
     }

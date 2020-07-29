@@ -4,13 +4,14 @@ import * as firebase from 'firebase/app';
 import 'firebase/analytics';
 import 'firebase/auth';
 import 'firebase/firestore';
+import { DataService } from '../data/data.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class FirebaseService {
 
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient, private dataService: DataService) { }
 
     /*getStuff(access) {
 
@@ -29,6 +30,7 @@ export class FirebaseService {
 
             firebase.auth().onAuthStateChanged(function (user) {
                 if (user) {
+                    localStorage.setItem("userID", user.uid);
                     resolve(user);
                 }
                 else {
@@ -55,6 +57,22 @@ export class FirebaseService {
                     reject(error);
                 });
 
+        }
+
+        return new Promise(resolver);
+
+    }
+
+    getUserIDToken() {
+
+        let resolver = (resolve, reject) => {
+            firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
+            .then(function(idToken) {
+                localStorage.setItem("idToken", idToken);
+                resolve(idToken);
+            }).catch(function(error) {
+                reject(error);
+            });
         }
 
         return new Promise(resolver);

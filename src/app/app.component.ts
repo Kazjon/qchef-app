@@ -7,6 +7,7 @@ import * as firebase from 'firebase/app';
 import { firebaseConfig } from '../../firebaseconfig';
 import { FirebaseService } from './services/firebase/firebase.service';
 import { Router } from '@angular/router';
+import { DataService } from './services/data/data.service';
 
 @Component({
     selector: 'app-root',
@@ -20,6 +21,7 @@ export class AppComponent {
         private splashScreen: SplashScreen,
         private statusBar: StatusBar,
         private firebaseService: FirebaseService,
+        private dataService: DataService,
         private menu: MenuController,
         private router: Router
     ) {
@@ -27,6 +29,11 @@ export class AppComponent {
 
         if (firebase.apps.length <= 0) {
             firebase.initializeApp(firebaseConfig);
+        }
+
+        let idToken = localStorage.getItem("idToken");
+        if (idToken != undefined) {
+            this.dataService.initAuthToken(idToken);
         }
 
     }
@@ -40,7 +47,7 @@ export class AppComponent {
 
     goTo(page: string) {
         switch(page) {
-            case 'recipes': 
+            case 'recipes':
                 this.router.navigateByUrl('dashboard/recipes', { replaceUrl: true });
                 break;
             case 'shoppinglist':
@@ -58,7 +65,7 @@ export class AppComponent {
         this.menu.close();
 
     }
-    
+
     logout() {
         this.firebaseService.logout()
             .then(() => {
