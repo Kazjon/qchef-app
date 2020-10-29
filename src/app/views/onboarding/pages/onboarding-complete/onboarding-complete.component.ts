@@ -6,6 +6,8 @@ import { MealsPerWeekResponse } from 'src/app/core/objects/MealsPerWeekResponse'
 import { MealSlot } from 'src/app/core/objects/MealSlot';
 import { DataHandlingService } from 'src/app/services/datahandling/datahandling.service';
 import { MealPreference } from 'src/app/core/objects/MealPreference';
+import { AlertController } from '@ionic/angular';
+import { FirebaseService } from 'src/app/services/firebase/firebase.service';
 
 @Component({
     selector: 'app-onboarding-complete',
@@ -18,7 +20,7 @@ export class OnboardingCompleteComponent implements OnInit {
     mealSlots: MealSlot[] = [];
     imgSrc: string;
 
-    constructor(private router: Router, private dataService: DataService, private dataHandlingService: DataHandlingService) {
+    constructor(private router: Router, private dataService: DataService, private dataHandlingService: DataHandlingService, private alertController: AlertController, private firebaseService: FirebaseService) {
         this.imgSrc = "../../../assets/images/splash.svg";
     }
 
@@ -36,6 +38,11 @@ export class OnboardingCompleteComponent implements OnInit {
                         this.dataService.setRecommendedMeals(organisedData);
                     });
                 this.createMealSlots();
+            },
+            (error) => {
+                if (error.error.text.includes('Authentication error')) {
+                    this.showLogoutUserPop();
+                }
             });
 
         });
@@ -69,6 +76,27 @@ export class OnboardingCompleteComponent implements OnInit {
 
     ngOnDestroy() {
         this.mealsPerWeekSubscription.unsubscribe();
+    }
+
+    async showLogoutUserPop() {
+
+        const alert = await this.alertController.create({
+            header: 'Oh no!',
+            message: 'Your session has expired! Please log back in.',
+            buttons: [
+                {
+                    text: 'Okay',
+                    handler: () => {
+                        this.firebaseService.logout()
+                            .then(() => {
+                                this.router.navigateByUrl('splash');
+                            })
+                    }
+                }
+            ]
+        });
+
+        await alert.present();
     }
 
 }

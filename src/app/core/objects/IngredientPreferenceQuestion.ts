@@ -7,5 +7,6 @@ export interface IngredientPreferenceQuestionOption {
 export interface IngredientPreferenceQuestion {
     id: string,
     options: Array<IngredientPreferenceQuestionOption>,
-    active: boolean
+    active: boolean,
+    disabled: boolean
 }

@@ -1,13 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from 'src/app/services/data/data.service';
-import { combineLatest } from 'rxjs';
+import { combineLatest, Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { MealsPerWeekResponse } from 'src/app/core/objects/MealsPerWeekResponse';
 import { MealPreference } from 'src/app/core/objects/MealPreference';
-import { ModalController } from '@ionic/angular';
+import { ModalController, IonSlides } from '@ionic/angular';
 import { RecipeModalComponent } from '../../../../core/components/recipemodal/recipemodal.component';
 import { MealSlot } from 'src/app/core/objects/MealSlot';
+import { FirebaseService } from 'src/app/services/firebase/firebase.service';
+import { DataHandlingService } from 'src/app/services/datahandling/datahandling.service';
 
 @Component({
     selector: 'app-mealselection-selectmeal',
@@ -15,6 +17,7 @@ import { MealSlot } from 'src/app/core/objects/MealSlot';
     styleUrls: ['./mealselection-selectmeal.component.scss'],
 })
 export class MealSelectionSelectMealComponent implements OnInit {
+    @ViewChild('mealSlides', { static: false }) mealSlides: IonSlides;
     isLoading: boolean = true;
     currentMealSlot: MealSlot;
     mealsPerWeek: MealsPerWeekResponse;
@@ -25,12 +28,17 @@ export class MealSelectionSelectMealComponent implements OnInit {
     visibleMealOptions: MealPreference[] = [];
     changeMeal: boolean = false;
     selected: boolean = false;
+    mealsPerWeekSubscription: Subscription;
+    mealSlotsSubscription: Subscription;
+    recommendedMealsSubscription: Subscription;
 
     constructor(
         private route: ActivatedRoute,
+        private firebaseService: FirebaseService,
         private dataService: DataService,
         public modalController: ModalController,
-        private router: Router) { }
+        private router: Router,
+        private dataHandlingService: DataHandlingService) { }
 
     ngOnInit() {
 
@@ -43,11 +51,12 @@ export class MealSelectionSelectMealComponent implements OnInit {
 
         });
 
-        // get meals per week
-        // get meal slots
-        // get meal recommendations
+        this.getData();
 
-        combineLatest(
+    }
+
+    private getData() {
+        /*combineLatest(
             this.dataService.mealsPerWeekObservable,
             this.dataService.mealSlotsObservable,
             this.dataService.recommendedMealsObservable
@@ -56,12 +65,55 @@ export class MealSelectionSelectMealComponent implements OnInit {
         )
         .subscribe(([mealsPerWeek, mealSlots, recommendedMeals]) => {
             this.checkData(mealsPerWeek, mealSlots, recommendedMeals);
+        });*/
+
+        this.mealsPerWeekSubscription = this.dataService.mealsPerWeekObservable.subscribe((res) => {
+            if (res.userID == undefined) {
+                let mealsPerWeekLocal = this.dataService.getMealsPerWeekFromLocal();
+                if (mealsPerWeekLocal == null || mealsPerWeekLocal == undefined) {
+                    this.router.navigateByUrl('onboarding/numberofmeals', { replaceUrl: true });
+                }
+                else {
+                    this.mealsPerWeek = mealsPerWeekLocal;
+                }
+            }
+            else {
+                this.mealsPerWeek = res;
+            }
+
+        });
+
+        this.mealSlotsSubscription = this.dataService.mealSlotsObservable.subscribe((res) => {
+
+            if (res.length <= 0) {
+                this.dataService.getMealSlotsFromLocal();
+            }
+            else {
+                this.mealSlots = res;
+            }
+
+
+        });
+
+        this.recommendedMealsSubscription = this.dataService.recommendedMealsObservable.subscribe((res) => {
+
+            if (res.length <= 0) {
+                let areThereMeals = this.dataService.getRecommendedMealsFromLocal();
+
+                if (!areThereMeals) {
+                    this.router.navigateByUrl('onboarding/numberofmeals', { replaceUrl: true });
+                }
+            }
+            else {
+                this.initialiseData(this.mealsPerWeek, this.mealSlots, res);
+            }
+
         });
 
     }
 
     ionViewWillEnter() {
-        this.organiseMealOptions();
+        //this.getData();
     }
 
     imageLoaded(meal: MealPreference) {
@@ -73,7 +125,16 @@ export class MealSelectionSelectMealComponent implements OnInit {
             this.dataService.getMealSlotsFromLocal();
         }
         else if (recommendedMeals.length <= 0) {
-            this.dataService.getRecommendedMealsFromLocal();
+            //this.dataService.getRecommendedMealsFromLocal(mealsPerWeek);
+            this.dataService.getMealPlanSelectionFromServer(mealsPerWeek).subscribe((res) => {
+                this.dataHandlingService.handleMealPreferenceData(res)
+                    .then((organisedData: MealPreference[]) => {
+                        this.dataService.setRecommendedMeals(organisedData);
+                    });
+            },
+            (error) => {
+                console.log(error);
+            });
         }
         else {
             this.initialiseData(mealsPerWeek, mealSlots, recommendedMeals);
@@ -84,9 +145,19 @@ export class MealSelectionSelectMealComponent implements OnInit {
         this.mealsPerWeek = mealsPerWeek;
         this.mealSlots = mealSlots;
         this.mealOptions = recommendedMeals;
-        this.setCurrentMealSlot();
-        this.organiseMealOptions();
-        this.isLoading = false;
+
+        if (this.mealOptions.length <= 0) {
+            this.firebaseService.logout()
+                .then(() => {
+                    this.router.navigateByUrl('splash');
+                })
+        }
+        else {
+            this.setCurrentMealSlot();
+            this.organiseMealOptions();
+            this.isLoading = false;
+        }
+
     }
 
     private organiseMealOptions() {
@@ -106,6 +177,7 @@ export class MealSelectionSelectMealComponent implements OnInit {
 
         for (let i = 0; i < this.mealSlots.length; i++) {
             if (this.paramMealSlot == this.mealSlots[i].id) {
+                console.log("match!");
                 this.mealSlots[i].active = true;
                 this.currentMealSlot = this.mealSlots[i];
                 this.updateCurrentMeal(this.currentMealSlot);
@@ -156,10 +228,7 @@ export class MealSelectionSelectMealComponent implements OnInit {
         this.currentMealSlot.selected = true;
         this.currentMealSlot.recipe = this.visibleMealOptions[mealIndex];
 
-        console.log(this.currentMealSlot);
-
-        console.log(this.visibleMealOptions);
-
+        this.dataService.logAction(this.visibleMealOptions[mealIndex].id, "selected");
 
         this.updateMealSlots(this.currentMealSlot);
 
@@ -182,6 +251,9 @@ export class MealSelectionSelectMealComponent implements OnInit {
 
     async openRecipe(recipe: MealPreference) {
 
+        console.log("open recipe");
+        this.dataService.logAction(recipe.id, "opened");
+
         const modal = await this.modalController.create({
             component: RecipeModalComponent,
             cssClass: 'recipe-modal',
@@ -198,8 +270,6 @@ export class MealSelectionSelectMealComponent implements OnInit {
 
         this.updateMeals();
 
-
-
         if (this.paramMealSlot < this.mealSlots.length) {
             let nextSlot = this.paramMealSlot + 1;
             this.router.navigateByUrl("/mealselection/meal/" + nextSlot);
@@ -213,4 +283,18 @@ export class MealSelectionSelectMealComponent implements OnInit {
     goToSummary() {
         this.router.navigateByUrl("/mealselection/summary");
     }
+
+    slideChanged() {
+        this.mealSlides.getActiveIndex()
+            .then((index) => {
+                let currentRecipe = this.visibleMealOptions[index];
+                console.log("slide changed");
+                this.dataService.logAction(currentRecipe.id, "viewed");
+            });
+    }
+
 }
+
+/*Timestamp and recipeID whenever the user views a recipe page (including closing the recipe details page)
+Timestamp and recipeID whenever they select a meal
+Timestamp and recipeID whenever they open the “details” panel with the ingredients and method for a particular recipe*/

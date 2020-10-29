@@ -24,15 +24,17 @@ export class DataHandlingService {
 
                 let cookTime = (data[key].cookTime != null) ? data[key].cookTime.toString() : "NULL";
 
+                console.log("yeah!");
+
                 let mealPreference: MealPreference = {
                     id: key,
                     title: data[key].title,
                     description: "MISSING",
                     cookTime: cookTime,
                     match: "MISSING",
-                    image: "https://q-chef-images.herokuapp.com/image/" + key,
+                    image: "https://q-chef-images.herokuapp.com/recipe_image/" + key,
                     loaded: false,
-                    ingredients: ["MISSING"], // should be data[key].ingredient_names,
+                    ingredients: data[key].ingredient_names, // should be data[key].ingredient_names,
                     ingredientsFull: data[key].ingredient_phrases,
                     method: data[key].steps,
                     questions: JSON.parse(questions)
@@ -96,9 +98,9 @@ export class DataHandlingService {
                     description: "MISSING",
                     cookTime: cookTime,
                     match: "MISSING",
-                    image: "https://q-chef-images.herokuapp.com/image/" + key,
+                    image: "https://q-chef-images.herokuapp.com/recipe_image/" + key,
                     loaded: false,
-                    ingredients: ["MISSING"], // should be data[key].ingredient_names
+                    ingredients: data[key].ingredient_names, // should be data[key].ingredient_names
                     ingredientsFull: data[key].ingredient_phrases,
                     method: data[key].steps
                 }

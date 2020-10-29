@@ -58,7 +58,15 @@ export class LoginPage implements OnInit {
                         .then((res) => {
                             this.dataService.initAuthToken(res);
                             this.state = this.loginStates.ready;
-                            this.router.navigateByUrl('onboarding', { replaceUrl: true });
+
+                            let localMealSlotsString = localStorage.getItem("localMealSlots");
+
+                            if (localMealSlotsString != undefined && localMealSlotsString != "undefined") {
+                                this.router.navigateByUrl('dashboard/recipes', { replaceUrl: true });
+                            }
+                            else {
+                                this.router.navigateByUrl('onboarding', { replaceUrl: true });
+                            }
                         })
                 })
                 .catch((error) => {

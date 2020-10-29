@@ -1,13 +1,19 @@
 import { Component, ViewChild } from '@angular/core';
 import { Platform, IonMenu, MenuController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
-import { StatusBar } from '@ionic-native/status-bar/ngx';
+//import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 import * as firebase from 'firebase/app';
 import { firebaseConfig } from '../../firebaseconfig';
 import { FirebaseService } from './services/firebase/firebase.service';
 import { Router } from '@angular/router';
 import { DataService } from './services/data/data.service';
+import {
+    Plugins,
+    StatusBarStyle,
+  } from '@capacitor/core';
+
+  const { StatusBar } = Plugins;
 
 @Component({
     selector: 'app-root',
@@ -19,7 +25,6 @@ export class AppComponent {
     constructor(
         private platform: Platform,
         private splashScreen: SplashScreen,
-        private statusBar: StatusBar,
         private firebaseService: FirebaseService,
         private dataService: DataService,
         private menu: MenuController,
@@ -35,12 +40,20 @@ export class AppComponent {
         if (idToken != undefined) {
             this.dataService.initAuthToken(idToken);
         }
+        else {
+            this.logout();
+        }
 
     }
 
     initializeApp() {
         this.platform.ready().then(() => {
-            this.statusBar.styleDefault();
+            StatusBar.setStyle({
+                style: StatusBarStyle.Light
+              });
+            StatusBar.setOverlaysWebView({
+                overlay: true
+            });
             this.splashScreen.hide();
         });
     }
@@ -67,8 +80,11 @@ export class AppComponent {
     }
 
     logout() {
+        console.log("logout!");
         this.firebaseService.logout()
             .then(() => {
+                console.log("logged out?");
+                console.log(this.sideMenu);
                 this.sideMenu.close();
                 this.router.navigateByUrl('splash');
             })

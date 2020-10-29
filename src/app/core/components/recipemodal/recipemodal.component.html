@@ -5,7 +5,6 @@
     </div>
     <div class="meal-details details-wrapper ">
         <h1>{{ recipe.title }}</h1>
-        <p>{{ recipe.description }}</p>
         <div class="meal-details details-box">
             <div class="detail">
                 <span class="icon cooktime"></span>
@@ -31,7 +30,7 @@
         </div>
         <div class="review details-box" *ngIf="showReview">
             <h2>Let us know what you thought of this meal!</h2>
-            <ion-button mode="ios" color="primary">Start Review</ion-button>
+            <ion-button mode="ios" color="primary" (click)="openReview()">Start Review</ion-button>
         </div>
     </div>
 

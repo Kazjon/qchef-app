@@ -10,6 +10,8 @@ import { MealSlot } from 'src/app/core/objects/MealSlot';
 import { MealPreferenceResponse } from 'src/app/core/objects/MealPreferenceResponse';
 import { IngredientPreferenceResponse } from 'src/app/core/objects/IngredientPreferenceResponse';
 import { DataHandlingService } from '../datahandling/datahandling.service';
+import { RecipeReviewResponse } from 'src/app/core/objects/RecipeReviewResponse';
+import { FirebaseService } from '../firebase/firebase.service';
 
 @Injectable({
     providedIn: 'root'
@@ -19,7 +21,7 @@ export class DataService {
     private baseURL:string = "https://q-chef-backend-api-server.web.app";
     httpOptions = {};
 
-    mealsPerWeek = new BehaviorSubject<MealsPerWeekResponse>({ userID: "", number_of_recipes: 3 });
+    mealsPerWeek = new BehaviorSubject<MealsPerWeekResponse>({ userID: undefined, number_of_recipes: 3 });
     mealsPerWeekObservable = this.mealsPerWeek.asObservable();
 
     private preferenceProgress = new BehaviorSubject<ProgressStage>({ stage: 0 });
@@ -34,9 +36,37 @@ export class DataService {
     weekStartDate = new BehaviorSubject<Date>(undefined);
     weekStartDateObservable = this.weekStartDate.asObservable();
 
+    totalMealsNotReviewed = new BehaviorSubject<number>(0);
+    totalMealsNotReviewedObservable = this.totalMealsNotReviewed.asObservable();
+
+    actionLog = new BehaviorSubject<any>([]);
+    actionLogObservable = this.actionLog.asObservable();
+
     constructor(private http: HttpClient, private dataHandlingService: DataHandlingService) { }
 
+    logAction(recipeID: string, action: string) {
+
+        let log = [];
+
+        let time = new Date();
+
+        log.push(time.getTime());
+        log.push(recipeID);
+        log.push(action);
+
+        let actionLogUpdate = this.actionLog.getValue();
+
+        actionLogUpdate.push(log);
+
+        this.actionLog.next(actionLogUpdate);
+
+        console.log(this.actionLog.getValue());
+
+    }
+
     initAuthToken(idToken) {
+
+        console.log("token!");
 
         console.log(idToken);
 
@@ -60,14 +90,16 @@ export class DataService {
     }
 
     getMealPlanSelectionFromServer(numberOfMeals: MealsPerWeekResponse): Observable<MealPreference[]> {
+        console.log(numberOfMeals);
         //return this.http.get<MealPreference[]>('assets/data/mealpreferences.json');
         return this.http.post<MealPreference[]>(this.baseURL + '/get_meal_plan_selection', numberOfMeals, this.httpOptions);
     }
 
-    getMealPlanFromServer(): Observable<Object> {
-        let userID = { userID: "9999" }
+    /*getMealPlanFromServer(): Observable<Object> {
+        //let uid = localStorage.getItem("userID");
+        //let userID = { userID: uid }
         return this.http.post<Object>(this.baseURL + '/get_meal_plan_selection', userID, this.httpOptions);
-    }
+    }*/
 
     postMealRatingsToServer(mealPreferenceResponse: MealPreferenceResponse): Observable<MealPreferenceResponse> {
         return this.http.post<MealPreferenceResponse>(this.baseURL + '/onboarding_recipe_rating', mealPreferenceResponse, this.httpOptions);
@@ -85,6 +117,11 @@ export class DataService {
         return this.http.post<MealPreferenceResponse>(this.baseURL + '/validation_recipe_rating', mealPreferenceResponse, this.httpOptions);
     }
 
+    postRecipeReviewToServer(recipeReviewResponse: RecipeReviewResponse): Observable<RecipeReviewResponse> {
+        // review_recipe
+        return this.http.post<RecipeReviewResponse>(this.baseURL + '/review_recipe', recipeReviewResponse, this.httpOptions);
+    }
+
     getRecommendedMealsFromLocal() {
 
         let recommendedMeals: MealPreference[];
@@ -92,19 +129,19 @@ export class DataService {
 
         if (localRecommendedMealsString != undefined) {
             recommendedMeals = JSON.parse(localRecommendedMealsString);
+            this.setRecommendedMeals(recommendedMeals);
+            return true;
         }
         else {
-            recommendedMeals = [];
+            return false;
         }
-
-        this.setRecommendedMeals(recommendedMeals);
 
     }
 
 
     getMealSlotsFromLocal() {
 
-        let mealSlots: MealSlot[];
+        let mealSlots: MealSlot[] = [];
         let localMealSlotsString = localStorage.getItem("localMealSlots");
 
         if (localMealSlotsString != undefined && localMealSlotsString != "undefined") {
@@ -112,18 +149,31 @@ export class DataService {
             this.setMealSlots(mealSlots);
         }
         else {
-            this.getMealPlanFromServer().subscribe((res) => {
+            /*this.getMealPlanSelectionFromServer(mealsPerWeek).subscribe((res) => {
                 this.dataHandlingService.handleMealSlotData(res)
                     .then((organisedData: MealSlot[]) => {
                         mealSlots = organisedData;
                         this.setMealSlots(mealSlots);
                     });
-            });
+            },);*/
+
+            for (let i = 0; i < 3; i++) {
+                let mealSlot: MealSlot = {
+                    id: (i + 1),
+                    selected: false,
+                    reviewed: false,
+                    active: false
+                }
+                mealSlots.push(mealSlot);
+            }
+
+            this.setMealSlots(mealSlots);
+
         }
 
     }
 
-    getMealsPerWeekFromLocal() {
+    /*getMealsPerWeekFromLocal() {
 
         let mealsPerWeek: MealsPerWeekResponse;
         let localMealsPerWeekString = localStorage.getItem("localMealsPerWeek");
@@ -137,7 +187,7 @@ export class DataService {
 
         this.setMealsPerWeek(mealsPerWeek);
 
-    }
+    }*/
 
     getSurprisePreferencesFromLocal() {
 
@@ -210,6 +260,7 @@ export class DataService {
     }
 
     setMealsPerWeek(meals: MealsPerWeekResponse) {
+        this.saveMealsPerWeekToLocal(meals);
         this.mealsPerWeek.next(meals);
     }
 
@@ -233,6 +284,11 @@ export class DataService {
         this.weekStartDate.next(date);
     }
 
+    setTotalMealsNotReviewed() {
+        let total = this.getNotReviewedMealNum();
+        this.totalMealsNotReviewed.next(total);
+    }
+
     getNotReviewedMealNum() {
         let mealSlots: MealSlot[];
         let notReviewed: number = 0;
@@ -250,11 +306,30 @@ export class DataService {
                 notReviewed++;
             }
         });
-        return notReviewed
+        return notReviewed;
+    }
+
+    saveMealsPerWeekToLocal(mealsPerWeek: MealsPerWeekResponse) {
+        localStorage.setItem("mealsPerWeek", JSON.stringify(mealsPerWeek));
+    }
+
+    getMealsPerWeekFromLocal() {
+        let mealsPerWeekString = localStorage.getItem("mealsPerWeek");
+        let mealsPerWeek = JSON.parse(mealsPerWeekString);
+        return mealsPerWeek;
     }
 
     saveSurprisePreferencesToLocal(surprisePreferences: MealPreference[]) {
         let surprisePreferencesString = JSON.stringify(surprisePreferences);
         localStorage.setItem("localSurprisePreferences", surprisePreferencesString);
+    }
+
+    setOnboardingStage(stage: string) {
+        localStorage.setItem("onboardingStage", stage);
+    }
+
+    getOnboardingStage() {
+        let stage = localStorage.getItem("onboardingStage");
+        return stage;
     }
 }

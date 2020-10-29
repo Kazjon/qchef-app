@@ -5,9 +5,10 @@ import { MealPreference } from '../../../../core/objects/MealPreference';
 import { MealPreferenceQuestion, MealPreferenceQuestionOption } from '../../../../core/objects/MealPreferenceQuestion';
 import { MealPreferenceResponse } from 'src/app/core/objects/MealPreferenceResponse';
 import { IngredientmodalComponent } from '../../../../core/components/ingredientmodal/ingredientmodal.component';
-import { IonSlides, ModalController } from '@ionic/angular';
+import { IonSlides, ModalController, AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { DataHandlingService } from 'src/app/services/datahandling/datahandling.service';
+import { FirebaseService } from 'src/app/services/firebase/firebase.service';
 
 @Component({
     selector: 'app-onboarding-surprisepreferences',
@@ -30,7 +31,9 @@ export class OnboardingSurprisePreferencesComponent implements OnInit {
         private dataService: DataService,
         private dataHandlingService: DataHandlingService,
         public modalController: ModalController,
-        private router: Router
+        private router: Router,
+        private alertController: AlertController,
+        private firebaseService: FirebaseService
     ) { }
 
     ngOnInit() {
@@ -40,7 +43,7 @@ export class OnboardingSurprisePreferencesComponent implements OnInit {
 
         this.surprisePreferenceResponse = {
             userID: uid,
-            cook_ratings: {},
+            surprise_ratings: {},
             taste_ratings: {},
             familiarity_ratings: {}
         }
@@ -48,11 +51,16 @@ export class OnboardingSurprisePreferencesComponent implements OnInit {
         let meals;
         meals = this.dataService.getSurprisePreferencesFromLocal()
 
-        this.dataHandlingService.handleMealPreferenceData(meals)
+        console.log(meals);
+
+        this.surprisePreferenceOptions = meals;
+        this.isLoading = false;
+
+        /*this.dataHandlingService.handleMealPreferenceData(meals)
             .then((organisedData: MealPreference[]) => {
                 this.surprisePreferenceOptions = organisedData;
                 this.isLoading = false;
-        });
+        });*/
 
         this.progressValue = this.dataService.getProgressStage();
         this.percentage = this.progressValue;
@@ -70,6 +78,8 @@ export class OnboardingSurprisePreferencesComponent implements OnInit {
     }
 
     selectPreference(mealID: string, question: MealPreferenceQuestion, option: MealPreferenceQuestionOption, optionIndex: number, questionIndex: number, mealIndex: number) {
+
+        this.surprisePreferenceOptions[mealIndex].questions[questionIndex].disabled = true;
 
         // Set answer to selected
         this.deselectAllAnswers(mealIndex, questionIndex);
@@ -134,6 +144,12 @@ export class OnboardingSurprisePreferencesComponent implements OnInit {
             this.surprisePreferenceOptions[mealIndex].questions[questionIndex].active = false;
             this.surprisePreferenceOptions[mealIndex].questions[prev].active = true;
         }
+        else {
+            this.surprisePreferenceOptions[mealIndex - 1].questions[2].disabled = false;
+            this.progressValue = this.dataService.getProgressStage();
+            this.percentage = this.progressValue;
+            this.surpriseSlides.slidePrev();
+        }
     }
 
     async openIngredients(recipe: MealPreference) {
@@ -154,11 +170,37 @@ export class OnboardingSurprisePreferencesComponent implements OnInit {
             .subscribe((res) => {
                 console.log(res);
                 this.goToNumberOfMeals();
+            },
+            (error) => {
+                if (error.error.text.includes('Authentication error')) {
+                    this.showLogoutUserPop();
+                }
             });
     }
 
     private goToNumberOfMeals() {
         this.router.navigateByUrl("/onboarding/numberofmeals");
+    }
+
+    async showLogoutUserPop() {
+
+        const alert = await this.alertController.create({
+            header: 'Oh no!',
+            message: 'Your session has expired! Please log back in.',
+            buttons: [
+                {
+                    text: 'Okay',
+                    handler: () => {
+                        this.firebaseService.logout()
+                            .then(() => {
+                                this.router.navigateByUrl('splash');
+                            })
+                    }
+                }
+            ]
+        });
+
+        await alert.present();
     }
 
 }

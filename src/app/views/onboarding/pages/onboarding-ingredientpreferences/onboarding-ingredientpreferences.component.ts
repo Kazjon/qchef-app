@@ -2,11 +2,12 @@ import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { IngredientPreference } from 'src/app/core/objects/IngredientPreference';
 import { IngredientPreferenceQuestion, IngredientPreferenceQuestionOption } from 'src/app/core/objects/IngredientPreferenceQuestion';
 import { ingredientPreferenceQuestions } from '../../../../../assets/data/ingredientpreferencequestions';
-import { IonSlides } from '@ionic/angular';
+import { IonSlides, AlertController } from '@ionic/angular';
 import { IngredientPreferenceResponse } from 'src/app/core/objects/IngredientPreferenceResponse';
 import { DataService } from 'src/app/services/data/data.service';
 import { Router } from '@angular/router';
 import { DataHandlingService } from 'src/app/services/datahandling/datahandling.service';
+import { FirebaseService } from 'src/app/services/firebase/firebase.service';
 
 @Component({
     selector: 'app-onboarding-ingredientpreferences',
@@ -23,7 +24,7 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
     ingredientPreferenceResponse: IngredientPreferenceResponse;
     percentage: any;
 
-    constructor(private dataService: DataService, private router: Router, private dataHandlingService: DataHandlingService) { }
+    constructor(private dataService: DataService, private router: Router, private dataHandlingService: DataHandlingService, private alertController: AlertController, private firebaseService: FirebaseService) { }
 
     ngOnInit() {
 
@@ -41,6 +42,11 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
                     this.ingredientPreferenceOptions = organisedData;
                     this.isLoading = false;
                 });
+        },
+        (error) => {
+            if (error.error.text.includes('Authentication error')) {
+                this.showLogoutUserPop();
+            }
         });
         this.progressValue = this.dataService.getProgressStage();
         this.percentage = this.progressValue;
@@ -56,6 +62,8 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
     }
 
     selectPreference(ingredientID: string, question: IngredientPreferenceQuestion, option: IngredientPreferenceQuestionOption, optionIndex: number, questionIndex: number, ingredientIndex: number) {
+
+        this.ingredientPreferenceOptions[ingredientIndex].questions[questionIndex].disabled = true;
 
         // Set answer to selected
         this.deselectAllAnswers(ingredientIndex, questionIndex);
@@ -114,6 +122,12 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
             this.ingredientPreferenceOptions[ingredientIndex].questions[questionIndex].active = false;
             this.ingredientPreferenceOptions[ingredientIndex].questions[prev].active = true;
         }
+        else {
+            this.ingredientPreferenceOptions[ingredientIndex - 1].questions[2].disabled = false;
+            this.progressValue = this.dataService.getProgressStage();
+            this.percentage = this.progressValue;
+            this.ingredientSlides.slidePrev();
+        }
     }
 
     setPagerNum() {
@@ -124,11 +138,13 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
     }
 
     private savePreferences() {
-        this.dataService.postIngredientRatingsToServer(this.ingredientPreferenceResponse)
+        localStorage.setItem("ingredientPrefs", JSON.stringify(this.ingredientPreferenceResponse));
+        this.goToLoadingScreen();
+        /*this.dataService.postIngredientRatingsToServer(this.ingredientPreferenceResponse)
             .subscribe((res) => {
                 console.log('post ingredirent', res);
                 this.goToLoadingScreen();
-            });
+            });*/
     }
 
     private goToLoadingScreen() {
@@ -137,6 +153,27 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
 
     goBack() {
         this.router.navigateByUrl("/onboarding/mealpreferences");
+    }
+
+    async showLogoutUserPop() {
+
+        const alert = await this.alertController.create({
+            header: 'Oh no!',
+            message: 'Your session has expired! Please log back in.',
+            buttons: [
+                {
+                    text: 'Okay',
+                    handler: () => {
+                        this.firebaseService.logout()
+                            .then(() => {
+                                this.router.navigateByUrl('splash');
+                            })
+                    }
+                }
+            ]
+        });
+
+        await alert.present();
     }
 
 }

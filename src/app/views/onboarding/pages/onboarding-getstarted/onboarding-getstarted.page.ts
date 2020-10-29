@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { DataService } from 'src/app/services/data/data.service';
 
 @Component({
 	selector: 'app-onboarding-getstarted',
@@ -8,9 +9,10 @@ import { Router } from '@angular/router';
 })
 export class OnboardingGetStartedPage implements OnInit {
 
-	constructor(private router: Router) { }
+	constructor(private router: Router, private dataService: DataService) { }
 
 	ngOnInit() {
+		this.dataService.setOnboardingStage("begin");
 	}
 
 	getStarted() {

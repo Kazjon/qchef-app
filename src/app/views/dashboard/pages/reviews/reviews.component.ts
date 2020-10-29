@@ -17,6 +17,14 @@ export class ReviewsPage implements OnInit {
 
     ngOnInit() {
 
+        this.getMealsToReview();
+
+
+
+        console.log(this.mealSlots)
+    }
+
+    private getMealsToReview() {
         this.dataService.getMealSlotsFromLocal();
         combineLatest(
             this.dataService.mealSlotsObservable,
@@ -26,8 +34,6 @@ export class ReviewsPage implements OnInit {
         .subscribe(([mealSlots]) => {
             this.checkData(mealSlots);
         });
-
-        console.log(this.mealSlots)
     }
 
     private checkData(data) {
@@ -39,10 +45,13 @@ export class ReviewsPage implements OnInit {
         }
     }
 
-    /** TODO: navigate to review page **/
     reviewMeal(meal: any) {
-        console.log(meal)
         this.router.navigate(['/dashboard/reviews-form/'+meal.id],  {state: {data: {title: meal.title}}});
+    }
+
+    ionViewWillEnter() {
+        console.log("reviews loaded!");
+        this.getMealsToReview();
     }
 
 }

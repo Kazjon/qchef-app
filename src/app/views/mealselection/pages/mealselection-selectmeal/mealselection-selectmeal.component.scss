@@ -32,6 +32,10 @@
 
 .meal-info {
     padding: 0 20px;
+
+    p {
+        margin: 0;
+    }
 }
 
 ion-slides {
@@ -106,9 +110,10 @@ ion-slides {
     width: 100%;
     min-height: 120px;
     padding: 20px;
-    display: table;
+    //display: table;
     //overflow-x: scroll;
     //white-space: nowrap;
+    display: flex;
 }
 
 .button-disabled {

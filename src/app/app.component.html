@@ -1,14 +1,9 @@
 <ion-app>
-    <ion-menu side="end" type="push" contentId="main" swipe-gesture="false">
+    <ion-menu #sideMenu side="end" type="push" contentId="main" swipe-gesture="false">
         <ion-header [translucent]="false">
-            <ion-toolbar class="with-border">
-                <ion-item lines="none">
-                  <ion-thumbnail>
-                      <img src="../../../../../assets/images/splash.svg">
-                  </ion-thumbnail>
-                  <ion-label>Chef</ion-label>
-                </ion-item>
-        
+            <ion-toolbar class="header-dashboard">
+                <img class="logo" src="../../../../../assets/images/header-logo.svg">
+
                 <ion-buttons mode="ios" slot="end">
                     <ion-buttons slot="start">
                         <ion-menu-button autoHide="false"></ion-menu-button>

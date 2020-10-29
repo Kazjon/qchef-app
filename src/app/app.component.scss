@@ -7,7 +7,7 @@ ion-menu {
     }
 
     ion-content {
-        --padding-top: 25px;
+        //--padding-top: 25px;
 
         ion-item {
             --background: var(--ion-color-tabbar);
@@ -22,7 +22,7 @@ ion-menu {
 
             img {
                 padding-right: 18.5px;
-            }            
+            }
         }
     }
 }

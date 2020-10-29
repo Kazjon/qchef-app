@@ -7,6 +7,7 @@ import { MealPreference } from 'src/app/core/objects/MealPreference';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { RecipeModalComponent } from 'src/app/core/components/recipemodal/recipemodal.component';
+import { FirebaseService } from 'src/app/services/firebase/firebase.service';
 
 @Component({
     selector: 'app-recipes',
@@ -20,10 +21,13 @@ export class RecipesPage implements OnInit {
 
     constructor(
         private dataService: DataService,
+        private firebaseService: FirebaseService,
         private router: Router,
         private modalController: ModalController) { }
 
     ngOnInit() {
+
+        this.dataService.setOnboardingStage("dashboard");
 
         this.dataService.getMealSlotsFromLocal();
         this.dataService.getWeekStartDateFromLocal();
@@ -35,16 +39,24 @@ export class RecipesPage implements OnInit {
             take(3)
         )
         .subscribe(([mealSlots, weekStartDate]) => {
-            this.checkData(mealSlots);
+            console.log(mealSlots);
+            console.log(weekStartDate);
+            this.checkData(mealSlots, weekStartDate);
             this.checkIfWeekIsComplete(weekStartDate);
         });
 
 
     }
 
-    private checkData(data) {
+    private checkData(data, weekStartDate) {
         console.log(data);
-        if (data.length <= 0 || data[0].recipe == undefined) {
+        if (isNaN(weekStartDate.getTime()) && data.length <= 0) {
+            this.firebaseService.logout()
+                .then(() => {
+                    this.router.navigateByUrl('splash');
+                })
+        }
+        else if (data.length <= 0 || data[0].recipe == undefined) {
            this.router.navigateByUrl('mealselection/meal/1', { replaceUrl: true });
         }
         else {

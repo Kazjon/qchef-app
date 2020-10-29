@@ -7,15 +7,11 @@
   "cordova": {},
   "plugins": {
     "SplashScreen": {
-      "launchShowDuration": 20000,
+      "launchShowDuration": 2000,
       "launchAutoHide": true,
-      "showSpinner": true,
+      "showSpinner": false,
       "splashFullScreen": true,
       "splashImmersive": true
     }
-  },
-  "server": {
-    "url": "http://localhost:8100",
-    "cleartext": true
   }
 }

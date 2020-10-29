@@ -1,11 +1,6 @@
 <ion-header [translucent]="false">
-    <ion-toolbar class="with-border">
-        <ion-item lines="none">
-          <ion-thumbnail>
-              <img src="../../../../../assets/images/splash.svg">
-          </ion-thumbnail>
-          <ion-label>Chef</ion-label>
-        </ion-item>
+    <ion-toolbar class="header-dashboard">
+        <img class="logo" src="../../../../../assets/images/header-logo.svg">
 
         <ion-buttons mode="ios" slot="end">
             <ion-buttons slot="start">
@@ -14,7 +9,7 @@
         </ion-buttons>
     </ion-toolbar>
   </ion-header>
-<ion-content class="has-tabs" [ngClass]="{'loading': isLoading}">
+<ion-content fullscreen class="has-tabs" [ngClass]="{'loading': isLoading}">
 
     <div class="loading-overlay">
         <ion-spinner name="crescent" color="primary"></ion-spinner>
@@ -34,7 +29,6 @@
             </div>
             <div class="meal-content">
                 <h2>{{ meal.recipe.title }}</h2>
-                <p>{{ meal.recipe.description }}</p>
                 <div class="meal-details">
                     <div class="detail">
                         <span class="icon cooktime"></span>

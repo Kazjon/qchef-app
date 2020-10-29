@@ -5,9 +5,10 @@ import { MealPreference } from '../../../../core/objects/MealPreference';
 import { MealPreferenceQuestion, MealPreferenceQuestionOption } from '../../../../core/objects/MealPreferenceQuestion';
 import { MealPreferenceResponse } from 'src/app/core/objects/MealPreferenceResponse';
 import { IngredientmodalComponent } from '../../../../core/components/ingredientmodal/ingredientmodal.component';
-import { IonSlides, ModalController } from '@ionic/angular';
+import { IonSlides, ModalController, AlertController } from '@ionic/angular';
 import { Router, NavigationExtras } from '@angular/router';
 import { DataHandlingService } from 'src/app/services/datahandling/datahandling.service';
+import { FirebaseService } from 'src/app/services/firebase/firebase.service';
 
 @Component({
     selector: 'app-onboarding-mealpreferences',
@@ -31,7 +32,9 @@ export class OnboardingMealPreferencesComponent implements OnInit {
         private dataService: DataService,
         private dataHandlingService: DataHandlingService,
         public modalController: ModalController,
-        private router: Router
+        private router: Router,
+        private alertController: AlertController,
+        private firebaseService: FirebaseService
     ) { }
 
     ngOnInit() {
@@ -40,8 +43,8 @@ export class OnboardingMealPreferencesComponent implements OnInit {
         let uid = localStorage.getItem("userID");
 
         this.mealPreferenceResponse = {
-            userID: uid,
-            cook_ratings: {},
+            //userID: uid,
+            surprise_ratings: {},
             taste_ratings: {},
             familiarity_ratings: {}
         }
@@ -52,16 +55,19 @@ export class OnboardingMealPreferencesComponent implements OnInit {
                     .then((organisedData: MealPreference[]) => {
                         this.mealPreferenceOptions = organisedData;
                         this.isLoading = false;
+
                     });
+            },
+            (error) => {
+                if (error.error.text.includes('Authentication error')) {
+                    this.showLogoutUserPop();
+                }
             });
         this.progressValue = this.dataService.getProgressStage();
         this.percentage = this.progressValue;
 
     }
 
-    ionViewDidEnter() {
-        // this.mealSlides.lockSwipes(true);
-    }
 
     imageLoaded(meal: MealPreference) {
         console.log("loaded!");
@@ -74,6 +80,8 @@ export class OnboardingMealPreferencesComponent implements OnInit {
     }
 
     selectPreference(mealID: string, question: MealPreferenceQuestion, option: MealPreferenceQuestionOption, optionIndex: number, questionIndex: number, mealIndex: number) {
+
+        this.mealPreferenceOptions[mealIndex].questions[questionIndex].disabled = true;
 
         // Set answer to selected
         this.deselectAllAnswers(mealIndex, questionIndex);
@@ -130,6 +138,13 @@ export class OnboardingMealPreferencesComponent implements OnInit {
             prev = questionIndex - 1;
             this.mealPreferenceOptions[mealIndex].questions[questionIndex].active = false;
             this.mealPreferenceOptions[mealIndex].questions[prev].active = true;
+            this.mealPreferenceOptions[mealIndex].questions[prev].disabled = false;
+        }
+        else {
+            this.mealPreferenceOptions[mealIndex - 1].questions[2].disabled = false;
+            this.progressValue = this.dataService.getProgressStage();
+            this.percentage = this.progressValue;
+            this.mealSlides.slidePrev();
         }
     }
 
@@ -156,12 +171,17 @@ export class OnboardingMealPreferencesComponent implements OnInit {
     private savePreferences() {
         this.dataService.postMealRatingsToServer(this.mealPreferenceResponse)
             .subscribe((res) => {
-                this.dataHandlingService.handleMealPreferenceData(res)
+                /*this.dataHandlingService.handleMealPreferenceData(res)
                 .then((organisedData: MealPreference[]) => {
                     this.dataService.saveSurprisePreferencesToLocal(organisedData);
-                });
+                });*/
 
                 this.goToIngredients();
+            },
+            (error) => {
+                if (error.error.text.includes('Authentication error')) {
+                    this.showLogoutUserPop();
+                }
             });
     }
 
@@ -172,6 +192,27 @@ export class OnboardingMealPreferencesComponent implements OnInit {
             }
         };
         this.router.navigateByUrl("/onboarding/ingredientpreferences", navigationExtras);
+    }
+
+    async showLogoutUserPop() {
+
+        const alert = await this.alertController.create({
+            header: 'Oh no!',
+            message: 'Your session has expired! Please log back in.',
+            buttons: [
+                {
+                    text: 'Okay',
+                    handler: () => {
+                        this.firebaseService.logout()
+                            .then(() => {
+                                this.router.navigateByUrl('splash');
+                            })
+                    }
+                }
+            ]
+        });
+
+        await alert.present();
     }
 
 }

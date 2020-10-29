@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from 'src/app/services/data/data.service';
-import { combineLatest } from 'rxjs';
+import { combineLatest, Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { MealSlot } from 'src/app/core/objects/MealSlot';
 import { Router } from '@angular/router';
 import { MealPlanSelectionResponse } from 'src/app/core/objects/MealPlanSelectionResponse';
+import { AlertController } from '@ionic/angular';
+import { FirebaseService } from 'src/app/services/firebase/firebase.service';
 
 @Component({
     selector: 'app-mealselection-summary',
@@ -13,20 +15,26 @@ import { MealPlanSelectionResponse } from 'src/app/core/objects/MealPlanSelectio
 })
 export class MealSelectionSummaryComponent implements OnInit {
     mealSlots: MealSlot[];
+    actionLogSubscription: Subscription;
+    actionLog: any;
 
-    constructor(private dataService: DataService, private router: Router) { }
+    constructor(private dataService: DataService, private router: Router, private alertController: AlertController, private firebaseService: FirebaseService) { }
 
     ngOnInit() {
+
+        this.actionLogSubscription = this.dataService.actionLogObservable.subscribe((res) => {
+            this.actionLog = res;
+        });
 
         combineLatest(
             this.dataService.mealSlotsObservable,
         ).pipe(
             take(4)
         )
-        .subscribe(([mealSlots]) => {
-            console.log(mealSlots);
-            this.checkData(mealSlots);
-        });
+            .subscribe(([mealSlots]) => {
+                console.log(mealSlots);
+                this.checkData(mealSlots);
+            });
 
 
     }
@@ -69,7 +77,9 @@ export class MealSelectionSummaryComponent implements OnInit {
 
         let selectedMealPlan: MealPlanSelectionResponse = {
             userID: uid,
-            picked: picked
+            picked: picked,
+            //action_log: [[1531351699745026893, "60372", "scrolled"], [1531351760359533025, "27455", "clicked"]]
+            action_log: this.actionLog
         }
 
         // TODO: Have a loading spinner here to show that something's happening
@@ -77,7 +87,12 @@ export class MealSelectionSummaryComponent implements OnInit {
             .subscribe((res) => {
                 console.log(res);
                 this.goToNext();
-            });
+            },
+                (error) => {
+                    if (error.error.text.includes('Authentication error')) {
+                        this.showLogoutUserPop();
+                    }
+                });
 
     }
 
@@ -85,4 +100,24 @@ export class MealSelectionSummaryComponent implements OnInit {
         this.router.navigateByUrl('dashboard', { replaceUrl: true });
     }
 
+    async showLogoutUserPop() {
+
+        const alert = await this.alertController.create({
+            header: 'Oh no!',
+            message: 'Your session has expired! Please log back in.',
+            buttons: [
+                {
+                    text: 'Okay',
+                    handler: () => {
+                        this.firebaseService.logout()
+                            .then(() => {
+                                this.router.navigateByUrl('splash');
+                            })
+                    }
+                }
+            ]
+        });
+
+        await alert.present();
+    }
 }

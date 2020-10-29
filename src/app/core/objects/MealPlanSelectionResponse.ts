@@ -1,4 +1,5 @@
 export interface MealPlanSelectionResponse {
-    userID: string,
+    userID?: string,
     picked: string[],
+    action_log
 }

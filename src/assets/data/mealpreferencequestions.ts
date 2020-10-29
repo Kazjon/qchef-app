@@ -1,10 +1,10 @@
 export const mealPreferenceQuestions = [
     {
-        "id": "taste_ratings",
+        "id": "familiarity_ratings",
         "options": [
             {
                 "id": 0,
-                "title":  "I'm pretty sure I know how this would taste",
+                "title":  "I don't really know how this would taste",
                 "selected": false
             },
             {
@@ -14,20 +14,21 @@ export const mealPreferenceQuestions = [
             },
             {
                 "id": 2,
-                "title":  "I don't really know how this would taste",
+                "title":  "I'm pretty sure I know how this would taste",
                 "selected": false
-            }
+            },
 
 
         ],
-        "active": true
+        "active": true,
+        "disabled": false
     },
     {
-        "id": "cook_ratings",
+        "id": "taste_ratings",
         "options": [
             {
                 "id": 0,
-                "title": "I think I would enjoy eating this",
+                "title": "I don't think I would enjoy eating this",
                 "selected": false
             },
             {
@@ -37,14 +38,16 @@ export const mealPreferenceQuestions = [
             },
             {
                 "id": 2,
-                "title": "I don't think I would enjoy eating this",
+                "title": "I think I would enjoy eating this",
                 "selected": false
             }
+
         ],
-        "active": false
+        "active": false,
+        "disabled": false
     },
     {
-        "id": "familiarity_ratings",
+        "id": "surprise_ratings",
         "options": [
             {
                 "id": 0,
@@ -53,16 +56,17 @@ export const mealPreferenceQuestions = [
             },
             {
                 "id": 1,
-                "title": "I had no idea what ingredients to expect",
+                "title": "Some ingredients weren’t what I expected",
                 "selected": false
             },
             {
                 "id": 2,
-                "title": "Some ingredients weren’t what I expected",
+                "title": "I had no idea what ingredients to expect",
                 "selected": false
-            },
+            }
 
         ],
-        "active": false
+        "active": false,
+        "disabled": false
     }
 ]

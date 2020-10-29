@@ -1,10 +1,10 @@
 export const ingredientPreferenceQuestions = [
     {
-        "id": "taste_ratings",
+        "id": "familiarity_ratings",
         "options": [
             {
                 "id": 0,
-                "title":  "I know how this tastes",
+                "title":  "I don't really know how this tastes",
                 "selected": false
             },
             {
@@ -14,19 +14,20 @@ export const ingredientPreferenceQuestions = [
             },
             {
                 "id": 2,
-                "title":  "I don't really know how this tastes",
+                "title":  "I know how this tastes",
                 "selected": false
-            },
+            }
 
         ],
-        "active": true
+        "active": true,
+        "disabled": false
     },
     {
-        "id": "familiarity_ratings",
+        "id": "taste_ratings",
         "options": [
             {
                 "id": 0,
-                "title":  "I like to eat this",
+                "title":  "I don't like to eat this",
                 "selected": false
             },
             {
@@ -36,11 +37,12 @@ export const ingredientPreferenceQuestions = [
             },
             {
                 "id": 2,
-                "title":  "I don't like to eat this",
+                "title":  "I like to eat this",
                 "selected": false
-            }
+            },
         ],
-        "active": false
+        "active": false,
+        "disabled": false
     }
 ]
 
