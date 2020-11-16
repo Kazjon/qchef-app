@@ -148,19 +148,6 @@ export class OnboardingMealPreferencesComponent implements OnInit {
         }
     }
 
-    async openIngredients(recipe: MealPreference) {
-
-        const modal = await this.modalController.create({
-            component: IngredientmodalComponent,
-            cssClass: 'ingredient-modal',
-            componentProps: {
-                'recipe': recipe,
-            }
-        });
-        return await modal.present();
-
-    }
-
     setPagerNum() {
         this.mealSlides.getActiveIndex().then(
             (index)=>{
