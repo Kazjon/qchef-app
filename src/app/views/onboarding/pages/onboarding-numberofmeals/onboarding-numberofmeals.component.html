@@ -5,13 +5,12 @@
 		</ion-buttons>
 	</ion-toolbar>
 </ion-header>
-<ion-content fullscreen>
+<ion-content fullscreen no-bounce has-bouncing="false" forceOverscroll="false">
 
   <div class="content-wrapper column start">
 
     <div class="progress">
-        <ion-progress-bar indeterminate color="tertiary" value="{{progressValue/100}}"></ion-progress-bar>
-        <p class="progress-percentage"> {{progressValue}}% Complete</p>
+        <onboarding-progress [showOverall]="true"></onboarding-progress>
     </div>
 
       <div class="content">

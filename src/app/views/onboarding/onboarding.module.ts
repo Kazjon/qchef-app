@@ -12,6 +12,7 @@ import { OnboardingCompleteComponent } from './pages/onboarding-complete/onboard
 import { OnboardingLoadingScreenComponent } from './pages/onboarding-loadingscreen/onboarding-loadingscreen.component';
 import { OnboardingSurprisePreferencesComponent } from './pages/onboarding-surprisepreferences/onboarding-surprisepreferences.component';
 import { IngredientmodalComponent } from '../../core/components/ingredientmodal/ingredientmodal.component';
+import { OnboardingProgressComponent } from '../../core/components/onboarding-progress/onboarding-progress.component';
 
 const routes: Routes = [
     {
@@ -59,7 +60,8 @@ const routes: Routes = [
         OnboardingCompleteComponent,
         OnboardingLoadingScreenComponent,
         IngredientmodalComponent,
-        OnboardingSurprisePreferencesComponent
+        OnboardingSurprisePreferencesComponent,
+        OnboardingProgressComponent
     ],
     entryComponents: [
         IngredientmodalComponent

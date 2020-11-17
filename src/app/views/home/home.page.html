@@ -6,7 +6,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" no-bounce has-bouncing="false" forceOverscroll="false">
   <div id="container">
     <ion-button (click)="goTo('plugintester')">Test plugins</ion-button>
     <ion-button (click)="logout()">Logout</ion-button>

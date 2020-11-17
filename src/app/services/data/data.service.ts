@@ -20,6 +20,29 @@ export class DataService {
     private totalStages:number = 94;
     private baseURL:string = "https://q-chef-backend-api-server.web.app";
     httpOptions = {};
+    private progressSections = [
+        {
+            section: "meals",
+            progress: 0,
+            total: 20,
+            count: 0
+        },
+        {
+            section: "ingredients",
+            progress: 0,
+            total: 30,
+            count: 0
+        },
+        {
+            section: "surprise",
+            progress: 0,
+            total: 10,
+            count: 0
+        }
+    ];
+
+    totalProgress = new BehaviorSubject<Object[]>(this.progressSections);
+    totalProgressObservable = this.totalProgress.asObservable();
 
     mealsPerWeek = new BehaviorSubject<MealsPerWeekResponse>({ userID: undefined, number_of_recipes: 3 });
     mealsPerWeekObservable = this.mealsPerWeek.asObservable();
@@ -331,5 +354,9 @@ export class DataService {
     getOnboardingStage() {
         let stage = localStorage.getItem("onboardingStage");
         return stage;
+    }
+
+    updateTotalProgress(progress: Object[]) {
+        this.totalProgress.next(progress);
     }
 }
