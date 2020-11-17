@@ -1,0 +1,15 @@
+.onboarding-progress {
+    display: flex;
+    justify-content: space-between;
+
+    ion-progress-bar {
+        width: 30%;
+        border-radius: 30px;
+    }
+}
+
+.total-complete {
+    text-align: center;
+    font-size: 12px;
+    padding: 15px;
+}
