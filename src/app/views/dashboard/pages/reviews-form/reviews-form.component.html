@@ -17,7 +17,7 @@
 		<p class="italic-note">All fields are required</p>
 		<div class="review-form">
 			<form (ngSubmit)="submitReview()" [formGroup]="reviewForm">
-				<ion-card>
+				<ion-card (click)="updatePhotoFrom()">
 					<ion-img
 						class="photo"
 						*ngIf="photo"
