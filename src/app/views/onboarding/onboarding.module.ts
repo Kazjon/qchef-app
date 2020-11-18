@@ -12,6 +12,8 @@ import { OnboardingCompleteComponent } from './pages/onboarding-complete/onboard
 import { OnboardingLoadingScreenComponent } from './pages/onboarding-loadingscreen/onboarding-loadingscreen.component';
 import { OnboardingSurprisePreferencesComponent } from './pages/onboarding-surprisepreferences/onboarding-surprisepreferences.component';
 import { IngredientmodalComponent } from '../../core/components/ingredientmodal/ingredientmodal.component';
+import { OnboardingProgressComponent } from '../../core/components/onboarding-progress/onboarding-progress.component';
+import { SharedComponentsModule } from '../../core/components/shared.module';
 
 const routes: Routes = [
     {
@@ -58,11 +60,8 @@ const routes: Routes = [
         OnboardingNumberOfMealsComponent,
         OnboardingCompleteComponent,
         OnboardingLoadingScreenComponent,
-        IngredientmodalComponent,
-        OnboardingSurprisePreferencesComponent
-    ],
-    entryComponents: [
-        IngredientmodalComponent
+        OnboardingSurprisePreferencesComponent,
+        OnboardingProgressComponent
     ]
 })
 export class OnboardingModule { }

@@ -1,0 +1,4 @@
+<div class="onboarding-progress">
+    <ion-progress-bar *ngFor="let progress of totalProgress" value="{{progress.progress/100}}" indeterminate color="tertiary"></ion-progress-bar>
+</div>
+<div class="total-complete" *ngIf="showOverall">{{overallProgress}}% Complete</div>
