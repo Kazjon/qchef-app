@@ -5,10 +5,11 @@ import { MealPreference } from '../../../../core/objects/MealPreference';
 import { MealPreferenceQuestion, MealPreferenceQuestionOption } from '../../../../core/objects/MealPreferenceQuestion';
 import { MealPreferenceResponse } from 'src/app/core/objects/MealPreferenceResponse';
 import { IngredientmodalComponent } from '../../../../core/components/ingredientmodal/ingredientmodal.component';
-import { IonSlides, ModalController, AlertController } from '@ionic/angular';
+import { IonSlides, ModalController, AlertController, IonContent } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { DataHandlingService } from 'src/app/services/datahandling/datahandling.service';
 import { FirebaseService } from 'src/app/services/firebase/firebase.service';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-onboarding-surprisepreferences',
@@ -16,16 +17,21 @@ import { FirebaseService } from 'src/app/services/firebase/firebase.service';
     styleUrls: ['./onboarding-surprisepreferences.component.scss'],
 })
 export class OnboardingSurprisePreferencesComponent implements OnInit {
+    @ViewChild('scroller', { static: false }) scroller: IonContent;
     @ViewChild('surpriseSlides', { static: false }) surpriseSlides: IonSlides;
     @Input() progressValue: any;
     @Input() imgSrc: string;
     @Input() isSelected: boolean = false;
     @Input() page: number = 1;
+    activeSlide: number = 0;
+    disableNext: boolean = false;
     isLoading: boolean = true;
     surprisePreferenceOptions: MealPreference[];
     preferenceQuestions: MealPreferenceQuestion[] = mealPreferenceQuestions;
     surprisePreferenceResponse: MealPreferenceResponse;
     percentage: any;
+    totalProgressSubscription: Subscription;
+    totalProgress: Object[];
 
     constructor(
         private dataService: DataService,
@@ -51,7 +57,9 @@ export class OnboardingSurprisePreferencesComponent implements OnInit {
         let meals;
         meals = this.dataService.getSurprisePreferencesFromLocal()
 
-        console.log(meals);
+        this.totalProgressSubscription = this.dataService.totalProgressObservable.subscribe((res) => {
+            this.totalProgress = res;
+        });
 
         this.surprisePreferenceOptions = meals;
         this.isLoading = false;
@@ -62,8 +70,8 @@ export class OnboardingSurprisePreferencesComponent implements OnInit {
                 this.isLoading = false;
         });*/
 
-        this.progressValue = this.dataService.getProgressStage();
-        this.percentage = this.progressValue;
+        //this.progressValue = this.dataService.getProgressStage();
+        //this.percentage = this.progressValue;
 
     }
 
@@ -89,10 +97,10 @@ export class OnboardingSurprisePreferencesComponent implements OnInit {
         this.setMealPreferenceAnswer(mealID, question, option);
 
         // Show the next question
-        let timeout = setTimeout(() => {
+        /*let timeout = setTimeout(() => {
             this.showNextQuestion(questionIndex, mealIndex);
             clearTimeout(timeout);
-        }, 300);
+        }, 300);*/
 
     }
 
@@ -124,16 +132,59 @@ export class OnboardingSurprisePreferencesComponent implements OnInit {
         else {
             this.surpriseSlides.isEnd().then((isEnd) => {
                 if (isEnd) {
+                    (this.totalProgress[2] as any).progress = 100;
+                    (this.totalProgress[2] as any).count = 10;
+                    this.dataService.updateTotalProgress(this.totalProgress);
                     this.savePreferences();
                 }
                 else {
                     this.progressValue = this.dataService.getProgressStage();
                     this.percentage = this.progressValue;
                     this.surpriseSlides.slideNext();
+                    this.calculateProgress();
                 }
             });
         }
 
+    }
+
+    showNextMeal(mealIndex: number) {
+
+        let totalQuestionsAnswered = 0;
+
+        for (let i = 0; i < this.surprisePreferenceOptions[mealIndex].questions.length; i++) {
+
+            for (let p = 0; p < this.surprisePreferenceOptions[mealIndex].questions[i].options.length; p++) {
+                if (this.surprisePreferenceOptions[mealIndex].questions[i].options[p].selected) {
+                    totalQuestionsAnswered = totalQuestionsAnswered + 1;
+                }
+            }
+        }
+
+        if (totalQuestionsAnswered === 3) {
+            this.surpriseSlides.isEnd().then((isEnd) => {
+                if (isEnd) {
+                    (this.totalProgress[2] as any).progress = 100;
+                    (this.totalProgress[2] as any).count = 10;
+                    this.dataService.updateTotalProgress(this.totalProgress);
+                    this.disableNext = true;
+                    this.savePreferences();
+                }
+                else {
+                    this.progressValue = this.dataService.getProgressStage();
+                    this.percentage = this.progressValue;
+                    this.surpriseSlides.slideNext();
+                    this.scroller.scrollToTop(500);
+                    this.calculateProgress();
+                }
+            });
+        }
+
+    }
+
+    showPrevMeal() {
+        this.surpriseSlides.slidePrev();
+        this.activeSlide = this.activeSlide - 1;
     }
 
     backToPrevQuestion(questionIndex: number, mealIndex: number) {
@@ -149,7 +200,18 @@ export class OnboardingSurprisePreferencesComponent implements OnInit {
             this.progressValue = this.dataService.getProgressStage();
             this.percentage = this.progressValue;
             this.surpriseSlides.slidePrev();
+            this.calculateProgress();
         }
+    }
+
+    private calculateProgress() {
+        this.surpriseSlides.getActiveIndex().then((activeIndex) => {
+            this.activeSlide = activeIndex;
+            let percentage = (activeIndex / this.surprisePreferenceOptions.length) * 100;
+            (this.totalProgress[2] as any).progress = percentage;
+            (this.totalProgress[2] as any).count = activeIndex;
+            this.dataService.updateTotalProgress(this.totalProgress);
+        });
     }
 
     async openIngredients(recipe: MealPreference) {
@@ -202,5 +264,9 @@ export class OnboardingSurprisePreferencesComponent implements OnInit {
 
         await alert.present();
     }
+
+    ngOnDestroy() {
+        this.totalProgressSubscription.unsubscribe();
+     }
 
 }

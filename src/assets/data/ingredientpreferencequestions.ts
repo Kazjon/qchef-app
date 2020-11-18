@@ -1,6 +1,7 @@
 export const ingredientPreferenceQuestions = [
     {
         "id": "familiarity_ratings",
+        "title": "Familiarity",
         "options": [
             {
                 "id": 0,
@@ -24,6 +25,7 @@ export const ingredientPreferenceQuestions = [
     },
     {
         "id": "taste_ratings",
+        "title": "Taste",
         "options": [
             {
                 "id": 0,

@@ -65,6 +65,88 @@
         }
     }
 
+    .question-option-radio {
+        background: #FFFFFF;
+        box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+        border-radius: 5px;
+        height: 55px;
+        font-size: 14px;
+        line-height: 130%;
+        color: var(--ion-color-font-main);
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        text-align: left;
+        cursor: pointer;
+        margin: 12px 0;
+        padding-right: 20px;
+
+        .radio {
+            width: 24px;
+            height: 24px;
+            min-width: 24px;
+            background: #F8F7F7;
+            box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 24px;
+            margin: 0 20px;
+        }
+
+        &.selected {
+            border: 2px solid #68E975;
+            color: #68E975;
+
+            .radio {
+                background: none;
+                box-shadow: none;
+                background: url(assets/images/icon-tick.svg) center center no-repeat;
+                background-size: contain;
+                margin-left:18px;
+            }
+        }
+
+    }
+
+    .question-group {
+        margin-top: 20px;
+
+        h2 {
+            text-align: left;
+            color: var(--ion-color-font-main);
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        &.disabled {
+            .question-option-radio {
+                opacity: 0.4;
+
+                &.selected {
+                    opacity: 1;
+                }
+            }
+        }
+
+    }
+
+    .meal-nav {
+        text-align: left;
+        width: 87%;
+
+        .butt-previous {
+            height: 40px;
+            background: transparent;
+            color: #3fa4dd;
+            text-transform: uppercase;
+            font-size: 14px;
+            line-height: 17px;
+            font-family: var(--font-family-button);
+            font-style: var(--font-style-button);
+            font-weight: var(--font-weight-button);
+            padding: 0;
+
+        }
+    }
+
     ion-card {
         border-radius: 0px;
         background: rgba(255, 255, 255, 0.9);
@@ -133,6 +215,11 @@
             }
         }
 
+        &.next {
+            border-radius: 37px;
+            height: 37px;
+        }
+
         &::part(button) {
             opacity: 1;
         }
@@ -169,6 +256,7 @@
 
         }
     }
+
 
 
     ion-toolbar {
@@ -344,6 +432,7 @@
             ion-button {
                 margin: 4.5px 0;
                 min-height: 37px;
+                margin-bottom: 20px;
 
                 span {
                     font-family: var(--font-family-question-button);
@@ -372,7 +461,7 @@
                 }
 
                 &.selected, &:active, &:hover, &:focus {
-                    --background: var(--ion-color-secondary);
+                    //--background: var(--ion-color-secondary);
                     --border-radius: 50px;
                 }
             }
@@ -640,6 +729,51 @@ h1 {
 .safe-top {
     margin-top: env(safe-area-inset-top, 20px)
 }
+
+/** Animation **/
+.animated {
+    -webkit-animation-duration: 0.5s;
+    animation-duration: 0.5s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+  }
+  .animated.infinite {
+    -webkit-animation-iteration-count: infinite;
+    animation-iteration-count: infinite;
+  }
+  /*the animation definition*/
+  @-webkit-keyframes shake {
+    0%, 50%, 100% {
+      -webkit-transform: translate3d(0, 0, 0);
+      transform: translate3d(0, 0, 0)
+    }
+    25% {
+      -webkit-transform: translate3d(10px, 0, 0);
+      transform: translate3d(10px, 0, 0)
+    }
+    75% {
+      -webkit-transform: translate3d(-10px, 0, 0);
+      transform: translate3d(-10px, 0, 0)
+    }
+  }
+  @keyframes shake {
+    0%, 50%, 100% {
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0)
+    }
+    25% {
+        -webkit-transform: translate3d(10px, 0, 0);
+        transform: translate3d(10px, 0, 0)
+    }
+    75% {
+        -webkit-transform: translate3d(-10px, 0, 0);
+        transform: translate3d(-10px, 0, 0)
+    }
+  }
+  .shake {
+    -webkit-animation-name: shake;
+    animation-name: shake;
+  }
 
 /** Font **/
 @font-face {

@@ -3,18 +3,18 @@
 
 	</ion-toolbar>
 </ion-header>
-<ion-content fullscreen>
+<ion-content fullscreen no-bounce has-bouncing="false" forceOverscroll="false">
 
   <div class="content-wrapper column start">
 
       <div class="progress">
-        <ion-progress-bar indeterminate color="tertiary" value="1"></ion-progress-bar>
+        <onboarding-progress [showOverall]="false"></onboarding-progress>
         <p class="progress-percentage">On Boarding is Complete!</p>
       </div>
 
       <div class="content column start content-prompt">
-          <ion-img [src]="imgSrc" class="complete-image ion-align-self-center"></ion-img>
-          <h1>Just a Second</h1>
+        <ion-img [src]="imgSrc" class="shake animated infinite complete-image ion-align-self-center"></ion-img>
+        <h1>Just a Second</h1>
           <p>Our algorithms are coming up with a few more recipes for you to rate.</p>
       </div>
 
