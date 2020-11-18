@@ -2,7 +2,8 @@ import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { IngredientPreference } from 'src/app/core/objects/IngredientPreference';
 import { IngredientPreferenceQuestion, IngredientPreferenceQuestionOption } from 'src/app/core/objects/IngredientPreferenceQuestion';
 import { ingredientPreferenceQuestions } from '../../../../../assets/data/ingredientpreferencequestions';
-import { IonSlides, AlertController, IonContent } from '@ionic/angular';
+import { GuidemodalComponent } from '../../../../core/components/guidemodal/guidemodal.component';
+import { IonSlides, AlertController, IonContent, ModalController } from '@ionic/angular';
 import { IngredientPreferenceResponse } from 'src/app/core/objects/IngredientPreferenceResponse';
 import { DataService } from 'src/app/services/data/data.service';
 import { Router } from '@angular/router';
@@ -30,12 +31,20 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
     totalProgressSubscription: Subscription;
     totalProgress: Object[];
 
-    constructor(private dataService: DataService, private router: Router, private dataHandlingService: DataHandlingService, private alertController: AlertController, private firebaseService: FirebaseService) { }
+    constructor(
+        private dataService: DataService, 
+        private router: Router, 
+        private dataHandlingService: DataHandlingService, 
+        private alertController: AlertController, 
+        private firebaseService: FirebaseService,
+        public modalController: ModalController,
+    ) { }
 
     ngOnInit() {
 
         let uid = localStorage.getItem("userID");
-
+        this.surprisePreferenceStartPopup();
+        
         this.ingredientPreferenceResponse = {
             userID: uid,
             taste_ratings: {},
@@ -209,6 +218,15 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
                 console.log('post ingredirent', res);
                 this.goToLoadingScreen();
             });*/
+    }
+
+    async surprisePreferenceStartPopup() {
+
+        const modal = await this.modalController.create({
+            component: GuidemodalComponent,
+            cssClass: 'guide-modal',
+        });
+        return await modal.present();
     }
 
     private goToLoadingScreen() {

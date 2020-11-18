@@ -335,6 +335,25 @@
         }
     }
 
+    .guide-modal {
+        margin: 24px;
+        width: 327px;
+        height: 471px;
+
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+
+        .content {
+            padding: 0 43px;
+
+            .header {
+                padding: 12px 0 7px;
+                margin: 18px 0;
+            }
+        }
+    }
+
     .submit-invalid-modal .modal-wrapper{
         margin: auto 24px !important;
         min-height: 340px;
