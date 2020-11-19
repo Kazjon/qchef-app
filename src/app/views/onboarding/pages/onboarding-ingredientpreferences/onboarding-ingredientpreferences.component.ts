@@ -138,6 +138,8 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
 
     showNextIngredient(mealIndex: number) {
 
+        this.disableNext = true;
+
         let totalQuestionsAnswered = 0;
 
         for (let i = 0; i < this.ingredientPreferenceOptions[mealIndex].questions.length; i++) {
@@ -155,7 +157,6 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
                     (this.totalProgress[1] as any).progress = 100;
                     (this.totalProgress[1] as any).count = 30;
                     this.dataService.updateTotalProgress(this.totalProgress);
-                    this.disableNext = true;
                     this.savePreferences();
                 }
                 else {
@@ -163,6 +164,7 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
                     this.percentage = this.progressValue;
                     this.ingredientSlides.slideNext();
                     this.scroller.scrollToTop(500);
+                    this.disableNext = false;
                     this.calculateProgress();
                 }
             });
@@ -212,6 +214,7 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
 
     private savePreferences() {
         localStorage.setItem("ingredientPrefs", JSON.stringify(this.ingredientPreferenceResponse));
+        this.disableNext = false;
         this.goToLoadingScreen();
         /*this.dataService.postIngredientRatingsToServer(this.ingredientPreferenceResponse)
             .subscribe((res) => {

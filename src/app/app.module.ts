@@ -12,11 +12,13 @@ import { RecipeModalComponent } from 'src/app/core/components/recipemodal/recipe
 
 import { HttpClientModule } from '@angular/common/http';
 
+import { SharedComponentsModule } from '../app/core/components/shared.module';
+
 
 @NgModule({
   declarations: [AppComponent, RecipeModalComponent],
   entryComponents: [RecipeModalComponent],
-  imports: [BrowserModule, IonicModule.forRoot({ swipeBackEnabled: false }), AppRoutingModule, HttpClientModule,],
+  imports: [BrowserModule, IonicModule.forRoot({ swipeBackEnabled: false }), AppRoutingModule, HttpClientModule, SharedComponentsModule],
   providers: [
     StatusBar,
     SplashScreen,

@@ -10,21 +10,38 @@
     <div class="content-wrapper column start">
 
         <div class="page-info">
-            <h1>Meal Plan Summary</h1>
-            <p class="summary-description">Review, edit & confirm your choices for this week</p>
+            <h1>Meal Selection</h1>
         </div>
 
-        <ion-item *ngFor="let mealslot of mealSlots" (click)="changeMeal(mealslot)" lines="none" class="ion-no-padding">
-            <ion-thumbnail slot="start">
-                <img src="{{ mealslot.recipe.image }}">
+        <div class="meal-selection" *ngFor="let mealslot of mealSlots; let mealIndex = index">
+            <h2>Meal {{ mealIndex + 1}}</h2>
+            <div class="meal-wrap empty" *ngIf="!mealslot.recipe" (click)="changeMeal(mealslot)">
+                <ion-button class="small" mode="ios">Select Meal Option</ion-button>
+            </div>
+            <div class="meal-wrap" *ngIf="mealslot.recipe">
+                <div class="image-wrap"><img src="{{ mealslot.recipe.image }}"></div>
+                <div class="meal-content">
+                    <div class="title">{{ mealslot.recipe.title }}</div>
+                    <div class="detail"><div class="icon cooktime"></div>20 mins</div>
+                    <div class="detail"><div class="icon ingredients"></div><div class="link" (click)="openIngredients(mealslot.recipe)">View Ingredients</div></div>
+                </div>
+            </div>
+            <div class="link" *ngIf="mealslot.recipe" (click)="changeMeal(mealslot)">Modify Meal Selection</div>
+        </div>
+
+
+        <!--<ion-item *ngFor="let mealslot of mealSlots" (click)="changeMeal(mealslot)" lines="none" class="ion-no-padding">
+            <ion-thumbnail slot="start" *ngIf="mealslot.recipe">
+                <img src="{{ mealslot.recipe?.image }}">
             </ion-thumbnail>
-            <ion-label text-wrap>
-                <h2>{{ mealslot.recipe.title }}</h2>
+            <ion-label text-wrap *ngIf="mealslot.recipe">
+                <h2>{{ mealslot.recipe?.title }}</h2>
                 <p class="text-button">Change Meal</p>
             </ion-label>
-        </ion-item>
+        </ion-item>-->
         <div class="button-wrap">
-            <ion-button mode="ios" color="primary" (click)="setWeekStartDate()">Confirm</ion-button>
+            <button class="butt-confirm" (click)="setWeekStartDate()">Confirm Meal Plan</button>
+            <!--<ion-button mode="ios" color="primary" (click)="setWeekStartDate()">Confirm</ion-button>-->
         </div>
     </div>
 </ion-content>

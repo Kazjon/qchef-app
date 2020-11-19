@@ -166,6 +166,8 @@ export class MealSelectionSelectMealComponent implements OnInit {
 
         for (let i = 0; i < this.mealOptions.length; i++) {
 
+            console.log(this.mealOptions);
+
             if (!this.mealOptions[i].selected || (this.currentMealSlot.recipe != undefined && this.mealOptions[i].id == this.currentMealSlot.recipe.id)) {
                 this.visibleMealOptions.push(this.mealOptions[i]);
             }
