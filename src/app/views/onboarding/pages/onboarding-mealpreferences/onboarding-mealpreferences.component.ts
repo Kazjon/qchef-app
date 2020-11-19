@@ -5,6 +5,7 @@ import { MealPreference } from '../../../../core/objects/MealPreference';
 import { MealPreferenceQuestion, MealPreferenceQuestionOption } from '../../../../core/objects/MealPreferenceQuestion';
 import { MealPreferenceResponse } from 'src/app/core/objects/MealPreferenceResponse';
 import { IngredientmodalComponent } from '../../../../core/components/ingredientmodal/ingredientmodal.component';
+import { GuidemodalComponent } from '../../../../core/components/guidemodal/guidemodal.component';
 import { IonSlides, ModalController, AlertController, IonContent } from '@ionic/angular';
 import { Router, NavigationExtras } from '@angular/router';
 import { DataHandlingService } from 'src/app/services/datahandling/datahandling.service';
@@ -46,7 +47,8 @@ export class OnboardingMealPreferencesComponent implements OnInit {
     ngOnInit() {
         this.imgSrc = "../../../assets/images/icon-ingredient.svg";
         let uid = localStorage.getItem("userID");
-
+        this.surprisePreferenceStartPopup();
+        
         this.mealPreferenceResponse = {
             //userID: uid,
             surprise_ratings: {},
@@ -227,6 +229,19 @@ export class OnboardingMealPreferencesComponent implements OnInit {
         });
         return await modal.present();
 
+    }
+
+    async surprisePreferenceStartPopup() {
+
+        const modal = await this.modalController.create({
+            component: GuidemodalComponent,
+            cssClass: 'guide-modal',
+            componentProps: {
+                'title': 'Let’s get started!',
+                'description': ['To get a better idea of what you like, we\’d like to get your thoughts on some recipes.', 'We\'ll ask you whether you know how it would taste, whether you think you\'d enjoy it, and whether the ingredients are what you\'d expect.']
+            }
+        });
+        return await modal.present();
     }
 
     setPagerNum() {

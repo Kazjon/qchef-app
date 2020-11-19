@@ -12,6 +12,7 @@ import { OnboardingCompleteComponent } from './pages/onboarding-complete/onboard
 import { OnboardingLoadingScreenComponent } from './pages/onboarding-loadingscreen/onboarding-loadingscreen.component';
 import { OnboardingSurprisePreferencesComponent } from './pages/onboarding-surprisepreferences/onboarding-surprisepreferences.component';
 import { IngredientmodalComponent } from '../../core/components/ingredientmodal/ingredientmodal.component';
+import { GuidemodalComponent } from '../../core/components/guidemodal/guidemodal.component';
 import { OnboardingProgressComponent } from '../../core/components/onboarding-progress/onboarding-progress.component';
 import { SharedComponentsModule } from '../../core/components/shared.module';
 
@@ -60,6 +61,12 @@ const routes: Routes = [
         OnboardingNumberOfMealsComponent,
         OnboardingCompleteComponent,
         OnboardingLoadingScreenComponent,
+        GuidemodalComponent,
+        OnboardingSurprisePreferencesComponent,
+        OnboardingProgressComponent
+    ],
+    entryComponents: [
+        GuidemodalComponent,
         OnboardingSurprisePreferencesComponent,
         OnboardingProgressComponent
     ]

@@ -1,0 +1,10 @@
+<ion-content no-bounce has-bouncing="false" forceOverscroll="false">
+  <div class="content">
+      <p class="header">{{ title }}</p>
+      <p class="description" *ngFor="let desc of description; let i = index">
+        {{ desc }}
+      </p>
+      <ion-button (click)="closeModal()">OK</ion-button>
+  </div>
+
+</ion-content>
