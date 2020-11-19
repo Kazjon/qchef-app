@@ -232,7 +232,12 @@ export class OnboardingSurprisePreferencesComponent implements OnInit {
 
         const modal = await this.modalController.create({
             component: GuidemodalComponent,
-            cssClass: 'guide-modal',
+            cssClass: 'guide-modal small',
+            componentProps: {
+                'title': 'Almost done!',
+                'description': ['We\’re now going to show you just a few more recipes to calibrate our algorithm based on what you\’ve said so far.', 'Then you’ll be ready to make a meal plan!']
+            }
+
         });
         return await modal.present();
     }

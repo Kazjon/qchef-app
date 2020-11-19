@@ -1,15 +1,10 @@
 <ion-content no-bounce has-bouncing="false" forceOverscroll="false">
   <div class="content">
-      <p class="header">Let's get started!</p>
-      <p class="description">
-        To get a better idea of what you like, we’d like to get your thoughts on some recipes.
-      </p>
-      <p class="description">
-         We'll ask you whether you know how it would taste, whether you think you'd enjoy it, and whether the ingredients are what you'd expect.
+      <p class="header">{{ title }}</p>
+      <p class="description" *ngFor="let desc of description; let i = index">
+        {{ desc }}
       </p>
       <ion-button (click)="closeModal()">OK</ion-button>
-
   </div>
-  
 
 </ion-content>

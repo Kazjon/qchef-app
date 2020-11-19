@@ -7,11 +7,12 @@ import { ModalController } from '@ionic/angular';
   styleUrls: ['./guidemodal.component.scss'],
 })
 export class GuidemodalComponent implements OnInit {
-
+  @Input() title: string;
+  @Input() description: Array<string>;
   constructor(public modalController: ModalController) { }
 
   ngOnInit() {
-    //console.log(this.recipe.description)
+    
   }
 
   closeModal() {

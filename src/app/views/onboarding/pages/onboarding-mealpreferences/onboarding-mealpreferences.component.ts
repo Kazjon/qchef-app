@@ -231,6 +231,10 @@ export class OnboardingMealPreferencesComponent implements OnInit {
         const modal = await this.modalController.create({
             component: GuidemodalComponent,
             cssClass: 'guide-modal',
+            componentProps: {
+                'title': 'Let’s get started!',
+                'description': ['To get a better idea of what you like, we\’d like to get your thoughts on some recipes.', 'We\'ll ask you whether you know how it would taste, whether you think you\'d enjoy it, and whether the ingredients are what you\'d expect.']
+            }
         });
         return await modal.present();
     }
