@@ -30,6 +30,7 @@ export class ReviewsFormComponent implements OnInit {
     photoBase64: string = null;
 
     photo: SafeResourceUrl;
+    buttonLabel: string = 'ADD PHOTO';
 
     constructor(
         public actionSheetController: ActionSheetController,
@@ -166,7 +167,9 @@ export class ReviewsFormComponent implements OnInit {
         console.log(image);
         this.photoBase64 = image.dataUrl;
         this.photo = this.sanitizer.bypassSecurityTrustResourceUrl(image && (image.dataUrl));
-
+        if (this.photo) {
+            this.buttonLabel = 'REPLACE IMAGE';
+        }
         /*Object.keys(this.reviewForm.controls).forEach(key => {
             let abstractControl: AbstractControl = this.reviewForm.get('photo');
             if (this.photo) {
