@@ -1,7 +1,7 @@
 <ion-header [translucent]="true" class="ion-no-border">
 	<ion-toolbar>
 		<ion-buttons mode="ios" slot="start" (click)="prevStage()">
-			<ion-back-button></ion-back-button>
+			<ion-button *ngIf="page > 1" (click)="showPrevIngredient()">< Previous</ion-button>
 		</ion-buttons>
 		<img class="logo" src="../../../../../assets/images/header-logo.svg">
 	</ion-toolbar>
@@ -17,7 +17,6 @@
 			<onboarding-progress [showOverall]="false"></onboarding-progress>
 			<div class="total-progress">PART 2: Ingredient Preferences ({{ page }} of {{ ingredientPreferenceOptions?.length }})</div>
 		</div>
-		<div class="meal-nav"><button class="butt-previous" *ngIf="activeSlide > 0" (click)="showPrevIngredient()">< Show previous ingredient</button></div>
 		<h1 class="content-prompt">Ingredient Preferences</h1>
 		<div class="slide-options">
 			<ion-slides #ingredientSlides (ionSlideDidChange)="setPagerNum()" [options]="{ allowTouchMove: false, autoHeight: true }">
@@ -37,7 +36,7 @@
 									<div class="title">{{ option.title }}</div>
 								</div>
 							</div>
-							<ion-button class="next" (click)="showNextIngredient(ingredientIndex)" [disabled]="disableNext">Next Ingredient</ion-button>
+							<ion-button mode="ios" class="next" (click)="showNextIngredient(ingredientIndex)" [disabled]="disableNext">Next Ingredient</ion-button>
 							<!--<div class="preference-question-group" *ngFor="let question of ingredient.questions; let questionIndex = index" [ngClass]="{'visible': question.active}">
 								<p class="sub-heading">Question {{ questionIndex + 1 }} of {{ ingredient.questions.length }}:</p>
 								<ion-button mode="ios" *ngFor="let option of question.options; let optionIndex = index" [disabled]="question.disabled" (click)="selectPreference(ingredient.id, question, option, optionIndex, questionIndex, ingredientIndex)" color="{{ option.selected ? 'secondary' : 'primary'}}" slot="start" id="ingredient-{{ingredient.id}}{{questionIndex}}{{optionIndex}}"><span>{{ option.title }}</span></ion-button>

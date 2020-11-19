@@ -57,7 +57,7 @@ export class RecipesPage implements OnInit {
                 })
         }
         else if (data.length <= 0 || data[0].recipe == undefined) {
-           this.router.navigateByUrl('mealselection/meal/1', { replaceUrl: true });
+           this.router.navigateByUrl('mealselection/summary', { replaceUrl: true });
         }
         else {
             this.mealSlots = data;
