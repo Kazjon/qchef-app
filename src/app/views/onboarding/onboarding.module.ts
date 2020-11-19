@@ -66,7 +66,9 @@ const routes: Routes = [
         OnboardingProgressComponent
     ],
     entryComponents: [
-        GuidemodalComponent
+        GuidemodalComponent,
+        OnboardingSurprisePreferencesComponent,
+        OnboardingProgressComponent
     ]
 })
 export class OnboardingModule { }
