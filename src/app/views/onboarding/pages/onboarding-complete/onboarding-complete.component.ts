@@ -69,7 +69,8 @@ export class OnboardingCompleteComponent implements OnInit {
 
     private goToMealSelection() {
         let arbitraryTimeout = setTimeout(() => {
-            this.router.navigateByUrl("/mealselection/meal/1");
+            this.router.navigateByUrl("/mealselection/summary");
+            //this.router.navigateByUrl("/mealselection/meal/1");
             clearTimeout(arbitraryTimeout);
         }, 2000);
     }
