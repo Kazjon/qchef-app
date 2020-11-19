@@ -5,6 +5,7 @@ import { MealPreference } from '../../../../core/objects/MealPreference';
 import { MealPreferenceQuestion, MealPreferenceQuestionOption } from '../../../../core/objects/MealPreferenceQuestion';
 import { MealPreferenceResponse } from 'src/app/core/objects/MealPreferenceResponse';
 import { IngredientmodalComponent } from '../../../../core/components/ingredientmodal/ingredientmodal.component';
+import { GuidemodalComponent } from '../../../../core/components/guidemodal/guidemodal.component';
 import { IonSlides, ModalController, AlertController, IonContent } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { DataHandlingService } from 'src/app/services/datahandling/datahandling.service';
@@ -44,9 +45,9 @@ export class OnboardingSurprisePreferencesComponent implements OnInit {
 
     ngOnInit() {
         this.imgSrc = "../../../assets/images/icon-ingredient.svg";
-
         let uid = localStorage.getItem("userID");
-
+        this.surprisePreferenceStartPopup();
+        
         this.surprisePreferenceResponse = {
             userID: uid,
             surprise_ratings: {},
@@ -227,6 +228,20 @@ export class OnboardingSurprisePreferencesComponent implements OnInit {
         });
         return await modal.present();
 
+    }
+
+    async surprisePreferenceStartPopup() {
+
+        const modal = await this.modalController.create({
+            component: GuidemodalComponent,
+            cssClass: 'guide-modal small',
+            componentProps: {
+                'title': 'Almost done!',
+                'description': ['We\’re now going to show you just a few more recipes to calibrate our algorithm based on what you\’ve said so far.', 'Then you’ll be ready to make a meal plan!']
+            }
+
+        });
+        return await modal.present();
     }
 
     private savePreferences() {

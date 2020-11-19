@@ -11,8 +11,10 @@ import { DataService } from './services/data/data.service';
 import {
     Plugins,
     StatusBarStyle,
+    KeyboardInfo
   } from '@capacitor/core';
 
+  const { Keyboard } = Plugins;
   const { StatusBar } = Plugins;
 
 @Component({
@@ -54,6 +56,7 @@ export class AppComponent {
             StatusBar.setOverlaysWebView({
                 overlay: true
             });
+            Keyboard.setAccessoryBarVisible({isVisible: true});
             this.splashScreen.hide();
         });
     }
