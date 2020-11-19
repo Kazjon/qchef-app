@@ -5,8 +5,10 @@ import { take } from 'rxjs/operators';
 import { MealSlot } from 'src/app/core/objects/MealSlot';
 import { Router } from '@angular/router';
 import { MealPlanSelectionResponse } from 'src/app/core/objects/MealPlanSelectionResponse';
-import { AlertController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import { FirebaseService } from 'src/app/services/firebase/firebase.service';
+import { MealPreference } from 'src/app/core/objects/MealPreference';
+import { IngredientmodalComponent } from 'src/app/core/components/ingredientmodal/ingredientmodal.component';
 
 @Component({
     selector: 'app-mealselection-summary',
@@ -18,7 +20,7 @@ export class MealSelectionSummaryComponent implements OnInit {
     actionLogSubscription: Subscription;
     actionLog: any;
 
-    constructor(private dataService: DataService, private router: Router, private alertController: AlertController, private firebaseService: FirebaseService) { }
+    constructor(private dataService: DataService, private router: Router, private alertController: AlertController, private firebaseService: FirebaseService, public modalController: ModalController) { }
 
     ngOnInit() {
 
@@ -119,5 +121,18 @@ export class MealSelectionSummaryComponent implements OnInit {
         });
 
         await alert.present();
+    }
+
+    async openIngredients(recipe: MealPreference) {
+
+        const modal = await this.modalController.create({
+            component: IngredientmodalComponent,
+            cssClass: 'ingredient-modal',
+            componentProps: {
+                'recipe': recipe,
+            }
+        });
+        return await modal.present();
+
     }
 }

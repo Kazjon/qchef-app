@@ -37,14 +37,19 @@
 }
 
 .description-detail {
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+
+    ion-grid, ion-col {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
 }
 
 .show-more span, .prev-question span {
-    font-family: var(--font-family-button);
-    font-style: var(--font-style-button);
-    font-weight: var(--font-weight-button);
+    font-family: var(--font-family-show-more-button);
+    font-style: var(--font-style-show-more-button);
+    font-weight: var(--font-weight-show-more-button);
     font-size: 14px;
     line-height: 17px;
     text-transform: uppercase;

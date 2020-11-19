@@ -7,6 +7,7 @@ import { MealSelectionSelectMealComponent } from './pages/mealselection-selectme
 import { MealSlotComponent } from '../../core/components/mealslot/mealslot.component';
 import { MealSelectionSummaryComponent } from './pages/mealselection-summary/mealselection-summary.component';
 import { AuthGuardService as AuthGuard } from '../../services/auth-guard/auth-guard.service';
+import { SharedComponentsModule } from '../../core/components/shared.module';
 
 
 const routes: Routes = [
@@ -33,14 +34,13 @@ const routes: Routes = [
         CommonModule,
         FormsModule,
         IonicModule,
-        RouterModule.forChild(routes)
+        RouterModule.forChild(routes),
+
     ],
     declarations: [
         MealSelectionSelectMealComponent,
         MealSelectionSummaryComponent,
         MealSlotComponent
-    ],
-    entryComponents: [
     ]
 })
 export class MealSelectionModule { }

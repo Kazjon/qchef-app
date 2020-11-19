@@ -65,7 +65,10 @@ export class OnboardingMealPreferencesComponent implements OnInit {
                 this.dataHandlingService.handleMealPreferenceData(res)
                     .then((organisedData: MealPreference[]) => {
                         this.mealPreferenceOptions = organisedData;
-                        this.isLoading = false;
+                        let timeout = setTimeout(() => {
+                            this.isLoading = false;
+                            clearTimeout(timeout);
+                        }, 500);
                     });
             },
             (error) => {
@@ -148,6 +151,8 @@ export class OnboardingMealPreferencesComponent implements OnInit {
 
     showNextMeal(mealIndex: number) {
 
+        this.disableNext = true;
+
         let totalQuestionsAnswered = 0;
 
         for (let i = 0; i < this.mealPreferenceOptions[mealIndex].questions.length; i++) {
@@ -165,7 +170,6 @@ export class OnboardingMealPreferencesComponent implements OnInit {
                     (this.totalProgress[0] as any).progress = 100;
                     (this.totalProgress[0] as any).count = 20;
                     this.dataService.updateTotalProgress(this.totalProgress);
-                    this.disableNext = true;
                     this.savePreferences();
                 }
                 else {
@@ -173,6 +177,7 @@ export class OnboardingMealPreferencesComponent implements OnInit {
                     this.percentage = this.progressValue;
                     this.mealSlides.slideNext();
                     this.scroller.scrollToTop(500);
+                    this.disableNext = false;
                     this.calculateProgress();
                 }
             });
@@ -247,6 +252,11 @@ export class OnboardingMealPreferencesComponent implements OnInit {
     }
 
     private savePreferences() {
+
+        this.scroller.scrollToTop(500);
+        this.disableNext = false;
+        this.isLoading = true;
+
         this.dataService.postMealRatingsToServer(this.mealPreferenceResponse)
             .subscribe((res) => {
                 /*this.dataHandlingService.handleMealPreferenceData(res)
@@ -254,10 +264,12 @@ export class OnboardingMealPreferencesComponent implements OnInit {
                     this.dataService.saveSurprisePreferencesToLocal(organisedData);
                 });*/
 
+                this.isLoading = false;
                 this.goToIngredients();
             },
             (error) => {
                 if (error.error.text.includes('Authentication error')) {
+                    this.isLoading = false;
                     this.showLogoutUserPop();
                 }
             });
