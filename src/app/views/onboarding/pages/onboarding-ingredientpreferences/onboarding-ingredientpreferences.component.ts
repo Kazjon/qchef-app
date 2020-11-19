@@ -2,12 +2,13 @@ import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { IngredientPreference } from 'src/app/core/objects/IngredientPreference';
 import { IngredientPreferenceQuestion, IngredientPreferenceQuestionOption } from 'src/app/core/objects/IngredientPreferenceQuestion';
 import { ingredientPreferenceQuestions } from '../../../../../assets/data/ingredientpreferencequestions';
-import { IonSlides, AlertController } from '@ionic/angular';
+import { IonSlides, AlertController, IonContent } from '@ionic/angular';
 import { IngredientPreferenceResponse } from 'src/app/core/objects/IngredientPreferenceResponse';
 import { DataService } from 'src/app/services/data/data.service';
 import { Router } from '@angular/router';
 import { DataHandlingService } from 'src/app/services/datahandling/datahandling.service';
 import { FirebaseService } from 'src/app/services/firebase/firebase.service';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-onboarding-ingredientpreferences',
@@ -15,14 +16,19 @@ import { FirebaseService } from 'src/app/services/firebase/firebase.service';
     styleUrls: ['./onboarding-ingredientpreferences.component.scss'],
 })
 export class OnboardingIngredientPreferencesComponent implements OnInit {
+    @ViewChild('scroller', { static: false }) scroller: IonContent;
     @ViewChild('ingredientSlides', { static: false }) ingredientSlides: IonSlides;
     @Input() progressValue: any;
     @Input() page: number = 1;
+    activeSlide: number = 0;
+    disableNext: boolean = false;
     isLoading: boolean = true;
     ingredientPreferenceOptions: IngredientPreference[];
     preferenceQuestions: IngredientPreferenceQuestion[] = ingredientPreferenceQuestions;
     ingredientPreferenceResponse: IngredientPreferenceResponse;
     percentage: any;
+    totalProgressSubscription: Subscription;
+    totalProgress: Object[];
 
     constructor(private dataService: DataService, private router: Router, private dataHandlingService: DataHandlingService, private alertController: AlertController, private firebaseService: FirebaseService) { }
 
@@ -48,8 +54,12 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
                 this.showLogoutUserPop();
             }
         });
-        this.progressValue = this.dataService.getProgressStage();
-        this.percentage = this.progressValue;
+        //this.progressValue = this.dataService.getProgressStage();
+        //this.percentage = this.progressValue;
+
+        this.totalProgressSubscription = this.dataService.totalProgressObservable.subscribe((res) => {
+            this.totalProgress = res;
+        });
     }
 
     prevStage() {
@@ -73,10 +83,10 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
         this.setIngredientPreferenceAnswer(ingredientID, question, option);
 
         // Show the next question
-        let timeout = setTimeout(() => {
+        /*let timeout = setTimeout(() => {
             this.showNextQuestion(questionIndex, ingredientIndex);
             clearTimeout(timeout);
-        }, 300);
+        }, 300);*/
 
     }
 
@@ -101,16 +111,59 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
         else {
             this.ingredientSlides.isEnd().then((isEnd) => {
                 if (isEnd) {
+                    (this.totalProgress[1] as any).progress = 100;
+                    (this.totalProgress[1] as any).count = 30;
+                    this.dataService.updateTotalProgress(this.totalProgress);
                     this.savePreferences();
                 }
                 else {
                     this.progressValue = this.dataService.getProgressStage();
                     this.percentage = this.progressValue;
                     this.ingredientSlides.slideNext();
+                    this.calculateProgress();
                 }
             });
         }
 
+    }
+
+    showNextIngredient(mealIndex: number) {
+
+        let totalQuestionsAnswered = 0;
+
+        for (let i = 0; i < this.ingredientPreferenceOptions[mealIndex].questions.length; i++) {
+
+            for (let p = 0; p < this.ingredientPreferenceOptions[mealIndex].questions[i].options.length; p++) {
+                if (this.ingredientPreferenceOptions[mealIndex].questions[i].options[p].selected) {
+                    totalQuestionsAnswered = totalQuestionsAnswered + 1;
+                }
+            }
+        }
+
+        if (totalQuestionsAnswered === 2) {
+            this.ingredientSlides.isEnd().then((isEnd) => {
+                if (isEnd) {
+                    (this.totalProgress[1] as any).progress = 100;
+                    (this.totalProgress[1] as any).count = 30;
+                    this.dataService.updateTotalProgress(this.totalProgress);
+                    this.disableNext = true;
+                    this.savePreferences();
+                }
+                else {
+                    this.progressValue = this.dataService.getProgressStage();
+                    this.percentage = this.progressValue;
+                    this.ingredientSlides.slideNext();
+                    this.scroller.scrollToTop(500);
+                    this.calculateProgress();
+                }
+            });
+        }
+
+    }
+
+    showPrevIngredient() {
+        this.ingredientSlides.slidePrev();
+        this.activeSlide = this.activeSlide - 1;
     }
 
 
@@ -127,7 +180,18 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
             this.progressValue = this.dataService.getProgressStage();
             this.percentage = this.progressValue;
             this.ingredientSlides.slidePrev();
+            this.calculateProgress();
         }
+    }
+
+    private calculateProgress() {
+        this.ingredientSlides.getActiveIndex().then((activeIndex) => {
+            this.activeSlide = activeIndex;
+            let percentage = (activeIndex / this.ingredientPreferenceOptions.length) * 100;
+            (this.totalProgress[1] as any).progress = percentage;
+            (this.totalProgress[1] as any).count = activeIndex;
+            this.dataService.updateTotalProgress(this.totalProgress);
+        });
     }
 
     setPagerNum() {
@@ -175,5 +239,9 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
 
         await alert.present();
     }
+
+    ngOnDestroy() {
+        this.totalProgressSubscription.unsubscribe();
+     }
 
 }
