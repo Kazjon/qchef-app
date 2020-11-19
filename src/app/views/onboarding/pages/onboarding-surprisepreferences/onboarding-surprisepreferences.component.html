@@ -8,7 +8,7 @@
 </ion-header>
 <ion-content #scroller fullscreen [ngClass]="{'loading': isLoading}" no-bounce has-bouncing="false" forceOverscroll="false">
 
-	<div class="loading-overlay">
+	<div class="loading-overlay" [ngClass]="{'loading': isLoading, 'stop-scroll': isLoading}">
 		<ion-spinner name="crescent" color="primary"></ion-spinner>
 	</div>
 

@@ -150,6 +150,8 @@ export class OnboardingSurprisePreferencesComponent implements OnInit {
 
     showNextMeal(mealIndex: number) {
 
+        this.disableNext = true;
+
         let totalQuestionsAnswered = 0;
 
         for (let i = 0; i < this.surprisePreferenceOptions[mealIndex].questions.length; i++) {
@@ -167,7 +169,6 @@ export class OnboardingSurprisePreferencesComponent implements OnInit {
                     (this.totalProgress[2] as any).progress = 100;
                     (this.totalProgress[2] as any).count = 10;
                     this.dataService.updateTotalProgress(this.totalProgress);
-                    this.disableNext = true;
                     this.savePreferences();
                 }
                 else {
@@ -175,6 +176,7 @@ export class OnboardingSurprisePreferencesComponent implements OnInit {
                     this.percentage = this.progressValue;
                     this.surpriseSlides.slideNext();
                     this.scroller.scrollToTop(500);
+                    this.disableNext = false;
                     this.calculateProgress();
                 }
             });
@@ -228,9 +230,14 @@ export class OnboardingSurprisePreferencesComponent implements OnInit {
     }
 
     private savePreferences() {
+
+        this.scroller.scrollToTop(500);
+        this.disableNext = false;
+        this.isLoading = true;
+
         this.dataService.postSurpriseMealRatingsToServer(this.surprisePreferenceResponse)
             .subscribe((res) => {
-                console.log(res);
+                this.isLoading = false;
                 this.goToNumberOfMeals();
             },
             (error) => {

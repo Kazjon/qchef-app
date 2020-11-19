@@ -7,11 +7,9 @@
 	</ion-toolbar>
 </ion-header>
 <ion-content #scroller [ngClass]="{'loading': isLoading}" no-bounce has-bouncing="false" forceOverscroll="false" force-overscroll="false">
-
-	<div class="loading-overlay">
+	<div class="loading-overlay" [ngClass]="{'loading': isLoading, 'stop-scroll': isLoading}">
 		<ion-spinner name="crescent" color="primary"></ion-spinner>
 	</div>
-
 	<div class="content-wrapper column start preferences" *ngIf="!isLoading">
 		<div class="progress">
 			<onboarding-progress [showOverall]="false"></onboarding-progress>
@@ -38,7 +36,7 @@
 							</div>
 							<p class="description-detail">
 								<ion-grid>
-									<ion-row no-padding>							
+									<ion-row no-padding>
 										<ion-col size="6" *ngFor="let ingredient of meal.ingredients; let i = index" [ngClass]="{'not-display': i >= 10}">
 											<span>{{ ingredient }}</span>
 										</ion-col>
@@ -53,7 +51,7 @@
 									<div class="title">{{ option.title }}</div>
 								</div>
 							</div>
-							<ion-button class="next" (click)="showNextMeal(mealIndex)">Next Meal</ion-button>
+							<ion-button mode="ios" class="next" (click)="showNextMeal(mealIndex)" [disabled]="disableNext">Next Meal</ion-button>
 
 							<!--<div class="preference-question-group" *ngFor="let question of meal.questions; let questionIndex = index" [ngClass]="{'visible': question.active}">
 								<p class="sub-heading">Question {{ questionIndex + 1 }} of {{ meal.questions.length }}:</p>

@@ -40,6 +40,10 @@
         }
     }
 
+    app-ingredientmodal.ion-page {
+        justify-content: flex-start;
+    }
+
     ion-input {
         background: var(--ion-color-input-background);
         border: 1px solid var(--ion-color-input-border) ;
@@ -566,6 +570,14 @@
     justify-content: center;
     align-items: center;
     z-index: 2;
+
+    &.loading {
+        display: flex;
+    }
+
+    &.stop-scroll {
+        pointer-events: none;
+    }
 }
 
 .error {
