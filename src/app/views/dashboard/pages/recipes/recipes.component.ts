@@ -49,8 +49,7 @@ export class RecipesPage implements OnInit {
     }
 
     private checkData(data, weekStartDate) {
-        console.log(data);
-        if (isNaN(weekStartDate.getTime()) && data.length <= 0) {
+        if (weekStartDate == undefined || isNaN(weekStartDate.getTime()) && data.length <= 0) {
             this.firebaseService.logout()
                 .then(() => {
                     this.router.navigateByUrl('splash');
