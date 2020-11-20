@@ -46,7 +46,7 @@ export class OnboardingNumberOfMealsComponent implements OnInit {
             if (this.numberOfMeals > 1)
                 --this.numberOfMeals;
         } else if (type == 'plus') {
-            if (this.numberOfMeals < 7)
+            if (this.numberOfMeals < 10)
                 ++this.numberOfMeals;
         }
     }
