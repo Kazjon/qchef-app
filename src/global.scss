@@ -63,6 +63,11 @@
         }
     }
 
+    ion-spinner {
+        --color: #64C7FF;
+        transform: scale(2);
+    }
+
     ion-slide {
         ion-card {
             max-width: 400px;
