@@ -1,15 +1,12 @@
-<svg width="84" height="84" viewBox="0 0 84 84" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g clip-path="url(#clip0)">
-<path d="M1.5 1.5L81.81 81.81" stroke="#C4C4C4" stroke-width="3" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M74.2697 66.7001C75.9097 65.8801 77.0397 64.1701 77.0397 62.2101V24.0701C77.0397 21.3001 74.7897 19.0501 72.0197 19.0501H61.6197L52.4197 9.85008C51.7697 9.20008 50.8897 8.83008 49.9697 8.83008H41.6597H33.3497C32.4297 8.83008 31.5497 9.20008 30.8997 9.85008L24.9697 15.7801" stroke="#C4C4C4" stroke-width="3" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M18.5601 19.0498H10.3501C7.58008 19.0498 5.33008 21.2998 5.33008 24.0698V62.2098C5.33008 64.9798 7.58008 67.2298 10.3501 67.2298H66.6001" stroke="#C4C4C4" stroke-width="3" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M51.6304 52.6297C48.9204 55.0997 45.3204 56.6096 41.3604 56.6096C32.9404 56.6096 26.1104 49.7796 26.1104 41.3596C26.1104 37.4296 27.6004 33.8396 30.0404 31.1396" stroke="#C4C4C4" stroke-width="3" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M35.3203 27.3504C37.1703 26.5504 39.2103 26.1104 41.3603 26.1104C49.7803 26.1104 56.6103 32.9404 56.6103 41.3604C56.6103 43.4504 56.1903 45.4403 55.4303 47.2603" stroke="#C4C4C4" stroke-width="3" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M68.7795 28.5903C69.3373 28.5903 69.7895 28.1381 69.7895 27.5803C69.7895 27.0225 69.3373 26.5703 68.7795 26.5703C68.2217 26.5703 67.7695 27.0225 67.7695 27.5803C67.7695 28.1381 68.2217 28.5903 68.7795 28.5903Z" stroke="#C4C4C4" stroke-width="3" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-</g>
-<defs>
-<clipPath id="clip0">
-<rect width="83.31" height="83.31" fill="white"/>
-</clipPath>
-</defs>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 25.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 24 24" style="enable-background:new 0 0 24 24;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#C4C4C4;}
+</style>
+<path class="st0" d="M5,4H2V3h3V4z M15.9,4l0.8,1.2c0.7,1.1,2,1.8,3.3,1.8H22v13H2V7h3.9c1.3,0,2.6-0.7,3.3-1.8L10.1,4H15.9z M17,2
+	H9L7.6,4.1C7.2,4.7,6.6,5,5.9,5H0v17h24V5h-3.9c-0.7,0-1.3-0.3-1.7-0.9C18.4,4.1,17,2,17,2z M6,10c0-0.6-0.4-1-1-1s-1,0.4-1,1
+	s0.4,1,1,1S6,10.6,6,10z M13,10c1.7,0,3,1.3,3,3s-1.3,3-3,3s-3-1.3-3-3S11.3,10,13,10z M13,8c-2.8,0-5,2.2-5,5s2.2,5,5,5s5-2.2,5-5
+	S15.8,8,13,8z"/>
 </svg>
