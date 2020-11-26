@@ -31,6 +31,8 @@ export class MealSelectionSelectMealComponent implements OnInit {
     mealsPerWeekSubscription: Subscription;
     mealSlotsSubscription: Subscription;
     recommendedMealsSubscription: Subscription;
+    showAllIngredients: boolean = false; 
+    isExpand: boolean = false;
 
     constructor(
         private route: ActivatedRoute,
@@ -251,25 +253,12 @@ export class MealSelectionSelectMealComponent implements OnInit {
         }
     }
 
-    async openRecipe(recipe: MealPreference) {
-
-        console.log("open recipe");
-        this.dataService.logAction(recipe.id, "opened");
-
-        const modal = await this.modalController.create({
-            component: RecipeModalComponent,
-            cssClass: 'recipe-modal',
-            componentProps: {
-                'recipe': recipe,
-                'showReview': false
-            }
-        });
-        return await modal.present();
-
+    async openIngredients(recipe: MealPreference) {
+        this.showAllIngredients = true;
+        this.isExpand = true;
     }
 
     goToNext() {
-
         this.updateMeals();
 
         if (this.paramMealSlot < this.mealSlots.length) {
@@ -287,6 +276,8 @@ export class MealSelectionSelectMealComponent implements OnInit {
     }
 
     slideChanged() {
+        this.showAllIngredients = false;
+        this.isExpand = false;
         this.mealSlides.getActiveIndex()
             .then((index) => {
                 let currentRecipe = this.visibleMealOptions[index];

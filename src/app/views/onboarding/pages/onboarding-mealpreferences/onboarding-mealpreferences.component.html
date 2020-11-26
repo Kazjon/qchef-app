@@ -36,13 +36,13 @@
 							<p class="description-detail">
 								<ion-grid>
 									<ion-row no-padding>
-										<ion-col size="6" *ngFor="let ingredient of meal.ingredients; let i = index" [ngClass]="{'not-display': i >= 10}">
+										<ion-col size="6" *ngFor="let ingredient of meal.ingredients; let i = index" [ngClass]="{'not-display': i >= 10 && !showAllIngredients, 'expand-ingredient': showAllIngredients}">
 											<span>{{ ingredient }}</span>
 										</ion-col>
 									</ion-row>
 								</ion-grid>
 							</p>
-							<p class="description-detail show-more" ><span (click)="openIngredients(meal)">SHOW MORE</span></p>
+							<p class="description-detail show-more" *ngIf="meal.ingredients.length > 10 && !isExpand"><span (click)="openIngredients(meal)">SHOW MORE</span></p>
 							<div class="question-group" *ngFor="let question of meal.questions; let questionIndex = index" [ngClass]="{'disabled': question.disabled}">
 								<h2>{{ question.title }}</h2>
 								<div class="question-option-radio" *ngFor="let option of question.options; let optionIndex = index"  (click)="selectPreference(meal.id, question, option, optionIndex, questionIndex, mealIndex)" [ngClass]="{'selected': option.selected}">

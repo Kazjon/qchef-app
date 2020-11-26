@@ -98,11 +98,32 @@ ion-slides {
                 width: 180px;
             }
 
-
         }
 
 
     }
+}
+
+ion-row.ingredient-details, .description-detail.show-more {
+    margin: 0 28px !important;
+}
+
+.show-more {
+    span{
+        font-family: var(--font-family-button);
+        font-style: var(--font-style-button);
+        font-weight: var(--font-weight-button);
+        font-size: 14px;
+        line-height: 16.59px;
+        text-transform: uppercase;
+
+        color: var(--ion-color-primary);
+    }
+}
+
+.move-up {
+    position: relative;
+    top: -23px;
 }
 
 .butt-continue {
