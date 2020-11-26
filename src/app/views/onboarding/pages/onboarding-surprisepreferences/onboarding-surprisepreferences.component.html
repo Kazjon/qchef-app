@@ -38,7 +38,7 @@
 							<p class="description-detail">
 								<ion-grid>
 									<ion-row no-padding>
-										<ion-col size="6" *ngFor="let ingredient of meal.ingredients; let i = index" [ngClass]="{'not-display': i >= 10 && !showAllIngredients, 'expand-ingredient': showAllIngredients}">
+										<ion-col size="6" *ngFor="let ingredient of meal.ingredients; let i = index" [ngClass]="{'not-display': i >= 10 && !showAllIngredients, 'expand-ingredient': showAllIngredients }">
 											<span>{{ ingredient }}</span>
 										</ion-col>
 									</ion-row>
