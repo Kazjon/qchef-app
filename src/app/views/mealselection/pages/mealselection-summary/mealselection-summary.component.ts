@@ -19,6 +19,7 @@ export class MealSelectionSummaryComponent implements OnInit {
     mealSlots: MealSlot[];
     actionLogSubscription: Subscription;
     actionLog: any;
+    isAllMealSelected: boolean = false;
 
     constructor(private dataService: DataService, private router: Router, private alertController: AlertController, private firebaseService: FirebaseService, public modalController: ModalController) { }
 
@@ -37,8 +38,10 @@ export class MealSelectionSummaryComponent implements OnInit {
                 console.log(mealSlots);
                 this.checkData(mealSlots);
             });
+    }
 
-
+    ionViewWillEnter() {
+        this.isAllMealOptionSelected();
     }
 
     private checkData(mealSlots: MealSlot[]) {
@@ -97,6 +100,16 @@ export class MealSelectionSummaryComponent implements OnInit {
                 });
 
     }
+
+    private isAllMealOptionSelected() {
+        var selectedMealNum = 0;
+        this.mealSlots.forEach((meal) => {
+            if ( meal.selected == true)
+                selectedMealNum++;
+        })
+
+        this.isAllMealSelected = this.mealSlots.length == selectedMealNum
+    }v
 
     private goToNext() {
         this.router.navigateByUrl('dashboard', { replaceUrl: true });
