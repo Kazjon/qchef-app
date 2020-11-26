@@ -233,8 +233,8 @@ export class MealSelectionSelectMealComponent implements OnInit {
         this.dataService.logAction(this.visibleMealOptions[mealIndex].id, "selected");
 
         this.updateMealSlots(this.currentMealSlot);
-
-    }
+        this.goToSummary()
+    }   
 
     private updateMeals() {
         for (let i = 0; i < this.mealOptions.length; i++) {
