@@ -102,7 +102,6 @@ export class MealSelectionSummaryComponent implements OnInit {
     }
 
     private isAllMealOptionSelected() {
-        console.log('.... ', this.mealSlots);
         var selectedMealNum = 0;
         this.mealSlots.forEach((meal) => {
             if ( meal.selected == true)
