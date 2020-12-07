@@ -50,7 +50,7 @@ export class OnboardingMealPreferencesComponent implements OnInit {
         this.imgSrc = "../../../assets/images/icon-ingredient.svg";
         let uid = localStorage.getItem("userID");
         this.surprisePreferenceStartPopup();
-        
+
         this.mealPreferenceResponse = {
             //userID: uid,
             surprise_ratings: {},
@@ -184,6 +184,9 @@ export class OnboardingMealPreferencesComponent implements OnInit {
                     this.calculateProgress();
                 }
             });
+        }
+        else {
+            this.disableNext = false;
         }
 
     }
