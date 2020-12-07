@@ -32,10 +32,10 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
     totalProgress: Object[];
 
     constructor(
-        private dataService: DataService, 
-        private router: Router, 
-        private dataHandlingService: DataHandlingService, 
-        private alertController: AlertController, 
+        private dataService: DataService,
+        private router: Router,
+        private dataHandlingService: DataHandlingService,
+        private alertController: AlertController,
         private firebaseService: FirebaseService,
         public modalController: ModalController,
     ) { }
@@ -44,7 +44,7 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
 
         let uid = localStorage.getItem("userID");
         this.surprisePreferenceStartPopup();
-        
+
         this.ingredientPreferenceResponse = {
             userID: uid,
             taste_ratings: {},
@@ -168,6 +168,9 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
                     this.calculateProgress();
                 }
             });
+        }
+        else {
+            this.disableNext = false;
         }
 
     }
