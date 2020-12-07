@@ -33,6 +33,8 @@ export class OnboardingSurprisePreferencesComponent implements OnInit {
     percentage: any;
     totalProgressSubscription: Subscription;
     totalProgress: Object[];
+    showAllIngredients: boolean = false; 
+    isExpand: boolean = false;
 
     constructor(
         private dataService: DataService,
@@ -150,7 +152,8 @@ export class OnboardingSurprisePreferencesComponent implements OnInit {
     }
 
     showNextMeal(mealIndex: number) {
-
+        this.showAllIngredients = false;
+        this.isExpand = false;
         this.disableNext = true;
 
         let totalQuestionsAnswered = 0;
@@ -221,16 +224,8 @@ export class OnboardingSurprisePreferencesComponent implements OnInit {
     }
 
     async openIngredients(recipe: MealPreference) {
-
-        const modal = await this.modalController.create({
-            component: IngredientmodalComponent,
-            cssClass: 'ingredient-modal',
-            componentProps: {
-                'recipe': recipe,
-            }
-        });
-        return await modal.present();
-
+        this.showAllIngredients = true;
+        this.isExpand = true;
     }
 
     async surprisePreferenceStartPopup() {

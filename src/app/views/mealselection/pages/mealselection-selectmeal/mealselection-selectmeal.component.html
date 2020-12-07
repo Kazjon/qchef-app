@@ -27,7 +27,7 @@
 
 
         <div class="slide-options">
-			<ion-slides #mealSlides pager="true" (ionSlideDidChange)="slideChanged()" [options]="{ autoHeight: true }">
+			<ion-slides #mealSlides pager="true" (ionSlideWillChange)="slideChanged()"  [options]="{ autoHeight: true }">
 				<ion-slide *ngFor="let meal of visibleMealOptions; let mealIndex = index" [ngClass]="{'selected': meal.selected }">
 					<ion-card>
                         <div class="selected-border"></div>
@@ -38,15 +38,28 @@
 							<ion-card-title>{{ meal.title }}</ion-card-title>
 						</ion-card-header>
 						<ion-card-content>
-                            <div class="meal-details">
+                            <div class="meal-details details-box">
                                 <div class="detail">
                                     <span class="icon cooktime"></span>
-                                    <span class="text">{{ meal.cookTime }}</span>
+                                    <span class="text">{{ meal.cookTime }} mins</span>
                                 </div>
-                                <div class="detail">
-                                    <span class="icon ingredients"></span>
-                                    <span class="text">{{ meal.ingredients.length }} ingredients</span>
-                                </div>
+                            </div>
+                            <div class="meal-details ingredients details-box">
+                                <p class="description-detail">
+                                    <ion-grid>
+                                        <ion-row no-padding>
+                                            <div class="detail">
+                                                <span class="icon ingredients"></span>
+                                            </div>
+                                        </ion-row>
+                                        <ion-row no-padding class="ingredient-details move-up">
+                                            <ion-col size="6" *ngFor="let ingredient of meal.ingredients; let i = index" [ngClass]="{'not-display': i >= 10 && !showAllIngredients, 'expand-ingredient': showAllIngredients}">
+                                                <span>{{ ingredient }}</span>
+                                            </ion-col>
+                                        </ion-row>
+                                    </ion-grid>
+                                </p>
+                                <p class="description-detail show-more move-up" *ngIf="meal.ingredients.length > 10 && !isExpand" ><span (click)="openIngredients(meal)">SHOW MORE</span></p>
                             </div>
                             <ion-button mode="ios" class="small" color="font-button" *ngIf="!meal.selected" (click)="selectMeal(mealIndex)"><span>Select Meal</span></ion-button>
                             <ion-button mode="ios" class="small" color="primary" *ngIf="meal.selected" ><span>Selected</span></ion-button>
