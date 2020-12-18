@@ -4,11 +4,11 @@
   </div>
   <div class="content">
       <p class="header">Ingredients</p>
-      <div class="ingredients details-box">
-        <span *ngIf="recipe.ingredientsFull == undefined">MISSING {{ recipe.ingredientsFull }}</span>
-        <div class="ingredient-item" *ngFor="let ingredient of recipe.ingredientsFull">
-            <span class="text">{{ ingredient }}</span>
+        <div class="ingredients details-box">
+          <span *ngIf="recipe.ingredientsFull == undefined">MISSING {{ recipe.ingredientsFull }}</span>
+          <div class="ingredient-item" *ngFor="let ingredient of recipe.ingredientsFull">
+              <span class="text">{{ ingredient }}</span>
+          </div>
         </div>
-      </div>
   </div>
 

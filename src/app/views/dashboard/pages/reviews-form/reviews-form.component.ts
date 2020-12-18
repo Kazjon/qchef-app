@@ -28,6 +28,22 @@ export class ReviewsFormComponent implements OnInit {
     errorMessage: string = undefined;
     // disableMenuBtn: boolean = true;
     photoBase64: string = null;
+    taste = {
+        option1Selected: false,
+        option2Selected: false,
+        option3Selected: false
+    }
+    enjoy = {
+        option1Selected: false,
+        option2Selected: false,
+        option3Selected: false
+    }
+    tryAgain = {
+        option1Selected: false,
+        option2Selected: false,
+        option3Selected: false
+    }
+
 
     photo: SafeResourceUrl;
     buttonLabel: string = 'ADD PHOTO';
@@ -98,6 +114,72 @@ export class ReviewsFormComponent implements OnInit {
                 this.mealTitle = element.recipe.title;
         });
 
+    }
+
+    updateTaste(optionSelected) {
+
+        this.taste.option1Selected = false;
+        this.taste.option2Selected = false;
+        this.taste.option3Selected = false;
+
+        switch(optionSelected) {
+            case "0":
+                this.taste.option1Selected = true;
+                break;
+            case "1":
+                this.taste.option2Selected = true;
+                break;
+            case "2":
+                this.taste.option3Selected = true;
+                break;
+            default:
+                break;
+
+        }
+    }
+
+    updateEnjoy(optionSelected) {
+
+        this.enjoy.option1Selected = false;
+        this.enjoy.option2Selected = false;
+        this.enjoy.option3Selected = false;
+
+        switch(optionSelected) {
+            case "0":
+                this.enjoy.option1Selected = true;
+                break;
+            case "1":
+                this.enjoy.option2Selected = true;
+                break;
+            case "2":
+                this.enjoy.option3Selected = true;
+                break;
+            default:
+                break;
+
+        }
+    }
+
+    updateTryAgain(optionSelected) {
+
+        this.tryAgain.option1Selected = false;
+        this.tryAgain.option2Selected = false;
+        this.tryAgain.option3Selected = false;
+
+        switch(optionSelected) {
+            case "0":
+                this.tryAgain.option1Selected = true;
+                break;
+            case "1":
+                this.tryAgain.option2Selected = true;
+                break;
+            case "2":
+                this.tryAgain.option3Selected = true;
+                break;
+            default:
+                break;
+
+        }
     }
 
     submitReview() {

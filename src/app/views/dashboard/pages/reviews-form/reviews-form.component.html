@@ -67,7 +67,34 @@
 					required
 				></ion-textarea>
 
-				<p
+				<div class="question-group">
+					<p
+						class="questions"
+						[ngClass]="{
+							invalid:
+								!reviewForm.controls.taste.valid &&
+								!reviewForm.controls.taste.pristine
+						}"
+					>
+						It tasted...
+					</p>
+					<div class="question-option-radio" [ngClass]="{'selected': taste.option1Selected }">
+						<div class="radio"></div>
+						<input type="radio" id="like" name="taste" value="0" formControlName="taste" (input)="updateTaste('0')">
+						<label class="title" for="like">like other things I've had before</label>
+					</div>
+					<div class="question-option-radio" [ngClass]="{'selected': taste.option2Selected }">
+						<div class="radio"></div>
+						<input type="radio" id="abit" name="taste" value="1" formControlName="taste" (input)="updateTaste('1')">
+						<label class="title" for="abit">a bit like something I've had before</label>
+					</div>
+					<div class="question-option-radio" [ngClass]="{'selected': taste.option3Selected }">
+						<div class="radio"></div>
+						<input type="radio" id="unlike" name="taste" value="2" formControlName="taste" (input)="updateTaste('2')">
+						<label class="title" for="unlike">unlike anything else I've had before</label>
+					</div>
+				</div>
+				<!--<p
 					class="questions"
 					[ngClass]="{
 						invalid:
@@ -77,6 +104,7 @@
 				>
 					It tasted...
 				</p>
+
 				<ion-list>
 					<ion-radio-group formControlName="taste">
 						<ion-item lines="none">
@@ -125,9 +153,35 @@
 							></ion-radio>
 						</ion-item>
 					</ion-radio-group>
-				</ion-list>
-
-				<p
+				</ion-list>-->
+				<div class="question-group">
+					<p
+						class="questions"
+						[ngClass]="{
+							invalid:
+								!reviewForm.controls.enjoy.valid &&
+								!reviewForm.controls.enjoy.pristine
+						}"
+					>
+						Eating it...
+					</p>
+					<div class="question-option-radio" [ngClass]="{'selected': enjoy.option1Selected }">
+						<div class="radio"></div>
+						<input type="radio" id="enjoyable" name="enjoy" value="0" formControlName="enjoy" (input)="updateEnjoy('0')">
+						<label class="title" for="enjoyable">was enjoyable</label>
+					</div>
+					<div class="question-option-radio" [ngClass]="{'selected': enjoy.option2Selected }">
+						<div class="radio"></div>
+						<input type="radio" id="somewhat" name="enjoy" value="1" formControlName="enjoy" (input)="updateEnjoy('1')">
+						<label class="title" for="somewhat">was somewhat enjoyable</label>
+					</div>
+					<div class="question-option-radio" [ngClass]="{'selected': enjoy.option3Selected }">
+						<div class="radio"></div>
+						<input type="radio" id="wasnt" name="enjoy" value="2" formControlName="enjoy" (input)="updateEnjoy('2')">
+						<label class="title" for="wasnt">wasn’t really something I enjoyed</label>
+					</div>
+				</div>
+				<!--<p
 					class="questions"
 					[ngClass]="{
 						invalid:
@@ -185,9 +239,35 @@
 							></ion-radio>
 						</ion-item>
 					</ion-radio-group>
-				</ion-list>
-
-				<p
+				</ion-list>-->
+				<div class="question-group">
+					<p
+						class="questions"
+						[ngClass]="{
+							invalid:
+								!reviewForm.controls.tryAgain.valid &&
+								!reviewForm.controls.tryAgain.pristine
+						}"
+					>
+						Would you cook this again?
+					</p>
+					<div class="question-option-radio" [ngClass]="{'selected': tryAgain.option1Selected }">
+						<div class="radio"></div>
+						<input type="radio" id="yes" name="tryAgain" value="0" formControlName="tryAgain" (input)="updateTryAgain('0')">
+						<label class="title" for="yes">Yes</label>
+					</div>
+					<div class="question-option-radio" [ngClass]="{'selected': tryAgain.option2Selected }">
+						<div class="radio"></div>
+						<input type="radio" id="only" name="tryAgain" value="1" formControlName="tryAgain" (input)="updateTryAgain('1')">
+						<label class="title" for="only">Only for the right occasion</label>
+					</div>
+					<div class="question-option-radio" [ngClass]="{'selected': tryAgain.option3Selected }">
+						<div class="radio"></div>
+						<input type="radio" id="probably" name="tryAgain" value="2" formControlName="tryAgain" (input)="updateTryAgain('2')">
+						<label class="title" for="probably">Probably not</label>
+					</div>
+				</div>
+				<!--<p
 					class="questions"
 					[ngClass]="{
 						invalid:
@@ -245,7 +325,7 @@
 							></ion-radio>
 						</ion-item>
 					</ion-radio-group>
-				</ion-list>
+				</ion-list>-->
 
 				<ion-button
 					mode="ios"

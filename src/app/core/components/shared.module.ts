@@ -4,7 +4,7 @@ import { IngredientmodalComponent } from './ingredientmodal/ingredientmodal.comp
 
 @NgModule({
     imports: [
-        CommonModule
+        CommonModule,
     ],
     exports: [
         IngredientmodalComponent

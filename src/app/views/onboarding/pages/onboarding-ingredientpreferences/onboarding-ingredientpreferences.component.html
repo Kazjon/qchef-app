@@ -1,7 +1,7 @@
 <ion-header [translucent]="true" class="ion-no-border">
 	<ion-toolbar>
 		<ion-buttons mode="ios" slot="start" (click)="prevStage()">
-			<ion-button *ngIf="page > 1" (click)="showPrevIngredient()">< Previous</ion-button>
+			<ion-button class="button-previous" *ngIf="page > 1" (click)="showPrevIngredient()"><ion-icon name="chevron-back-outline"></ion-icon> Previous</ion-button>
 		</ion-buttons>
 		<img class="logo" src="../../../../../assets/images/header-logo.svg">
 	</ion-toolbar>

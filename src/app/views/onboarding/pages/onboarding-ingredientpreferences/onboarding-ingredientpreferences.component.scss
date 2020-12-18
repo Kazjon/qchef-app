@@ -2,3 +2,15 @@
     font-size: 12px;
     padding: 15px 0;
 }
+
+.button-previous {
+    letter-spacing: normal!important;
+    font-family: 'robotomedium'!important;
+    font-size: 13.3333px!important;
+
+    ion-icon {
+        width: 26px;
+        height: 26px;
+        margin-right: -5px;
+    }
+}

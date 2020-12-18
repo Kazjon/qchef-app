@@ -1,13 +1,18 @@
 <ion-header [translucent]="true" class="ion-no-border">
     <ion-toolbar>
-        <ion-buttons mode="ios" slot="start">
+        <!--<ion-buttons mode="ios" slot="start">
             <ion-back-button></ion-back-button>
-        </ion-buttons>
+        </ion-buttons>-->
         <img class="logo" src="../../../../../assets/images/header-logo.svg">
     </ion-toolbar>
 </ion-header>
 <ion-content fullscreen no-bounce has-bouncing="false" forceOverscroll="false">
-    <div class="content-wrapper column start">
+
+    <div class="loading-overlay" [ngClass]="{'loading': isLoading, 'stop-scroll': isLoading}">
+		<ion-spinner name="crescent" color="primary"></ion-spinner>
+    </div>
+
+    <div class="content-wrapper column start" *ngIf="!isLoading">
 
         <div class="page-info">
             <h1>Meal Selection</h1>

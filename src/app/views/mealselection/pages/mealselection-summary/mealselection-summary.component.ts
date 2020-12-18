@@ -16,6 +16,7 @@ import { IngredientmodalComponent } from 'src/app/core/components/ingredientmoda
     styleUrls: ['./mealselection-summary.component.scss'],
 })
 export class MealSelectionSummaryComponent implements OnInit {
+    isLoading: boolean = false;
     mealSlots: MealSlot[];
     actionLogSubscription: Subscription;
     actionLog: any;
@@ -65,6 +66,7 @@ export class MealSelectionSummaryComponent implements OnInit {
     }
 
     setWeekStartDate() {
+        this.isLoading = true;
         let todayDate = new Date();
         this.dataService.setWeekStartDate(todayDate);
         this.saveMealSelection();
@@ -87,13 +89,13 @@ export class MealSelectionSummaryComponent implements OnInit {
             action_log: this.actionLog
         }
 
-        // TODO: Have a loading spinner here to show that something's happening
         this.dataService.postMealPlanSelectionToServer(selectedMealPlan)
             .subscribe((res) => {
-                console.log(res);
+                this.isLoading = false;
                 this.goToNext();
             },
                 (error) => {
+                    this.isLoading = false;
                     if (error.error.text.includes('Authentication error')) {
                         this.showLogoutUserPop();
                     }
