@@ -54,6 +54,10 @@ ion-content {
         min-height: 365px;
         margin: 10px 0;
 
+        &:last-child {
+            margin-bottom: 100px;
+        }
+
         ion-card-content {
             padding: 22px 18px 5px;
         }
