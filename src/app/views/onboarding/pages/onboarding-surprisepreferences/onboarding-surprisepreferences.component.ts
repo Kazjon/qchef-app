@@ -35,6 +35,7 @@ export class OnboardingSurprisePreferencesComponent implements OnInit {
     totalProgress: Object[];
     showAllIngredients: boolean = false; 
     isExpand: boolean = false;
+    selectedAnswerNum: number = 0;
 
     constructor(
         private dataService: DataService,
@@ -95,6 +96,7 @@ export class OnboardingSurprisePreferencesComponent implements OnInit {
         // Set answer to selected
         this.deselectAllAnswers(mealIndex, questionIndex);
         this.surprisePreferenceOptions[mealIndex].questions[questionIndex].options[optionIndex].selected = true;
+        this.selectedAnswerNum++;
 
         // Set meal preference answer
         this.setMealPreferenceAnswer(mealID, question, option);
@@ -179,6 +181,7 @@ export class OnboardingSurprisePreferencesComponent implements OnInit {
                     this.progressValue = this.dataService.getProgressStage();
                     this.percentage = this.progressValue;
                     this.surpriseSlides.slideNext();
+                    this.selectedAnswerNum = 0;
                     this.scroller.scrollToTop(500);
                     this.disableNext = false;
                     this.calculateProgress();

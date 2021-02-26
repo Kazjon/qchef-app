@@ -30,6 +30,7 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
     percentage: any;
     totalProgressSubscription: Subscription;
     totalProgress: Object[];
+    selectedAnswerNum: number = 0;
 
     constructor(
         private dataService: DataService,
@@ -87,6 +88,7 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
         // Set answer to selected
         this.deselectAllAnswers(ingredientIndex, questionIndex);
         this.ingredientPreferenceOptions[ingredientIndex].questions[questionIndex].options[optionIndex].selected = true;
+        this.selectedAnswerNum++;
 
         // Set ingredient preference answer
         this.setIngredientPreferenceAnswer(ingredientID, question, option);
@@ -136,8 +138,8 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
 
     }
 
-    showNextIngredient(mealIndex: number) {
-
+    showNextIngredient(mealIndex: number) {  
+              
         this.disableNext = true;
 
         let totalQuestionsAnswered = 0;
@@ -163,6 +165,7 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
                     this.progressValue = this.dataService.getProgressStage();
                     this.percentage = this.progressValue;
                     this.ingredientSlides.slideNext();
+                    this.selectedAnswerNum = 0;
                     this.scroller.scrollToTop(500);
                     this.disableNext = false;
                     this.calculateProgress();
