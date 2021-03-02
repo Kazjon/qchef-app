@@ -176,7 +176,6 @@ export class DataService {
         if (localMealSlotsString != undefined && localMealSlotsString != "undefined") {
             mealSlots = JSON.parse(localMealSlotsString);
             this.setMealSlots(mealSlots);
-            console.log('pppp ', mealSlots)
         }
         else {
             /*this.getMealPlanSelectionFromServer(mealsPerWeek).subscribe((res) => {
