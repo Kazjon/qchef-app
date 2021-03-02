@@ -15,7 +15,7 @@
         <ion-spinner name="crescent" color="primary"></ion-spinner>
     </div>
 
-    <div class="content-wrapper column start" *ngIf="!isNewWeek && !isLoading">
+    <div class="content-wrapper column start" *ngIf="!isCompleted && !isLoading">
 
         <div class="page-info">
             <h1>Meal Plan</h1>
@@ -46,7 +46,7 @@
 
     </div>
 
-    <div class="content-wrapper column" *ngIf="isNewWeek && !isLoading">
+    <div class="content-wrapper column" *ngIf="isCompleted && !isLoading">
 
         <p>You have no selected meals for this week.</p>
         <ion-button mode="ios" color="primary" (click)="startWeeklyFlow()">Pick Weekly Meals</ion-button>
