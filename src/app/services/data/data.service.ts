@@ -118,6 +118,12 @@ export class DataService {
         return this.http.post<MealPreference[]>(this.baseURL + '/get_meal_plan_selection', numberOfMeals, this.httpOptions);
     }
 
+    getSelectedMealPlanFromServer(): Observable<MealPreference[]> {
+        let uid = localStorage.getItem("userID");
+        let userID = { userID: uid }
+        return this.http.post<MealPreference[]>(this.baseURL + '/retrieve_meal_plan', userID, this.httpOptions);
+    }
+    
     /*getMealPlanFromServer(): Observable<Object> {
         //let uid = localStorage.getItem("userID");
         //let userID = { userID: uid }
@@ -170,6 +176,7 @@ export class DataService {
         if (localMealSlotsString != undefined && localMealSlotsString != "undefined") {
             mealSlots = JSON.parse(localMealSlotsString);
             this.setMealSlots(mealSlots);
+            console.log('pppp ', mealSlots)
         }
         else {
             /*this.getMealPlanSelectionFromServer(mealsPerWeek).subscribe((res) => {
@@ -180,20 +187,32 @@ export class DataService {
                     });
             },);*/
 
-            for (let i = 0; i < 3; i++) {
-                let mealSlot: MealSlot = {
-                    id: (i + 1),
-                    selected: false,
-                    reviewed: false,
-                    active: false
-                }
-                mealSlots.push(mealSlot);
-            }
-
-            this.setMealSlots(mealSlots);
+            this.getSelectedMealPlanFromServer().subscribe((res) => {
+                this.dataHandlingService.handleMealSlotData(res)
+                    .then((res: MealSlot[]) => {
+                        mealSlots = res;
+                        if (mealSlots) {
+                            this.setMealSlots(mealSlots);
+                        } else {
+                            for (let i = 0; i < 3; i++) {
+                                let mealSlot: MealSlot = {
+                                    id: (i + 1),
+                                    selected: false,
+                                    reviewed: false,
+                                    active: false
+                                }
+                                mealSlots.push(mealSlot);                
+                            }
+                
+                            this.setMealSlots(mealSlots);
+                        }
+                    });
+            },
+            (error) => {
+                console.log(error);
+            });
 
         }
-
     }
 
     /*getMealsPerWeekFromLocal() {

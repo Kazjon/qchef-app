@@ -3,6 +3,8 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { FirebaseService } from '../../services/firebase/firebase.service';
 import { Router } from '@angular/router';
 import { DataService } from 'src/app/services/data/data.service';
+import { DataHandlingService } from 'src/app/services/datahandling/datahandling.service';
+import { MealSlot } from 'src/app/core/objects/MealSlot';
 
 @Component({
     selector: 'app-login',
@@ -25,7 +27,8 @@ export class LoginPage implements OnInit {
         private formBuilder: FormBuilder,
         private firebaseService: FirebaseService,
         private router: Router,
-        private dataService: DataService) { }
+        private dataService: DataService,
+        private dataHandlingService: DataHandlingService) { }
 
     ngOnInit() {
 
@@ -58,15 +61,7 @@ export class LoginPage implements OnInit {
                         .then((res) => {
                             this.dataService.initAuthToken(res);
                             this.state = this.loginStates.ready;
-
-                            let localMealSlotsString = localStorage.getItem("localMealSlots");
-
-                            if (localMealSlotsString != undefined && localMealSlotsString != "undefined") {
-                                this.router.navigateByUrl('dashboard/recipes', { replaceUrl: true });
-                            }
-                            else {
-                                this.router.navigateByUrl('onboarding', { replaceUrl: true });
-                            }
+                            this.getSelectedMealPlan();
                         })
                 })
                 .catch((error) => {
@@ -75,6 +70,25 @@ export class LoginPage implements OnInit {
                     this.errorMessage = error.message;
                 });
         }
+
+    }
+
+    private getSelectedMealPlan() {
+        this.dataService.getSelectedMealPlanFromServer().subscribe((res) => {
+            this.dataHandlingService.handleMealSlotData(res)
+                .then((res: MealSlot[]) => {
+                    if(res) {
+                        this.dataService.setMealSlots(res);
+                        this.router.navigateByUrl('dashboard/recipes', { replaceUrl: true });
+                    } else {
+                        this.router.navigateByUrl('onboarding', { replaceUrl: true });
+                    }
+                });
+        },
+        (error) => {
+            console.log(error);
+            this.router.navigateByUrl('onboarding', { replaceUrl: true });
+        });
 
     }
 

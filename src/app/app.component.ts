@@ -89,6 +89,7 @@ export class AppComponent {
                 console.log("logged out?");
                 console.log(this.sideMenu);
                 this.sideMenu.close();
+                localStorage.removeItem("localMealSlots");
                 this.router.navigateByUrl('splash');
             })
             .catch(() => {

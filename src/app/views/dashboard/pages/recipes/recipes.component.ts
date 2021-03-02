@@ -26,9 +26,10 @@ export class RecipesPage implements OnInit {
         private modalController: ModalController) { }
 
     ngOnInit() {
-
         this.dataService.setOnboardingStage("dashboard");
+    }
 
+    ionViewWillEnter() {
         this.dataService.getMealSlotsFromLocal();
         this.dataService.getWeekStartDateFromLocal();
 
@@ -44,8 +45,6 @@ export class RecipesPage implements OnInit {
             this.checkData(mealSlots, weekStartDate);
             this.checkIfWeekIsComplete(weekStartDate);
         });
-
-
     }
 
     private checkData(data, weekStartDate) {

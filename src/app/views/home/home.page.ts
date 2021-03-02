@@ -18,6 +18,7 @@ export class HomePage {
     logout() {
         this.firebaseService.logout()
             .then(() => {
+                localStorage.removeItem("localMealSlots");
                 this.router.navigateByUrl('splash');
             })
             .catch(() => {
