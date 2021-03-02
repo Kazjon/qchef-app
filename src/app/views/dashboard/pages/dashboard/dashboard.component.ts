@@ -20,15 +20,15 @@ export class DashboardPage implements OnInit {
 		this.notReviewedNum = 0
 	}
 
-	ngOnInit() {
-		//this.notReviewedNum = this.dataService.getNotReviewedMealNum();
+	ngOnInit() {		
+	}
 
+	ionViewWillEnter() {
 		this.dataService.setTotalMealsNotReviewed();
 
 		this.totalMealsNotReviewedSubscription = this.dataService.totalMealsNotReviewedObservable.subscribe((res) => {
 			this.notReviewedNum = res;
 		});
-
 	}
 
 }
