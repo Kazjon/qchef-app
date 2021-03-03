@@ -65,13 +65,14 @@ export class RecipesPage implements OnInit {
 
     private checkIfWeekIsComplete(mealSlots, weekStartDate: Date) {
         let reviewedMeal = 0;
+
         mealSlots.forEach(mealSlot => {
             if (mealSlot.reviewed == true) {
                 reviewedMeal ++;
             }
         });
 
-        if (reviewedMeal == mealSlots.length) {
+        if (mealSlots && reviewedMeal == mealSlots.length) {
             this.isCompleted = true;
             this.isLoading = false;
         } else {
