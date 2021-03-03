@@ -29,7 +29,7 @@ export const ingredientPreferenceQuestions = [
         "options": [
             {
                 "id": 0,
-                "title":  "I don't like to eat this",
+                "title":  "I like to eat this",
                 "selected": false
             },
             {
@@ -39,7 +39,7 @@ export const ingredientPreferenceQuestions = [
             },
             {
                 "id": 2,
-                "title":  "I like to eat this",
+                "title":  "I don't like to eat this",
                 "selected": false
             },
         ],

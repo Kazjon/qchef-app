@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FirebaseService } from 'src/app/services/firebase/firebase.service';
 import { Router } from '@angular/router';
 import { DataService } from 'src/app/services/data/data.service';
+import { DataHandlingService } from 'src/app/services/datahandling/datahandling.service';
+import { MealSlot } from 'src/app/core/objects/MealSlot';
 
 @Component({
 	selector: 'app-splash',
@@ -11,7 +13,7 @@ import { DataService } from 'src/app/services/data/data.service';
 export class SplashPage implements OnInit {
 	imgSrc: String;
 
-	constructor(private firebaseService: FirebaseService, private router: Router,  private dataService: DataService) {
+	constructor(private firebaseService: FirebaseService, private router: Router,  private dataService: DataService, private dataHandlingService: DataHandlingService) {
 		this.imgSrc = "../../../assets/images/splash.svg"
 	}
 
@@ -24,17 +26,8 @@ export class SplashPage implements OnInit {
 		let timeout = setTimeout(() => {
 			this.firebaseService.isUserAuthenticated()
 				.then(() => {
-
-					let stage = this.dataService.getOnboardingStage();
-					let localMealSlotsString = localStorage.getItem("localMealSlots");
-
-					if (stage == "begin" || localMealSlotsString == undefined && localMealSlotsString == "undefined") {
-						this.router.navigateByUrl('onboarding', { replaceUrl: true });
-					}
-					else {
-						this.router.navigateByUrl('dashboard/recipes', { replaceUrl: true });
-					}
-
+					this.getSelectedMealPlan();
+					this.router.navigateByUrl('dashboard/recipes', { replaceUrl: true });
 				})
 				.catch(() => {
 					this.router.navigateByUrl('login', { replaceUrl: true });
@@ -43,5 +36,19 @@ export class SplashPage implements OnInit {
 		}, 1500);
 
 	}
+
+	private getSelectedMealPlan() {
+        this.dataService.getSelectedMealPlanFromServer().subscribe((res) => {
+            this.dataHandlingService.handleMealSlotData(res)
+                .then((res: MealSlot[]) => {
+                    this.dataService.setMealSlots(res);
+                });
+        },
+        (error) => {
+			console.log(error);
+			this.router.navigateByUrl('login', { replaceUrl: true });
+        });
+
+    }
 
 }

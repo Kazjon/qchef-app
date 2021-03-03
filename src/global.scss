@@ -242,6 +242,12 @@
             height: 37px;
         }
 
+        &.disabled {
+            --background: #EEEEEE;
+            --background-hover: #EEEEEE;
+            --background-activated: #EEEEEE;
+        }
+
         &::part(button) {
             opacity: 1;
         }
@@ -692,6 +698,7 @@ p {
     opacity: 0;
     height: 0;
     padding: 0;
+    display: none;
 }
 
 .expand-ingredient {

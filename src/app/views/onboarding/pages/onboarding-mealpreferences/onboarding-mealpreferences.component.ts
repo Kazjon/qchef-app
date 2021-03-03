@@ -36,7 +36,8 @@ export class OnboardingMealPreferencesComponent implements OnInit {
     totalProgress: Object[];
     showAllIngredients: boolean = false; 
     isExpand: boolean = false;
-    
+    selectedAnswerNum: number = 0;
+
     constructor(
         private dataService: DataService,
         private dataHandlingService: DataHandlingService,
@@ -101,8 +102,7 @@ export class OnboardingMealPreferencesComponent implements OnInit {
         // Set answer to selected
         this.deselectAllAnswers(mealIndex, questionIndex);
         this.mealPreferenceOptions[mealIndex].questions[questionIndex].options[optionIndex].selected = true;
-
-
+        this.getSelectedAnswerNum(mealIndex);
         // Set meal preference answer
         this.setMealPreferenceAnswer(mealID, question, option);
 
@@ -151,23 +151,27 @@ export class OnboardingMealPreferencesComponent implements OnInit {
 
     }
 
+    getSelectedAnswerNum(mealIndex: number) {
+        this.selectedAnswerNum = 0;
+        for (let i = 0; i < this.mealPreferenceOptions[mealIndex].questions.length; i++) {
+
+            for (let p = 0; p < this.mealPreferenceOptions[mealIndex].questions[i].options.length; p++) {
+                if (this.mealPreferenceOptions[mealIndex].questions[i].options[p].selected) {
+                    console.log(this.selectedAnswerNum)
+                    this.selectedAnswerNum++;
+                }
+            }
+        }
+    }
+
     showNextMeal(mealIndex: number) {
         this.showAllIngredients = false;
         this.isExpand = false;
         this.disableNext = true;
 
-        let totalQuestionsAnswered = 0;
+        this.getSelectedAnswerNum(mealIndex);
 
-        for (let i = 0; i < this.mealPreferenceOptions[mealIndex].questions.length; i++) {
-
-            for (let p = 0; p < this.mealPreferenceOptions[mealIndex].questions[i].options.length; p++) {
-                if (this.mealPreferenceOptions[mealIndex].questions[i].options[p].selected) {
-                    totalQuestionsAnswered = totalQuestionsAnswered + 1;
-                }
-            }
-        }
-
-        if (totalQuestionsAnswered === 3) {
+        if (this.selectedAnswerNum === 3) {
             this.mealSlides.isEnd().then((isEnd) => {
                 if (isEnd) {
                     (this.totalProgress[0] as any).progress = 100;
@@ -179,6 +183,7 @@ export class OnboardingMealPreferencesComponent implements OnInit {
                     this.progressValue = this.dataService.getProgressStage();
                     this.percentage = this.progressValue;
                     this.mealSlides.slideNext();
+                    this.selectedAnswerNum = 0;
                     this.scroller.scrollToTop(500);
                     this.disableNext = false;
                     this.calculateProgress();

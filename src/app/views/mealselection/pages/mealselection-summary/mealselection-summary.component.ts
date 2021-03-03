@@ -111,7 +111,7 @@ export class MealSelectionSummaryComponent implements OnInit {
         })
 
         this.isAllMealSelected = this.mealSlots.length == selectedMealNum
-    }v
+    }
 
     private goToNext() {
         this.router.navigateByUrl('dashboard', { replaceUrl: true });

@@ -30,6 +30,7 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
     percentage: any;
     totalProgressSubscription: Subscription;
     totalProgress: Object[];
+    selectedAnswerNum: number = 0;
 
     constructor(
         private dataService: DataService,
@@ -69,6 +70,7 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
         this.totalProgressSubscription = this.dataService.totalProgressObservable.subscribe((res) => {
             this.totalProgress = res;
         });
+
     }
 
     prevStage() {
@@ -87,6 +89,7 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
         // Set answer to selected
         this.deselectAllAnswers(ingredientIndex, questionIndex);
         this.ingredientPreferenceOptions[ingredientIndex].questions[questionIndex].options[optionIndex].selected = true;
+        this.getSelectedAnswerNum(ingredientIndex);
 
         // Set ingredient preference answer
         this.setIngredientPreferenceAnswer(ingredientID, question, option);
@@ -136,22 +139,25 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
 
     }
 
-    showNextIngredient(mealIndex: number) {
-
-        this.disableNext = true;
-
-        let totalQuestionsAnswered = 0;
+    getSelectedAnswerNum(mealIndex: number) {
+        this.selectedAnswerNum = 0;
 
         for (let i = 0; i < this.ingredientPreferenceOptions[mealIndex].questions.length; i++) {
 
             for (let p = 0; p < this.ingredientPreferenceOptions[mealIndex].questions[i].options.length; p++) {
                 if (this.ingredientPreferenceOptions[mealIndex].questions[i].options[p].selected) {
-                    totalQuestionsAnswered = totalQuestionsAnswered + 1;
+                    this.selectedAnswerNum++;
                 }
             }
         }
+    }
 
-        if (totalQuestionsAnswered === 2) {
+    showNextIngredient(mealIndex: number) {  
+              
+        this.disableNext = true;
+        this.getSelectedAnswerNum(mealIndex);
+
+        if (this.selectedAnswerNum === 2) {
             this.ingredientSlides.isEnd().then((isEnd) => {
                 if (isEnd) {
                     (this.totalProgress[1] as any).progress = 100;
@@ -163,6 +169,7 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
                     this.progressValue = this.dataService.getProgressStage();
                     this.percentage = this.progressValue;
                     this.ingredientSlides.slideNext();
+                    this.selectedAnswerNum = 0;
                     this.scroller.scrollToTop(500);
                     this.disableNext = false;
                     this.calculateProgress();

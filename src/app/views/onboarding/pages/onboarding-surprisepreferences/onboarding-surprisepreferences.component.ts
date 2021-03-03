@@ -35,6 +35,7 @@ export class OnboardingSurprisePreferencesComponent implements OnInit {
     totalProgress: Object[];
     showAllIngredients: boolean = false; 
     isExpand: boolean = false;
+    selectedAnswerNum: number = 0;
 
     constructor(
         private dataService: DataService,
@@ -75,7 +76,6 @@ export class OnboardingSurprisePreferencesComponent implements OnInit {
 
         //this.progressValue = this.dataService.getProgressStage();
         //this.percentage = this.progressValue;
-
     }
 
     imageLoaded(meal: MealPreference) {
@@ -95,7 +95,7 @@ export class OnboardingSurprisePreferencesComponent implements OnInit {
         // Set answer to selected
         this.deselectAllAnswers(mealIndex, questionIndex);
         this.surprisePreferenceOptions[mealIndex].questions[questionIndex].options[optionIndex].selected = true;
-
+        this.getSelectedAnswerNum(mealIndex);
         // Set meal preference answer
         this.setMealPreferenceAnswer(mealID, question, option);
 
@@ -151,23 +151,28 @@ export class OnboardingSurprisePreferencesComponent implements OnInit {
 
     }
 
-    showNextMeal(mealIndex: number) {
-        this.showAllIngredients = false;
-        this.isExpand = false;
-        this.disableNext = true;
-
-        let totalQuestionsAnswered = 0;
+    getSelectedAnswerNum(mealIndex: number) {
+        this.selectedAnswerNum = 0;
 
         for (let i = 0; i < this.surprisePreferenceOptions[mealIndex].questions.length; i++) {
 
             for (let p = 0; p < this.surprisePreferenceOptions[mealIndex].questions[i].options.length; p++) {
                 if (this.surprisePreferenceOptions[mealIndex].questions[i].options[p].selected) {
-                    totalQuestionsAnswered = totalQuestionsAnswered + 1;
+                    this.selectedAnswerNum++;
                 }
             }
         }
 
-        if (totalQuestionsAnswered === 3) {
+    }
+
+    showNextMeal(mealIndex: number) {
+        this.showAllIngredients = false;
+        this.isExpand = false;
+        this.disableNext = true;
+
+        this.getSelectedAnswerNum(mealIndex);
+
+        if (this.selectedAnswerNum === 3) {
             this.surpriseSlides.isEnd().then((isEnd) => {
                 if (isEnd) {
                     (this.totalProgress[2] as any).progress = 100;
@@ -179,6 +184,7 @@ export class OnboardingSurprisePreferencesComponent implements OnInit {
                     this.progressValue = this.dataService.getProgressStage();
                     this.percentage = this.progressValue;
                     this.surpriseSlides.slideNext();
+                    this.selectedAnswerNum = 0;
                     this.scroller.scrollToTop(500);
                     this.disableNext = false;
                     this.calculateProgress();

@@ -18,6 +18,7 @@ export class RecipesPage implements OnInit {
     mealSlots: MealSlot[];
     isLoading: boolean = true;
     isNewWeek: boolean = false;
+    isCompleted: boolean = false;
 
     constructor(
         private dataService: DataService,
@@ -26,9 +27,10 @@ export class RecipesPage implements OnInit {
         private modalController: ModalController) { }
 
     ngOnInit() {
-
         this.dataService.setOnboardingStage("dashboard");
+    }
 
+    ionViewWillEnter() {
         this.dataService.getMealSlotsFromLocal();
         this.dataService.getWeekStartDateFromLocal();
 
@@ -42,10 +44,8 @@ export class RecipesPage implements OnInit {
             console.log(mealSlots);
             console.log(weekStartDate);
             this.checkData(mealSlots, weekStartDate);
-            this.checkIfWeekIsComplete(weekStartDate);
+            this.checkIfWeekIsComplete(mealSlots, weekStartDate);
         });
-
-
     }
 
     private checkData(data, weekStartDate) {
@@ -63,26 +63,41 @@ export class RecipesPage implements OnInit {
         }
     }
 
-    private checkIfWeekIsComplete(weekStartDate: Date) {
-        console.log(weekStartDate);
-        let startDate = weekStartDate;
+    private checkIfWeekIsComplete(mealSlots, weekStartDate: Date) {
+        let reviewedMeal = 0;
+        mealSlots.forEach(mealSlot => {
+            if (mealSlot.reviewed == true) {
+                reviewedMeal ++;
+            }
+        });
 
-        if (isNaN(weekStartDate.getTime())) {
-            startDate = new Date();
-        }
-
-        let todayDate = new Date();
-
-        let daysBetweenDates = this.getDaysBetweenDates(startDate, todayDate);
-
-        if (daysBetweenDates >= 7) {
-            this.isNewWeek = true;
+        if (reviewedMeal == mealSlots.length) {
+            this.isCompleted = true;
+            this.isLoading = false;
+        } else {
+            this.isCompleted = false;
             this.isLoading = false;
         }
-        else {
-            this.isNewWeek = false;
-            this.isLoading = false;
-        }
+
+        // console.log(weekStartDate);
+        // let startDate = weekStartDate;
+
+        // if (isNaN(weekStartDate.getTime())) {
+        //     startDate = new Date();
+        // }
+
+        // let todayDate = new Date();
+
+        // let daysBetweenDates = this.getDaysBetweenDates(startDate, todayDate);
+
+        // if (daysBetweenDates >= 7) {
+        //     this.isNewWeek = true;
+        //     this.isLoading = false;
+        // }
+        // else {
+        //     this.isNewWeek = false;
+        //     this.isLoading = false;
+        // }
 
     }
 

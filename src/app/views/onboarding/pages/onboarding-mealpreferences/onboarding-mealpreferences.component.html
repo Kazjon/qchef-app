@@ -50,7 +50,7 @@
 									<div class="title">{{ option.title }}</div>
 								</div>
 							</div>
-							<ion-button mode="ios" class="next" (click)="showNextMeal(mealIndex)" [disabled]="disableNext">Next Meal</ion-button>
+							<ion-button mode="ios" class="next" (click)="showNextMeal(mealIndex)" [ngClass]="{'disabled': selectedAnswerNum != meal.questions.length }" [disabled]="disableNext">Next Meal</ion-button>
 
 							<!--<div class="preference-question-group" *ngFor="let question of meal.questions; let questionIndex = index" [ngClass]="{'visible': question.active}">
 								<p class="sub-heading">Question {{ questionIndex + 1 }} of {{ meal.questions.length }}:</p>
