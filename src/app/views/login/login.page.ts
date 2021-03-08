@@ -45,7 +45,7 @@ export class LoginPage implements OnInit {
 
         this.state = this.loginStates.ready;
 
-        let idToken = this.dataService.getCookie('idToken');
+        let idToken = localStorage.getItem('idToken');
         if (idToken != undefined) {
             this.router.navigateByUrl('dashboard/recipes', { replaceUrl: true });
         }
@@ -69,7 +69,7 @@ export class LoginPage implements OnInit {
                         .then((res) => {
                             this.dataService.getCustomTokenFromServer(res).subscribe((customToken) => {
                                 this.dataService.initAuthToken(customToken['token']);
-                                this.dataService.createCookie('idToken', customToken['token'], 14);
+                                localStorage.setItem('idToken', customToken['token']);
                                 localStorage.setItem('loginDate',new Date().toUTCString());
                                 this.state = this.loginStates.ready;
                                 this.getSelectedMealPlan();

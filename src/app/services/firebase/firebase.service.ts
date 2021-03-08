@@ -12,31 +12,21 @@ import { DataService } from '../data/data.service';
 export class FirebaseService {
 
     constructor(private http: HttpClient, private dataService: DataService) { }
-
-    /*getStuff(access) {
-
-        let headers = new HttpHeaders({
-            'Authorization': 'Bearer ' + access,
-            'Content-Type': 'application/json'
-        });
-
-        return this.http.get("https://neura-ca-stage.theprojectfactory.com/vasat/api/Patient?patientId=778891", {headers});
-
-    }*/
-
+ 
     isUserAuthenticated() {
 
         let resolver = (resolve, reject) => {
-            const token = this.dataService.getCookie("idToken");
+            const token = localStorage.getItem("idToken");
 
             if (token != undefined) {
                 // check login date
                 if (localStorage.getItem('loginDate')) {
                     var loginDate = new Date(localStorage.getItem('loginDate'));
                     var currentDate = new Date();
-                    let diffDate = new Date(currentDate.getTime() - loginDate.getTime());
-                    const diffDays = diffDate.getUTCDate() - 1;
-                    if (diffDays > 3) {
+                   
+                    const diffDays = this.dataService.datediff(loginDate, currentDate);
+
+                    if (diffDays > 3 && diffDays < 14) {
                         // get new token
                         // call server, need new token 
                         // server get uid, sign in with custom token
@@ -54,15 +44,17 @@ export class FirebaseService {
                                             this.dataService.getCustomTokenFromServer(res).subscribe((customToken) => {
                                                 console.log(customToken);
                                                 this.dataService.initAuthToken(customToken['token']);
-                                                this.dataService.createCookie('idToken', customToken['token'], 14);
+                                                localStorage.setItem('idToken',  customToken['token']);
                                                 localStorage.setItem('loginDate', new Date().toUTCString());
                                             });
                                         })
                                 })
                             }
                         })
-
-
+                    }
+                    else if(diffDays >= 14){
+                        // user logged out
+                        this.logoutUserFromApp();
                     }
                 }
                 resolve(localStorage.getItem("userID"));
@@ -130,11 +122,12 @@ export class FirebaseService {
     logoutUserFromApp() {
 
         let resolver = (resolve, reject) => {
-            this.dataService.removeCookie('idToken');
+            localStorage.removeItem('idToken');
             localStorage.removeItem("userID");
             localStorage.removeItem("onboardingStage");
             localStorage.removeItem("localMealSlots");
             localStorage.removeItem("localWeekStartDate");
+            localStorage.removeItem("loginDate");
 
             this.logout();
         }

@@ -65,16 +65,6 @@ export class OnboardingMealPreferencesComponent implements OnInit {
 
         this.dataService.getMealsFromServer()
             .subscribe((res) => {
-                // need to check if server return 'Unable to authenticate'
-                if (typeof (res) == "string") {
-                    const strRes = <string>res;
-                    if (strRes.includes('Unable to authenticate')) {
-                        this.firebaseService.logoutUserFromApp().then(()=>{
-                            this.router.navigateByUrl('splash');
-                        });
-                    }
-                }
-
                 this.dataHandlingService.handleMealPreferenceData(res)
                     .then((organisedData: MealPreference[]) => {
                         this.mealPreferenceOptions = organisedData;

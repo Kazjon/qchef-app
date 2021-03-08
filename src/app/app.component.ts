@@ -38,7 +38,7 @@ export class AppComponent {
             firebase.initializeApp(firebaseConfig);
         }
 
-        let idToken = this.dataService.getCookie("idToken");
+        let idToken = localStorage.getItem("idToken");
         if (idToken != undefined) {
             this.dataService.initAuthToken(idToken);
         }

@@ -108,8 +108,8 @@ export class RecipesPage implements OnInit {
     }
 
     startWeeklyFlow() {
-        this.dataService.removeLocalStorage('localMealSlots');
-        this.dataService.removeLocalStorage('localWeekStartDate');
+        localStorage.removeItem('localMealSlots');
+        localStorage.removeItem('localWeekStartDate');
         this.router.navigateByUrl('onboarding/numberofmeals', { replaceUrl: true });
     }
 

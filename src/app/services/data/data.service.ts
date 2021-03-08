@@ -18,7 +18,7 @@ import { FirebaseService } from '../firebase/firebase.service';
 })
 export class DataService {
     private totalStages: number = 94;
-    private baseURL: string = "http://localhost:5000";
+    private baseURL:string = "https://q-chef-backend-api-server.web.app";
     httpOptions = {};
     private progressSections = [
         {
@@ -118,7 +118,7 @@ export class DataService {
 
     getCustomTokenFromServer(idToken): Observable<any> {
         let payload = { idToken: idToken }
-        return this.http.post<any>(this.baseURL + '/sessionLogin', payload, this.httpOptions);
+        return this.http.post<any>(this.baseURL + '/session_login', payload, this.httpOptions);
     }
 
     
@@ -369,30 +369,8 @@ export class DataService {
         this.totalProgress.next(progress);
     }
 
-    removeLocalStorage(key) {
-        localStorage.removeItem(key);
+    datediff(first, second) {
+        return Math.round((second-first)/(1000*60*60*24));
     }
-
-    getCookie(name) {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop().split(';').shift();
-    }
-
-    removeCookie(name){
-        document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-    }
-
-    createCookie(name, value, days) {
-        var expires;
-        if (days) {
-            var date = new Date();
-            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-            expires = "; expires=" + date['toGMTString']();
-        }
-        else {
-            expires = "";
-        }
-        document.cookie = name + "=" + value + expires + "; path=/";
-    }
+    
 }
