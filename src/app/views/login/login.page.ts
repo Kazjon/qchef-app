@@ -59,9 +59,12 @@ export class LoginPage implements OnInit {
                     console.log(res);
                     this.firebaseService.getUserIDToken()
                         .then((res) => {
-                            this.dataService.initAuthToken(res);
-                            this.state = this.loginStates.ready;
-                            this.getSelectedMealPlan();
+                            this.dataService.getCustomTokenFromServer(res).subscribe((customToken) => {
+                                console.log(customToken);
+                                this.dataService.initAuthToken(customToken['token']);
+                                this.state = this.loginStates.ready;
+                                this.getSelectedMealPlan();
+                            });
                         })
                 })
                 .catch((error) => {
@@ -71,13 +74,13 @@ export class LoginPage implements OnInit {
                 });
         }
 
-    }
+    } 
 
     private getSelectedMealPlan() {
         this.dataService.getSelectedMealPlanFromServer().subscribe((res) => {
             this.dataHandlingService.handleMealSlotData(res)
                 .then((res: MealSlot[]) => {
-                    if(res) {
+                    if (res) {
                         this.dataService.setMealSlots(res);
                         this.router.navigateByUrl('dashboard/recipes', { replaceUrl: true });
                     } else {
@@ -85,10 +88,10 @@ export class LoginPage implements OnInit {
                     }
                 });
         },
-        (error) => {
-            console.log(error);
-            this.router.navigateByUrl('onboarding', { replaceUrl: true });
-        });
+            (error) => {
+                console.log(error);
+                this.router.navigateByUrl('onboarding', { replaceUrl: true });
+            });
 
     }
 

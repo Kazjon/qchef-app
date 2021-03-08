@@ -123,6 +123,13 @@ export class DataService {
         let userID = { userID: uid }
         return this.http.post<MealPreference[]>(this.baseURL + '/retrieve_meal_plan', userID, this.httpOptions);
     }
+
+    
+    getCustomTokenFromServer(idToken): Observable<any> {
+        let payload = { idToken: idToken }
+        return this.http.post<any>(this.baseURL + '/sessionLogin', payload, this.httpOptions);
+    }
+    
     
     /*getMealPlanFromServer(): Observable<Object> {
         //let uid = localStorage.getItem("userID");
