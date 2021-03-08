@@ -18,10 +18,6 @@ export class ReviewsPage implements OnInit {
     ngOnInit() {
 
         this.getMealsToReview();
-
-
-
-        console.log(this.mealSlots)
     }
 
     private getMealsToReview() {

@@ -28,6 +28,8 @@ export class RecipesPage implements OnInit {
 
     ngOnInit() {
         this.dataService.setOnboardingStage("dashboard");
+        this.dataService.getMealSlotsFromLocal();
+        this.dataService.getWeekStartDateFromLocal();
     }
 
     ionViewWillEnter() {
@@ -41,8 +43,6 @@ export class RecipesPage implements OnInit {
             take(3)
         )
         .subscribe(([mealSlots, weekStartDate]) => {
-            console.log(mealSlots);
-            console.log(weekStartDate);
             this.checkData(mealSlots, weekStartDate);
             this.checkIfWeekIsComplete(mealSlots, weekStartDate);
         });
@@ -71,7 +71,7 @@ export class RecipesPage implements OnInit {
             }
         });
 
-        if (reviewedMeal == mealSlots.length) {
+        if (mealSlots && reviewedMeal == mealSlots.length) {
             this.isCompleted = true;
             this.isLoading = false;
         } else {
@@ -108,8 +108,8 @@ export class RecipesPage implements OnInit {
     }
 
     startWeeklyFlow() {
-        this.dataService.setMealSlots([]);
-        this.dataService.setWeekStartDate(undefined);
+        this.dataService.removeLocalStorage('localMealSlots');
+        this.dataService.removeLocalStorage('localWeekStartDate');
         this.router.navigateByUrl('onboarding/numberofmeals', { replaceUrl: true });
     }
 

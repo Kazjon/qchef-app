@@ -185,7 +185,6 @@ export class ReviewsFormComponent implements OnInit {
     submitReview() {
 
         this.formSubmitted = true;
-        console.log(this.id);
 
         let recipeReviewResponse: RecipeReviewResponse = {
             cook_ratings: {},
@@ -203,8 +202,6 @@ export class ReviewsFormComponent implements OnInit {
         recipeReviewResponse.how_response[this.id] = this.reviewForm.controls.feeling.value;
         recipeReviewResponse.image[this.id] = this.photoBase64;
 
-        console.log(recipeReviewResponse);
-
         // taste = familiarity_rating
         // enjoy = taste_rating
         // tryAgain = cook_rating
@@ -213,7 +210,6 @@ export class ReviewsFormComponent implements OnInit {
 
         this.dataService.postRecipeReviewToServer(recipeReviewResponse)
             .subscribe((res) => {
-                console.log(res);
                 this.mealSlots.forEach(element => {
                     if (element.recipe.id == this.id)
                         element.reviewed = true;
@@ -223,9 +219,13 @@ export class ReviewsFormComponent implements OnInit {
                         this.formSubmitted = false;
                 });
             },
-            (error) => {
-                if (error.error.text.includes('Authentication error')) {
-                    this.showLogoutUserPop();
+            (exception) => {
+                // need to check if server return 'Unable to authenticate'
+                if (exception && exception.error && typeof (exception.error) == "string") {
+                    const strRes = <string>exception.error;
+                    if (strRes.includes('Unable to authenticate')) {
+                        this.showLogoutUserPop();
+                    }
                 }
             });
 
@@ -246,7 +246,6 @@ export class ReviewsFormComponent implements OnInit {
             source: source
         });
 
-        console.log(image);
         this.photoBase64 = image.dataUrl;
         this.photo = this.sanitizer.bypassSecurityTrustResourceUrl(image && (image.dataUrl));
         if (this.photo) {
@@ -313,9 +312,9 @@ export class ReviewsFormComponent implements OnInit {
                 {
                     text: 'Okay',
                     handler: () => {
-                        this.firebaseService.logout()
+                        this.firebaseService.logoutUserFromApp()
                             .then(() => {
-                                this.router.navigateByUrl('splash');
+                                this.router.navigateByUrl('login',  { replaceUrl: true });
                             })
                     }
                 }

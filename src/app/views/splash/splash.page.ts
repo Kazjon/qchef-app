@@ -13,7 +13,7 @@ import { MealSlot } from 'src/app/core/objects/MealSlot';
 export class SplashPage implements OnInit {
 	imgSrc: String;
 
-	constructor(private firebaseService: FirebaseService, private router: Router,  private dataService: DataService, private dataHandlingService: DataHandlingService) {
+	constructor(private firebaseService: FirebaseService, private router: Router, private dataService: DataService, private dataHandlingService: DataHandlingService) {
 		this.imgSrc = "../../../assets/images/splash.svg"
 	}
 
@@ -23,32 +23,42 @@ export class SplashPage implements OnInit {
 
 	checkUserAuthentication() {
 
-		let timeout = setTimeout(() => {
+	 
 			this.firebaseService.isUserAuthenticated()
 				.then(() => {
 					this.getSelectedMealPlan();
-					this.router.navigateByUrl('dashboard/recipes', { replaceUrl: true });
 				})
-				.catch(() => {
+				.catch((e) => {
+					console.log(e);
 					this.router.navigateByUrl('login', { replaceUrl: true });
 				});
-			clearTimeout(timeout);
-		}, 1500);
-
 	}
 
 	private getSelectedMealPlan() {
-        this.dataService.getSelectedMealPlanFromServer().subscribe((res) => {
-            this.dataHandlingService.handleMealSlotData(res)
-                .then((res: MealSlot[]) => {
-                    this.dataService.setMealSlots(res);
-                });
-        },
-        (error) => {
-			console.log(error);
-			this.router.navigateByUrl('login', { replaceUrl: true });
-        });
+		this.dataService.getSelectedMealPlanFromServer().subscribe((res) => {
+			this.dataHandlingService.handleMealSlotData(res)
+				.then((res: MealSlot[]) => {
+					this.dataService.setMealSlots(res);
+					let timeout = setTimeout(() => { 
+						this.router.navigateByUrl('dashboard/recipes', { replaceUrl: true });
+						clearTimeout(timeout);
+					}, 1500);
+				});
+		},
+			(exception) => {
+				// need to check if server return 'Unable to authenticate'
+				if (exception && exception.error && typeof (exception.error) == "string") {
+					const strRes = <string>exception.error;
+					if (strRes.includes('Unable to authenticate')) {
+					 
+						this.firebaseService.logoutUserFromApp().then(() => {
+							this.router.navigateByUrl('login', { replaceUrl: true });
 
-    }
+						});
+					}
+				}
+			});
+
+	}
 
 }

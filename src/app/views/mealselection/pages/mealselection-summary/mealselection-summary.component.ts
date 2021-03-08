@@ -36,7 +36,6 @@ export class MealSelectionSummaryComponent implements OnInit {
             take(4)
         )
             .subscribe(([mealSlots]) => {
-                console.log(mealSlots);
                 this.checkData(mealSlots);
             });
     }
@@ -58,7 +57,6 @@ export class MealSelectionSummaryComponent implements OnInit {
 
     private initialiseMealSlots(mealSlots: MealSlot[]) {
         this.mealSlots = mealSlots;
-        console.log(this.mealSlots);
     }
 
     changeMeal(mealSlot: MealSlot) {
@@ -94,12 +92,15 @@ export class MealSelectionSummaryComponent implements OnInit {
                 this.isLoading = false;
                 this.goToNext();
             },
-                (error) => {
-                    this.isLoading = false;
-                    if (error.error.text.includes('Authentication error')) {
+            (exception) => {
+                // need to check if server return 'Unable to authenticate'
+                if (exception && exception.error && typeof (exception.error) == "string") {
+                    const strRes = <string>exception.error;
+                    if (strRes.includes('Unable to authenticate')) {
                         this.showLogoutUserPop();
                     }
-                });
+                }
+            });
 
     }
 
@@ -126,9 +127,9 @@ export class MealSelectionSummaryComponent implements OnInit {
                 {
                     text: 'Okay',
                     handler: () => {
-                        this.firebaseService.logout()
+                        this.firebaseService.logoutUserFromApp()
                             .then(() => {
-                                this.router.navigateByUrl('splash');
+                                this.router.navigateByUrl('login',  { replaceUrl: true });
                             })
                     }
                 }

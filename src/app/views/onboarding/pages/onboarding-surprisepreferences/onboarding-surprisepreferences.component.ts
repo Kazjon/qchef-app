@@ -79,7 +79,6 @@ export class OnboardingSurprisePreferencesComponent implements OnInit {
     }
 
     imageLoaded(meal: MealPreference) {
-        console.log("loaded!");
         meal.loaded = true;
     }
 
@@ -259,9 +258,13 @@ export class OnboardingSurprisePreferencesComponent implements OnInit {
                 this.isLoading = false;
                 this.goToNumberOfMeals();
             },
-            (error) => {
-                if (error.error.text.includes('Authentication error')) {
-                    this.showLogoutUserPop();
+            (exception) => {
+                // need to check if server return 'Unable to authenticate'
+                if (exception && exception.error && typeof (exception.error) == "string") {
+                    const strRes = <string>exception.error;
+                    if (strRes.includes('Unable to authenticate')) {
+                        this.showLogoutUserPop();
+                    }
                 }
             });
     }
@@ -279,9 +282,9 @@ export class OnboardingSurprisePreferencesComponent implements OnInit {
                 {
                     text: 'Okay',
                     handler: () => {
-                        this.firebaseService.logout()
-                            .then(() => {
-                                this.router.navigateByUrl('splash');
+                        this.firebaseService.logoutUserFromApp()
+                            .then(() => {            
+                                this.router.navigateByUrl('login',  { replaceUrl: true });
                             })
                     }
                 }

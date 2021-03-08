@@ -27,23 +27,56 @@ export class FirebaseService {
     isUserAuthenticated() {
 
         let resolver = (resolve, reject) => {
+            const token = this.dataService.getCookie("idToken");
 
-            firebase.auth().onAuthStateChanged(function (user) {
-                if (user) {
-                    localStorage.setItem("userID", user.uid);
-                    resolve(user);
-                }
-                else {
-                    reject(false);
-                }
-            });
+            if (token != undefined) {
+                // check login date
+                if (localStorage.getItem('loginDate')) {
+                    var loginDate = new Date(localStorage.getItem('loginDate'));
+                    var currentDate = new Date();
+                    let diffDate = new Date(currentDate.getTime() - loginDate.getTime());
+                    const diffDays = diffDate.getUTCDate() - 1;
+                    if (diffDays > 3) {
+                        // get new token
+                        // call server, need new token 
+                        // server get uid, sign in with custom token
+                        this.dataService.postExtendSessionToServer(token).subscribe(res => {
+                            const customToken = res['customtoken'];
+                            if (customToken) {
 
+
+                                // front end get custom token, talk to firebase, get IdToken
+                                firebase.auth().signInWithCustomToken(customToken).then(res => {
+                                    this.getUserIDToken()
+                                        .then((res) => {
+
+                                            // call sessionLogin again
+                                            this.dataService.getCustomTokenFromServer(res).subscribe((customToken) => {
+                                                console.log(customToken);
+                                                this.dataService.initAuthToken(customToken['token']);
+                                                this.dataService.createCookie('idToken', customToken['token'], 14);
+                                                localStorage.setItem('loginDate', new Date().toUTCString());
+                                            });
+                                        })
+                                })
+                            }
+                        })
+
+
+                    }
+                }
+                resolve(localStorage.getItem("userID"));
+            }
+            else {
+                reject(false);
+            }
         }
 
         return new Promise(resolver);
 
 
     }
+
 
     loginWithEmailAndPassword(email, password) {
 
@@ -67,12 +100,11 @@ export class FirebaseService {
 
         let resolver = (resolve, reject) => {
             firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
-            .then(function(idToken) {
-                localStorage.setItem("idToken", idToken);
-                resolve(idToken);
-            }).catch(function(error) {
-                reject(error);
-            });
+                .then(function (idToken) {
+                    resolve(idToken);
+                }).catch(function (error) {
+                    reject(error);
+                });
         }
 
         return new Promise(resolver);
@@ -93,6 +125,20 @@ export class FirebaseService {
 
         return new Promise(resolver);
 
+    }
+
+    logoutUserFromApp() {
+
+        let resolver = (resolve, reject) => {
+            this.dataService.removeCookie('idToken');
+            localStorage.removeItem("userID");
+            localStorage.removeItem("onboardingStage");
+            localStorage.removeItem("localMealSlots");
+            localStorage.removeItem("localWeekStartDate");
+
+            this.logout();
+        }
+        return new Promise(resolver);
     }
 
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input} from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { DataService } from '../../../../services/data/data.service';
 import { mealPreferenceQuestions } from '../../../../../assets/data/mealpreferencequestions';
 import { MealPreference } from '../../../../core/objects/MealPreference';
@@ -34,7 +34,7 @@ export class OnboardingMealPreferencesComponent implements OnInit {
     mealRatingsToServerResponse: any;
     totalProgressSubscription: Subscription;
     totalProgress: Object[];
-    showAllIngredients: boolean = false; 
+    showAllIngredients: boolean = false;
     isExpand: boolean = false;
     selectedAnswerNum: number = 0;
 
@@ -65,6 +65,16 @@ export class OnboardingMealPreferencesComponent implements OnInit {
 
         this.dataService.getMealsFromServer()
             .subscribe((res) => {
+                // need to check if server return 'Unable to authenticate'
+                if (typeof (res) == "string") {
+                    const strRes = <string>res;
+                    if (strRes.includes('Unable to authenticate')) {
+                        this.firebaseService.logoutUserFromApp().then(()=>{
+                            this.router.navigateByUrl('splash');
+                        });
+                    }
+                }
+
                 this.dataHandlingService.handleMealPreferenceData(res)
                     .then((organisedData: MealPreference[]) => {
                         this.mealPreferenceOptions = organisedData;
@@ -74,19 +84,22 @@ export class OnboardingMealPreferencesComponent implements OnInit {
                         }, 500);
                     });
             },
-            (error) => {
-                if (error.error.text.includes('Authentication error')) {
-                    this.showLogoutUserPop();
+            (exception) => {
+                // need to check if server return 'Unable to authenticate'
+                if (exception && exception.error && typeof (exception.error) == "string") {
+                    const strRes = <string>exception.error;
+                    if (strRes.includes('Unable to authenticate')) {
+                        this.showLogoutUserPop();
+                    }
                 }
             });
         //this.progressValue = this.dataService.getProgressStage();
-       // this.percentage = this.progressValue;
+        // this.percentage = this.progressValue;
 
     }
 
 
     imageLoaded(meal: MealPreference) {
-        console.log("loaded!");
         meal.loaded = true;
     }
 
@@ -157,7 +170,6 @@ export class OnboardingMealPreferencesComponent implements OnInit {
 
             for (let p = 0; p < this.mealPreferenceOptions[mealIndex].questions[i].options.length; p++) {
                 if (this.mealPreferenceOptions[mealIndex].questions[i].options[p].selected) {
-                    console.log(this.selectedAnswerNum)
                     this.selectedAnswerNum++;
                 }
             }
@@ -249,9 +261,9 @@ export class OnboardingMealPreferencesComponent implements OnInit {
 
     setPagerNum() {
         this.mealSlides.getActiveIndex().then(
-            (index)=>{
+            (index) => {
                 this.page = ++index;
-        });
+            });
     }
 
     private savePreferences() {
@@ -270,10 +282,13 @@ export class OnboardingMealPreferencesComponent implements OnInit {
                 this.isLoading = false;
                 this.goToIngredients();
             },
-            (error) => {
-                if (error.error.text.includes('Authentication error')) {
-                    this.isLoading = false;
-                    this.showLogoutUserPop();
+            (exception) => {
+                // need to check if server return 'Unable to authenticate'
+                if (exception && exception.error && typeof (exception.error) == "string") {
+                    const strRes = <string>exception.error;
+                    if (strRes.includes('Unable to authenticate')) {
+                        this.showLogoutUserPop();
+                    }
                 }
             });
     }
@@ -296,9 +311,9 @@ export class OnboardingMealPreferencesComponent implements OnInit {
                 {
                     text: 'Okay',
                     handler: () => {
-                        this.firebaseService.logout()
+                        this.firebaseService.logoutUserFromApp()
                             .then(() => {
-                                this.router.navigateByUrl('splash');
+                                this.router.navigateByUrl('login',  { replaceUrl: true });
                             })
                     }
                 }
@@ -309,7 +324,7 @@ export class OnboardingMealPreferencesComponent implements OnInit {
     }
 
     ngOnDestroy() {
-       this.totalProgressSubscription.unsubscribe();
+        this.totalProgressSubscription.unsubscribe();
     }
 
 }

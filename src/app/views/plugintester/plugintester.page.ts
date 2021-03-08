@@ -72,9 +72,6 @@ export class PlugintesterPage implements OnInit {
     }
 
     async setLocalNotification(res) {
-
-        console.log(res);
-
         if (res.granted) {
             const notifs = await LocalNotifications.schedule({
                 notifications: [
@@ -92,7 +89,6 @@ export class PlugintesterPage implements OnInit {
             });
 
             this.scheduledNotifications = notifs;
-            console.log('scheduled notifications', notifs);
         }
 
     }
@@ -117,7 +113,6 @@ export class PlugintesterPage implements OnInit {
         firebase.firestore().collection('recipes').get()
             .then((query) => {
                 query.forEach((doc) => {
-                    console.log(doc.data());
                 });
 
             });

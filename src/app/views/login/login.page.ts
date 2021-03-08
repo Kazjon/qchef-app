@@ -45,6 +45,11 @@ export class LoginPage implements OnInit {
 
         this.state = this.loginStates.ready;
 
+        let idToken = this.dataService.getCookie('idToken');
+        if (idToken != undefined) {
+            this.router.navigateByUrl('dashboard/recipes', { replaceUrl: true });
+        }
+
     }
 
     login() {
@@ -56,12 +61,16 @@ export class LoginPage implements OnInit {
 
             this.firebaseService.loginWithEmailAndPassword(this.loginForm.value.email, this.loginForm.value.password)
                 .then((res) => {
-                    console.log(res);
+                    const firebaseResp = <any>res;
+                    if(firebaseResp && firebaseResp.user && firebaseResp.user.uid){
+                        localStorage.setItem('userID', firebaseResp.user.uid)
+                    }
                     this.firebaseService.getUserIDToken()
                         .then((res) => {
                             this.dataService.getCustomTokenFromServer(res).subscribe((customToken) => {
-                                console.log(customToken);
                                 this.dataService.initAuthToken(customToken['token']);
+                                this.dataService.createCookie('idToken', customToken['token'], 14);
+                                localStorage.setItem('loginDate',new Date().toUTCString());
                                 this.state = this.loginStates.ready;
                                 this.getSelectedMealPlan();
                             });
@@ -74,22 +83,36 @@ export class LoginPage implements OnInit {
                 });
         }
 
-    } 
+    }
 
     private getSelectedMealPlan() {
         this.dataService.getSelectedMealPlanFromServer().subscribe((res) => {
+
             this.dataHandlingService.handleMealSlotData(res)
                 .then((res: MealSlot[]) => {
                     if (res) {
                         this.dataService.setMealSlots(res);
-                        this.router.navigateByUrl('dashboard/recipes', { replaceUrl: true });
+                        this.router.navigateByUrl('splash');
                     } else {
                         this.router.navigateByUrl('onboarding', { replaceUrl: true });
                     }
                 });
         },
-            (error) => {
-                console.log(error);
+            (exception) => {
+                // need to check if server return 'Unable to authenticate'
+                if (exception && exception.error && typeof (exception.error) == "string") {
+                    const strRes = <string>exception.error;
+                    if (strRes.includes('Unable to authenticate')) {
+                        this.state = this.loginStates.error;
+                        this.enableForm();
+                        this.errorMessage = "Internal server error";
+                        this.firebaseService.logoutUserFromApp().then(() => {
+                            //this.router.navigateByUrl('login');
+                            
+                        });
+                    }
+                }
+
                 this.router.navigateByUrl('onboarding', { replaceUrl: true });
             });
 

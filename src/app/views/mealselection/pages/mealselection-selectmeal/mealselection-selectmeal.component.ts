@@ -167,9 +167,6 @@ export class MealSelectionSelectMealComponent implements OnInit {
         this.visibleMealOptions = [];
 
         for (let i = 0; i < this.mealOptions.length; i++) {
-
-            console.log(this.mealOptions);
-
             if (!this.mealOptions[i].selected || (this.currentMealSlot.recipe != undefined && this.mealOptions[i].id == this.currentMealSlot.recipe.id)) {
                 this.visibleMealOptions.push(this.mealOptions[i]);
             }
@@ -181,7 +178,6 @@ export class MealSelectionSelectMealComponent implements OnInit {
 
         for (let i = 0; i < this.mealSlots.length; i++) {
             if (this.paramMealSlot == this.mealSlots[i].id) {
-                console.log("match!");
                 this.mealSlots[i].active = true;
                 this.currentMealSlot = this.mealSlots[i];
                 this.updateCurrentMeal(this.currentMealSlot);
@@ -281,7 +277,6 @@ export class MealSelectionSelectMealComponent implements OnInit {
         this.mealSlides.getActiveIndex()
             .then((index) => {
                 let currentRecipe = this.visibleMealOptions[index];
-                console.log("slide changed");
                 this.dataService.logAction(currentRecipe.id, "viewed");
             });
     }

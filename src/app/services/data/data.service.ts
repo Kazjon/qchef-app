@@ -17,8 +17,8 @@ import { FirebaseService } from '../firebase/firebase.service';
     providedIn: 'root'
 })
 export class DataService {
-    private totalStages:number = 94;
-    private baseURL:string = "https://q-chef-backend-api-server.web.app";
+    private totalStages: number = 94;
+    private baseURL: string = "http://localhost:5000";
     httpOptions = {};
     private progressSections = [
         {
@@ -83,26 +83,19 @@ export class DataService {
 
         this.actionLog.next(actionLogUpdate);
 
-        console.log(this.actionLog.getValue());
-
     }
 
     initAuthToken(idToken) {
 
-        console.log("token!");
-
-        console.log(idToken);
-
         this.httpOptions = {
             headers: new HttpHeaders({
-              'Content-Type':  'application/json',
-              'Authorization': 'Bearer ' + idToken
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + idToken
             })
         };
     }
 
     getMealsFromServer(): Observable<MealPreference[]> {
-        console.log((this.httpOptions as any).headers);
         //return this.http.get<MealPreference[]>('assets/data/mealpreferences.json');
         return this.http.get<MealPreference[]>(this.baseURL + '/onboarding_recipe_rating', this.httpOptions);
     }
@@ -113,8 +106,6 @@ export class DataService {
     }
 
     getMealPlanSelectionFromServer(numberOfMeals: MealsPerWeekResponse): Observable<MealPreference[]> {
-        console.log(numberOfMeals);
-        //return this.http.get<MealPreference[]>('assets/data/mealpreferences.json');
         return this.http.post<MealPreference[]>(this.baseURL + '/get_meal_plan_selection', numberOfMeals, this.httpOptions);
     }
 
@@ -124,13 +115,20 @@ export class DataService {
         return this.http.post<MealPreference[]>(this.baseURL + '/retrieve_meal_plan', userID, this.httpOptions);
     }
 
-    
+
     getCustomTokenFromServer(idToken): Observable<any> {
         let payload = { idToken: idToken }
         return this.http.post<any>(this.baseURL + '/sessionLogin', payload, this.httpOptions);
     }
+
     
-    
+    postExtendSessionToServer(token): Observable<any>{
+       
+        return this.http.post<any>(this.baseURL + '/extend_session', {}, this.httpOptions);
+    }
+
+
+
     /*getMealPlanFromServer(): Observable<Object> {
         //let uid = localStorage.getItem("userID");
         //let userID = { userID: uid }
@@ -207,35 +205,21 @@ export class DataService {
                                     reviewed: false,
                                     active: false
                                 }
-                                mealSlots.push(mealSlot);                
+                                mealSlots.push(mealSlot);
                             }
-                
+
                             this.setMealSlots(mealSlots);
                         }
                     });
             },
-            (error) => {
-                console.log(error);
-            });
+                (error) => {
+                    console.log(error);
+                });
 
         }
     }
 
-    /*getMealsPerWeekFromLocal() {
 
-        let mealsPerWeek: MealsPerWeekResponse;
-        let localMealsPerWeekString = localStorage.getItem("localMealsPerWeek");
-
-        if (localMealsPerWeekString != undefined) {
-            mealsPerWeek = JSON.parse(localMealsPerWeekString);
-        }
-        else {
-            mealsPerWeek = { userID: "", number_of_recipes: 3 };
-        }
-
-        this.setMealsPerWeek(mealsPerWeek);
-
-    }*/
 
     getSurprisePreferencesFromLocal() {
 
@@ -252,6 +236,7 @@ export class DataService {
         return surprisePreferences;
     }
 
+
     getWeekStartDateFromLocal() {
 
         let date: Date;
@@ -261,7 +246,7 @@ export class DataService {
             date = new Date(localWeekStartDateString);
         }
         else {
-            date = undefined;
+            date = new Date();
         }
 
         this.setWeekStartDate(date);
@@ -270,15 +255,15 @@ export class DataService {
 
     getProgressStage() {
         let progressStage: ProgressStage;
-        progressStage = {stage: ++this.preferenceProgress.value.stage};
+        progressStage = { stage: ++this.preferenceProgress.value.stage };
         this.setProgressStage(progressStage);
-        let progressPercentage = (Math.round((progressStage.stage/this.totalStages) * 10000) / 100).toFixed(0);
+        let progressPercentage = (Math.round((progressStage.stage / this.totalStages) * 10000) / 100).toFixed(0);
         return progressPercentage;
     }
 
     getProgressMark(markLabel: string) {
-        let mark:number;
-        switch(markLabel) {
+        let mark: number;
+        switch (markLabel) {
             case "intro": mark = 1; break;
             case "mealPreference": mark = 31; break;
             case "ingredientPreference": mark = 61; break;
@@ -286,7 +271,7 @@ export class DataService {
         }
         this.setProgressStage({ stage: mark })
 
-        return (Math.round((mark/this.totalStages) * 10000) / 100).toFixed(2);
+        return (Math.round((mark / this.totalStages) * 10000) / 100).toFixed(2);
     }
 
     saveRecommendedMealsToLocal(recommendedMeals: MealPreference[]) {
@@ -312,7 +297,7 @@ export class DataService {
         this.mealsPerWeek.next(meals);
     }
 
-    setProgressStage(progressStage: ProgressStage){
+    setProgressStage(progressStage: ProgressStage) {
         this.preferenceProgress.next(progressStage);
     }
 
@@ -322,7 +307,6 @@ export class DataService {
     }
 
     setMealSlots(mealSlots: MealSlot[]) {
-        console.log("set meal slots");
         this.saveMealSlotsToLocal(mealSlots);
         this.mealSlots.next(mealSlots);
     }
@@ -383,5 +367,32 @@ export class DataService {
 
     updateTotalProgress(progress: Object[]) {
         this.totalProgress.next(progress);
+    }
+
+    removeLocalStorage(key) {
+        localStorage.removeItem(key);
+    }
+
+    getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
+    removeCookie(name){
+        document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    }
+
+    createCookie(name, value, days) {
+        var expires;
+        if (days) {
+            var date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date['toGMTString']();
+        }
+        else {
+            expires = "";
+        }
+        document.cookie = name + "=" + value + expires + "; path=/";
     }
 }

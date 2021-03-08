@@ -59,9 +59,13 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
                     this.isLoading = false;
                 });
         },
-        (error) => {
-            if (error.error.text.includes('Authentication error')) {
-                this.showLogoutUserPop();
+        (exception) => {
+            // need to check if server return 'Unable to authenticate'
+            if (exception && exception.error && typeof (exception.error) == "string") {
+                const strRes = <string>exception.error;
+                if (strRes.includes('Unable to authenticate')) {
+                    this.showLogoutUserPop();
+                }
             }
         });
         //this.progressValue = this.dataService.getProgressStage();
@@ -263,9 +267,9 @@ export class OnboardingIngredientPreferencesComponent implements OnInit {
                 {
                     text: 'Okay',
                     handler: () => {
-                        this.firebaseService.logout()
+                        this.firebaseService.logoutUserFromApp()
                             .then(() => {
-                                this.router.navigateByUrl('splash');
+                                this.router.navigateByUrl('login',  { replaceUrl: true });
                             })
                     }
                 }

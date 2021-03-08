@@ -24,8 +24,6 @@ export class DataHandlingService {
 
                 let cookTime = (data[key].cookTime != null) ? data[key].cookTime.toString() : "NULL";
 
-                console.log("yeah!");
-
                 let mealPreference: MealPreference = {
                     id: key,
                     title: data[key].title,
@@ -116,8 +114,6 @@ export class DataHandlingService {
                 mealSlots.push(mealSlot);
 
             });
-
-            console.log(mealSlots);
 
             resolve(mealSlots);
 

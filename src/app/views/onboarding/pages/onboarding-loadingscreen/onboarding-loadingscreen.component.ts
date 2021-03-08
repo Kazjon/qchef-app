@@ -37,7 +37,6 @@ export class OnboardingLoadingScreenComponent implements OnInit {
 
         this.dataService.postIngredientRatingsToServer(JSON.parse(ingredientPrefs))
             .subscribe((res) => {
-                console.log('post ingredirent', res);
                 this.dataHandlingService.handleMealPreferenceData(res)
                 .then((organisedData: MealPreference[]) => {
                     this.dataService.saveSurprisePreferencesToLocal(organisedData);
@@ -45,19 +44,18 @@ export class OnboardingLoadingScreenComponent implements OnInit {
                 });
 
             },
-            (error) => {
-                console.log(error);
-                if (error.error.text && error.error.text.includes('Authentication error')) {
-                    this.showLogoutUserPop();
-                }
-                else {
-                    this.errorService.showGenericError(error.statusText);
+            (exception) => {
+                // need to check if server return 'Unable to authenticate'
+                if (exception && exception.error && typeof (exception.error) == "string") {
+                    const strRes = <string>exception.error;
+                    if (strRes.includes('Unable to authenticate')) {
+                        this.showLogoutUserPop();
+                    }
                 }
             });
     }
 
     ionViewWillEnter() {
-        console.log('loading');
     }
 
     private createMealSlots() {
@@ -98,9 +96,9 @@ export class OnboardingLoadingScreenComponent implements OnInit {
                 {
                     text: 'Okay',
                     handler: () => {
-                        this.firebaseService.logout()
+                        this.firebaseService.logoutUserFromApp()
                             .then(() => {
-                                this.router.navigateByUrl('splash');
+                                this.router.navigateByUrl('login',  { replaceUrl: true });
                             })
                     }
                 }

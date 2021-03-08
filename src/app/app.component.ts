@@ -38,7 +38,7 @@ export class AppComponent {
             firebase.initializeApp(firebaseConfig);
         }
 
-        let idToken = localStorage.getItem("idToken");
+        let idToken = this.dataService.getCookie("idToken");
         if (idToken != undefined) {
             this.dataService.initAuthToken(idToken);
         }
@@ -83,13 +83,9 @@ export class AppComponent {
     }
 
     logout() {
-        console.log("logout!");
-        this.firebaseService.logout()
+        this.firebaseService.logoutUserFromApp()
             .then(() => {
-                console.log("logged out?");
-                console.log(this.sideMenu);
                 this.sideMenu.close();
-                localStorage.removeItem("localMealSlots");
                 this.router.navigateByUrl('splash');
             })
             .catch(() => {
