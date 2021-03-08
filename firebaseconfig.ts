@@ -1,10 +1,10 @@
 export const firebaseConfig = {
-    apiKey: "AIzaSyBVGYhfRW3WcnI-YLYfTWVBtqfG5HKZ-yQ",
-    authDomain: "q-chef.firebaseapp.com",
-    databaseURL: "https://q-chef.firebaseio.com",
-    projectId: "q-chef",
-    storageBucket: "q-chef.appspot.com",
-    messagingSenderId: "554806346445",
-    appId: "1:554806346445:web:4a3ce4f57557557a165f84",
-    measurementId: "G-G0YD881P7F"
- };
+    apiKey: "AIzaSyBFnNU-xFGEXe9zU3NBd7DF9_POGKFtxF0",
+    authDomain: "q-chef-backend-api-server.firebaseapp.com",
+    databaseURL: "https://q-chef-backend-api-server.firebaseio.com",
+    projectId: "q-chef-backend-api-server",
+    storageBucket: "q-chef-backend-api-server.appspot.com",
+    messagingSenderId: "464491131899",
+    appId: "1:464491131899:web:44cb2886c4c5070ca1915e",
+    measurementId: "G-80XNK2LQLE"
+  };
