@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { DataService } from 'src/app/services/data/data.service';
 import { DataHandlingService } from 'src/app/services/datahandling/datahandling.service';
 import { MealSlot } from 'src/app/core/objects/MealSlot';
+import { MenuController } from '@ionic/angular';
 
 @Component({
 	selector: 'app-splash',
@@ -13,23 +14,36 @@ import { MealSlot } from 'src/app/core/objects/MealSlot';
 export class SplashPage implements OnInit {
 	imgSrc: String;
 
-	constructor(private firebaseService: FirebaseService, private router: Router, private dataService: DataService, private dataHandlingService: DataHandlingService) {
+	constructor(
+		private firebaseService: FirebaseService, 
+		private router: Router, 
+		private dataService: DataService, 
+		private dataHandlingService: DataHandlingService,
+		private menu: MenuController
+	) {
 		this.imgSrc = "../../../assets/images/splash.svg"
 	}
 
 	ngOnInit() {
+	}
+
+	ionViewWillEnter() {
 		this.checkUserAuthentication();
 	}
 
 	checkUserAuthentication() {
-
+			console.log('checkUserAuthentication')
 	 
 			this.firebaseService.isUserAuthenticated()
-				.then(() => {
+				.then((res) => {
+					console.log('isUserAuthenticated ', res)
 					this.getSelectedMealPlan();
 				})
 				.catch((e) => {
 					console.log(e);
+					// if(this.menu) {
+						this.menu.close();
+					// }
 					this.router.navigateByUrl('login', { replaceUrl: true });
 				});
 	}

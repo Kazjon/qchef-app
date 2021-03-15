@@ -83,13 +83,16 @@ export class AppComponent {
     }
 
     logout() {
+        console.log('logout start')
         this.firebaseService.logoutUserFromApp()
-            .then(() => {
-                this.sideMenu.close();
+            .then((res) => {
+                console.log('logout res', res)
+                this.menu.close();
                 this.router.navigateByUrl('splash');
             })
             .catch(() => {
                 //
+                console.log('logout fail')
             });
     }
 }

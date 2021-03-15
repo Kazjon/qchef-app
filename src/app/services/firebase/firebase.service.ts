@@ -17,7 +17,7 @@ export class FirebaseService {
 
         let resolver = (resolve, reject) => {
             const token = localStorage.getItem("idToken");
-
+            console.log('token ', token, token != undefined)
             if (token != undefined) {
                 // check login date
                 if (localStorage.getItem('loginDate')) {
@@ -60,6 +60,7 @@ export class FirebaseService {
                 resolve(localStorage.getItem("userID"));
             }
             else {
+                console.log('cccwede')
                 reject(false);
             }
         }
@@ -109,8 +110,12 @@ export class FirebaseService {
             firebase.auth().signOut()
                 .then(() => {
                     resolve(true);
+                    console.log('logout true');
+
                 })
                 .catch(() => {
+                    console.log('logout false')
+
                     reject(false);
                 });
         }
@@ -120,7 +125,7 @@ export class FirebaseService {
     }
 
     logoutUserFromApp() {
-
+        console.log('logoutUserFromApp.....')
         let resolver = (resolve, reject) => {
             localStorage.removeItem('idToken');
             localStorage.removeItem("userID");
