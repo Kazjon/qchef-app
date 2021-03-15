@@ -13,7 +13,12 @@ import { MealSlot } from 'src/app/core/objects/MealSlot';
 export class SplashPage implements OnInit {
 	imgSrc: String;
 
-	constructor(private firebaseService: FirebaseService, private router: Router, private dataService: DataService, private dataHandlingService: DataHandlingService) {
+	constructor(
+		private firebaseService: FirebaseService, 
+		private router: Router, 
+		private dataService: DataService, 
+		private dataHandlingService: DataHandlingService,
+	) {
 		this.imgSrc = "../../../assets/images/splash.svg"
 	}
 
@@ -22,7 +27,6 @@ export class SplashPage implements OnInit {
 	}
 
 	checkUserAuthentication() {
-
 	 
 			this.firebaseService.isUserAuthenticated()
 				.then(() => {

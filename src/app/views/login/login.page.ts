@@ -96,6 +96,7 @@ export class LoginPage implements OnInit {
                     } else {
                         this.router.navigateByUrl('onboarding', { replaceUrl: true });
                     }
+                    this.enableForm();
                 });
         },
             (exception) => {
