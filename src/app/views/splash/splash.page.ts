@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { DataService } from 'src/app/services/data/data.service';
 import { DataHandlingService } from 'src/app/services/datahandling/datahandling.service';
 import { MealSlot } from 'src/app/core/objects/MealSlot';
-import { MenuController } from '@ionic/angular';
 
 @Component({
 	selector: 'app-splash',
@@ -19,7 +18,6 @@ export class SplashPage implements OnInit {
 		private router: Router, 
 		private dataService: DataService, 
 		private dataHandlingService: DataHandlingService,
-		private menu: MenuController
 	) {
 		this.imgSrc = "../../../assets/images/splash.svg"
 	}
