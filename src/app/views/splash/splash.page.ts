@@ -29,7 +29,7 @@ export class SplashPage implements OnInit {
 	checkUserAuthentication() {
 	 
 			this.firebaseService.isUserAuthenticated()
-				.then((res) => {
+				.then(() => {
 					this.getSelectedMealPlan();
 				})
 				.catch((e) => {
