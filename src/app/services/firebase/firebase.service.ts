@@ -1,23 +1,30 @@
 import { Injectable } from '@angular/core';
+import { MenuController } from '@ionic/angular';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import * as firebase from 'firebase/app';
 import 'firebase/analytics';
 import 'firebase/auth';
 import 'firebase/firestore';
 import { DataService } from '../data/data.service';
+import { Router } from '@angular/router';
 
 @Injectable({
     providedIn: 'root'
 })
 export class FirebaseService {
 
-    constructor(private http: HttpClient, private dataService: DataService) { }
+    constructor(
+        private http: HttpClient, 
+        private dataService: DataService,
+        private menu: MenuController,
+        private router: Router
+    ) { }
  
     isUserAuthenticated() {
 
         let resolver = (resolve, reject) => {
             const token = localStorage.getItem("idToken");
-            console.log('token ', token, token != undefined)
+
             if (token != undefined) {
                 // check login date
                 if (localStorage.getItem('loginDate')) {
@@ -60,7 +67,6 @@ export class FirebaseService {
                 resolve(localStorage.getItem("userID"));
             }
             else {
-                console.log('cccwede')
                 reject(false);
             }
         }
@@ -110,12 +116,10 @@ export class FirebaseService {
             firebase.auth().signOut()
                 .then(() => {
                     resolve(true);
-                    console.log('logout true');
-
+                    this.menu.close();
+                    this.router.navigateByUrl('splash');
                 })
                 .catch(() => {
-                    console.log('logout false')
-
                     reject(false);
                 });
         }
@@ -125,7 +129,6 @@ export class FirebaseService {
     }
 
     logoutUserFromApp() {
-        console.log('logoutUserFromApp.....')
         let resolver = (resolve, reject) => {
             localStorage.removeItem('idToken');
             localStorage.removeItem("userID");

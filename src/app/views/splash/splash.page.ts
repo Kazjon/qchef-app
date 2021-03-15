@@ -25,25 +25,17 @@ export class SplashPage implements OnInit {
 	}
 
 	ngOnInit() {
-	}
-
-	ionViewWillEnter() {
 		this.checkUserAuthentication();
 	}
 
 	checkUserAuthentication() {
-			console.log('checkUserAuthentication')
 	 
 			this.firebaseService.isUserAuthenticated()
 				.then((res) => {
-					console.log('isUserAuthenticated ', res)
 					this.getSelectedMealPlan();
 				})
 				.catch((e) => {
 					console.log(e);
-					// if(this.menu) {
-						this.menu.close();
-					// }
 					this.router.navigateByUrl('login', { replaceUrl: true });
 				});
 	}
