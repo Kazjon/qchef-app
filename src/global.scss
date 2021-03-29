@@ -38,6 +38,24 @@
                 display: flex;
             }
         }
+
+        .transparent-butt-link {
+            --background: transparent;
+            color: #3fa4dd;
+            text-transform: uppercase;
+            font-size: 14px;
+            line-height: 17px;
+            font-family: var(--font-family-button);
+            font-style: var(--font-style-button);
+            font-weight: var(--font-weight-button);
+            --box-shadow: none;
+
+            &:active, &:hover, &:focus {
+                --background-activated: transparent;
+                --background-focused: transparent;
+                --background-hover: transparent;
+            }
+        }
     }
 
     app-ingredientmodal.ion-page {
@@ -392,15 +410,37 @@
         }
     }
 
-    .submit-invalid-modal .modal-wrapper{
+    .submit-invalid-modal .modal-wrapper {
         margin: auto 24px !important;
         min-height: 340px;
         height: auto;
     }
+
     .exit-review-modal .modal-wrapper {
         margin: auto 24px !important;
         min-height: 370px;
         height: auto;
+    }
+
+    .forgot-password-modal .modal-wrapper  {
+        margin: auto 24px !important;
+        min-height: 270px;
+        padding: 0 43px;
+        height: auto;
+        .header {
+            padding: 12px 0 7px;
+            margin: 18px 0;
+        }
+           
+        .button-group {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+
+            ion-button {
+                width: 48%;
+            }
+        }
     }
 
     .slide-options {

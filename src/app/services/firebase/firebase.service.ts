@@ -95,6 +95,25 @@ export class FirebaseService {
 
     }
 
+    createUserWithEmailAndPassword(email, password) {
+        console.log('email...', email)
+        let resolver = (resolve, reject) => {
+
+            firebase.auth().createUserWithEmailAndPassword(email, password)
+                .then((res) => {
+                    resolve(res);
+                })
+                .catch((error) => {
+                    console.log('error...', error)
+                    reject(error);
+                });
+
+        }
+
+        return new Promise(resolver);
+
+    }
+
     getUserIDToken() {
 
         let resolver = (resolve, reject) => {
@@ -108,6 +127,16 @@ export class FirebaseService {
 
         return new Promise(resolver);
 
+    }
+
+    sendPasswordResetEmail(email){
+        console.log('meial', email)
+        firebase.auth().sendPasswordResetEmail(email).then(function() {
+            // Email sent.
+            console.log('...reset..')
+        }).catch(function(error) {
+         
+        });	
     }
 
     logout() {

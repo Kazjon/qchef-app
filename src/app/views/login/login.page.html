@@ -1,16 +1,32 @@
 <ion-content no-bounce has-bouncing="false" forceOverscroll="false">
 
-	<div class="content-wrapper row">
+	<div class="content-wrapper column">
 		<ion-card class="content-prompt" [ngClass]="{ 'loading': state === 'loading'}">
-			<ion-card-header>
-				<ion-card-title>Login to Start</ion-card-title>
-			</ion-card-header>
+			<ion-segment (ionChange)="segmentChanged($event)" value="login">
+				<ion-segment-button value="login">
+				  <ion-label>Login</ion-label>
+				</ion-segment-button>
+				<ion-segment-button value="register">
+				  <ion-label>Register
+				  </ion-label>
+				</ion-segment-button>
+			</ion-segment>
 
-			<ion-card-content>
+			<ion-card-content *ngIf="!switchToRegisterForm">
 				<form (ngSubmit)="login()" [formGroup]="loginForm">
 					<ion-input formControlName="email" type="email" placeholder="Username"></ion-input>
 					<ion-input formControlName="password" type="password" placeholder="Password"></ion-input>
 					<ion-button mode="ios" type="submit" [disabled]="formDisabled">Login</ion-button>
+					<div class="error" [ngClass]="{'is-error': state === 'error'}">{{ errorMessage }}</div>
+				</form>
+			</ion-card-content>
+
+			<ion-card-content *ngIf="switchToRegisterForm">
+				<form (ngSubmit)="register()" [formGroup]="registerForm">
+					<ion-input formControlName="email" type="email" placeholder="Username"></ion-input>
+					<ion-input formControlName="password" type="password" placeholder="Password"></ion-input>
+					<ion-input formControlName="confirmPassword" type="password" placeholder="Confirm Password"></ion-input>
+					<ion-button mode="ios" type="submit" [disabled]="formDisabled">Register</ion-button>
 					<div class="error" [ngClass]="{'is-error': state === 'error'}">{{ errorMessage }}</div>
 				</form>
 			</ion-card-content>
@@ -20,6 +36,8 @@
 			</div>
 
 		</ion-card>
+		<ion-button fill="clear" class="transparent-butt-link" (click)="goTo('forgotpassword')" >Forgot Password</ion-button>
+
 	</div>
 
 </ion-content>
