@@ -426,22 +426,12 @@
 
     .forgot-password-modal .modal-wrapper  {
         margin: auto 24px !important;
-        min-height: 270px;
+        min-height: 400px;
         padding: 0 43px;
         height: auto;
         .header {
             padding: 12px 0 7px;
             margin: 18px 0;
-        }
-           
-        .button-group {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-
-            ion-button {
-                width: 48%;
-            }
         }
     }
 
