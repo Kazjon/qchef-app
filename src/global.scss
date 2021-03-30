@@ -49,6 +49,8 @@
             font-style: var(--font-style-button);
             font-weight: var(--font-weight-button);
             --box-shadow: none;
+            max-width: 400px;
+            width: 87%;
 
             &:active, &:hover, &:focus {
                 --background-activated: transparent;

@@ -96,7 +96,6 @@ export class FirebaseService {
     }
 
     createUserWithEmailAndPassword(email, password) {
-        console.log('email...', email)
         let resolver = (resolve, reject) => {
 
             firebase.auth().createUserWithEmailAndPassword(email, password)
@@ -104,7 +103,6 @@ export class FirebaseService {
                     resolve(res);
                 })
                 .catch((error) => {
-                    console.log('error...', error)
                     reject(error);
                 });
 
@@ -130,13 +128,16 @@ export class FirebaseService {
     }
 
     sendPasswordResetEmail(email){
-        console.log('meial', email)
-        firebase.auth().sendPasswordResetEmail(email).then(function() {
-            // Email sent.
-            console.log('...reset..')
-        }).catch(function(error) {
-         
-        });	
+        let resolver = (resolve, reject) => {
+            firebase.auth().sendPasswordResetEmail(email).then(function() {
+                // Email sent.
+                resolve(true);
+            }).catch(function(error) {
+                reject(error);
+            });	
+        }
+
+        return new Promise(resolver);
     }
 
     logout() {

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { ForgotpasswordmodalComponent } from 'src/app/core/components/forgotpasswordmodal/forgotpasswordmodal.component';
@@ -12,6 +12,15 @@ import { FirebaseService } from 'src/app/services/firebase/firebase.service';
 })
 export class ForgotpasswordPage implements OnInit {
   forgotPasswordForm: FormGroup;
+  errorMessage: string = undefined;
+  formDisabled: boolean = false;
+  loginStates = {
+    loading: "loading",
+    ready: "ready",
+    error: "error"
+  }
+  state: string = undefined;
+
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
@@ -26,10 +35,19 @@ export class ForgotpasswordPage implements OnInit {
           Validators.pattern("[^ @]*@[^ @]*")
       ]]
     });
+
+    this.state = this.loginStates.ready;
   }
 
   forgotPassword() {
-    this.confirmSendForgotPasswordEmailPopup()
+    if (this.forgotPasswordForm.valid) {
+      this.state = this.loginStates.ready;
+      this.enableForm();
+      this.errorMessage = "";
+      this.confirmSendForgotPasswordEmailPopup()
+    } else {
+      this.getErrorMessage();
+    }
   }
 
   async confirmSendForgotPasswordEmailPopup() {
@@ -41,10 +59,36 @@ export class ForgotpasswordPage implements OnInit {
             'email': this.forgotPasswordForm.get('email').value,
         }
     });
+    
+    modal.onDidDismiss()
+      .then((data) => {
+        if(data.data) {
+          this.state = this.loginStates.error;
+          this.errorMessage = data.data;
+        } else {
+          this.state = this.loginStates.ready;
+          this.errorMessage = undefined;
+        }
+        
+    });
+
     return await modal.present();
   }
 
-  goTo(route) {
-    this.router.navigateByUrl(route);
+  private getErrorMessage() {
+    this.state = this.loginStates.error;
+    this.enableForm();
+    this.errorMessage = "Please enter a valid email address.";
+  }  
+
+  private disableForm() {
+    this.forgotPasswordForm.disable();
+    this.formDisabled = true;
   }
+
+  private enableForm() {
+      this.forgotPasswordForm.enable();
+      this.formDisabled = false;
+  }
+  
 }

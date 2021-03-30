@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { FirebaseService } from 'src/app/services/firebase/firebase.service';
 
@@ -10,6 +11,7 @@ import { FirebaseService } from 'src/app/services/firebase/firebase.service';
 export class ForgotpasswordmodalComponent implements OnInit {
   @Input() email: string;
   constructor(
+    private router: Router,
     public modalController: ModalController,
     private firebaseService: FirebaseService
   ) { }
@@ -21,7 +23,16 @@ export class ForgotpasswordmodalComponent implements OnInit {
   }
 
   confirmSendEmail() {
-    this.modalController.dismiss();
-    this.firebaseService.sendPasswordResetEmail(this.email);
+    
+    this.firebaseService.sendPasswordResetEmail(this.email).then((res) => {
+      this.modalController.dismiss();
+      this.router.navigateByUrl('login', { replaceUrl: true });
+
+    })
+    .catch((error) => {
+      console.log(error)
+      let errorMsg = error.message;
+      this.modalController.dismiss(errorMsg);
+    });
   }
 }
