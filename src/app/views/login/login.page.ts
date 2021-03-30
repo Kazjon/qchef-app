@@ -200,7 +200,7 @@ export class LoginPage implements OnInit {
                         break;
                     case 'password': 
                         if(controlErrors.minlength || controlErrors.required) {
-                            this.errorMessage = "Password must be at least 8 characters";
+                            this.errorMessage = "Password must be at least 8 characters long";
                         } else {
                             this.errorMessage = "Password must contain uppercase letters and characters";
                         }
