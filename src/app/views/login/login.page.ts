@@ -175,7 +175,7 @@ export class LoginPage implements OnInit {
                                 localStorage.setItem('idToken', customToken['token']);
                                 localStorage.setItem('loginDate',new Date().toUTCString());
                                 this.state = this.loginStates.ready;
-                                this.getSelectedMealPlan();
+                                this.router.navigateByUrl('onboarding', { replaceUrl: true });
                             });
                         })
                 })
