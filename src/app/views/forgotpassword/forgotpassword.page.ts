@@ -45,8 +45,6 @@ export class ForgotpasswordPage implements OnInit {
       this.enableForm();
       this.errorMessage = "";
       this.confirmSendForgotPasswordEmailPopup()
-    } else {
-      this.getErrorMessage();
     }
   }
 
@@ -74,12 +72,6 @@ export class ForgotpasswordPage implements OnInit {
 
     return await modal.present();
   }
-
-  private getErrorMessage() {
-    this.state = this.loginStates.error;
-    this.enableForm();
-    this.errorMessage = "Please enter a valid email address.";
-  }  
 
   private disableForm() {
     this.forgotPasswordForm.disable();

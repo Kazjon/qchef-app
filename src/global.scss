@@ -81,6 +81,14 @@
         input {
             height: 52px;
         }
+
+        &.ion-invalid.ion-dirty {
+            border: 1px solid var(--ion-color-danger);
+        }
+
+        &.not-match {
+            border: 1px solid var(--ion-color-danger);
+        }
     }
 
     ion-spinner {
@@ -674,6 +682,15 @@
     font-size: 0.9em;
     margin: 10px;
 
+    &.is-error {
+        display: block;
+    }
+}
+
+.inline-error {
+    display: none;
+    color: var(--ion-color-danger);
+    font-size: 0.9em;
     &.is-error {
         display: block;
     }

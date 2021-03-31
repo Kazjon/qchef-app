@@ -59,7 +59,7 @@ export class LoginPage implements OnInit {
         this.loginForm = this.formBuilder.group({
             email: ['', [
                 Validators.required,
-                Validators.pattern("[^ @]*@[^ @]*")
+                Validators.pattern("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"),
             ]],
             password: ['', [
                 Validators.required,
@@ -72,7 +72,7 @@ export class LoginPage implements OnInit {
         this.registerForm = this.formBuilder.group({
             email: ['', [
                 Validators.required,
-                Validators.pattern("[^ @]*@[^ @]*")
+                Validators.pattern("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")
             ]],
             password: ['', [
                 Validators.required,
@@ -112,8 +112,6 @@ export class LoginPage implements OnInit {
                     this.enableForm();
                     this.errorMessage = error.message;
                 });
-        } else {
-            this.getErrorMessage(this.loginForm);
         }
 
     }
@@ -162,6 +160,7 @@ export class LoginPage implements OnInit {
 
     register() {
         if (this.registerForm.valid) {
+            this.state = this.loginStates.loading;
             this.firebaseService.createUserWithEmailAndPassword(this.registerForm.value.email, this.registerForm.value.password)
                 .then((res) => {
                     const firebaseResp = <any>res;
@@ -184,38 +183,7 @@ export class LoginPage implements OnInit {
                     this.enableForm();
                     this.errorMessage = error.message;
                 });
-        } else {
-            this.getErrorMessage(this.registerForm);
         }
-    }
-
-    private getErrorMessage(group: FormGroup) {
-        Object.keys(group.controls).forEach(key => {
-            const controlErrors: ValidationErrors = group.get(key).errors;
-            if (controlErrors != null) {
-                this.state = this.loginStates.error;
-                this.enableForm();
-                switch(key) {
-                    case 'email': this.errorMessage = "Please enter a valid email address.";
-                        break;
-                    case 'password': 
-                        if(controlErrors.minlength || controlErrors.required) {
-                            this.errorMessage = "Password must be at least 8 characters long";
-                        } else {
-                            this.errorMessage = "Password must contain uppercase letters and characters";
-                        }
-                        break;
-                    case 'notSame': this.errorMessage = "Passwords do not match";
-                        break;
-                }
-            } else {
-                if(group.hasError('notSame')) {
-                    this.state = this.loginStates.error;
-                    this.enableForm();
-                    this.errorMessage = "Passwords not match";
-                }
-            }
-        });
     }
 
     private disableForm() {
