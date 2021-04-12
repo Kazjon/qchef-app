@@ -874,7 +874,7 @@ h1 {
 
 
 .safe-top {
-    margin-top: env(safe-area-inset-top, 20px)
+    padding: 0;
 }
 
 .button-previous {
