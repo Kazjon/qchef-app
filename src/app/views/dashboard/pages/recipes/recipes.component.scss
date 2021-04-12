@@ -5,8 +5,7 @@ ion-content {
 }
 
 .mealslot {
-    width: 90%;
-    max-width: 400px;
+    width: 100vw;
     margin-bottom: 50px;
 
     &:last-child {
@@ -28,6 +27,13 @@ ion-content {
             border-top-left-radius: 8px;
             border-top-right-radius: 8px;
         }
+    }
+
+    .meal-content {
+        width: 90%;
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 0 20px;
     }
 }
 

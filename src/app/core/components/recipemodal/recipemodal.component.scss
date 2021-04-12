@@ -29,6 +29,7 @@
 }
 
 .meal-details {
+    margin-top: 0px;
     margin-bottom: 13px;
     text-align: left;
 
@@ -134,7 +135,8 @@
     .method-steps {
         display: flex;
         flex-direction: row;
-
+        padding-bottom: 15px;
+        
         .list-node {
             padding-right: 15px;
 
@@ -149,7 +151,7 @@
         .list-content {
             align-self: center;
             p {
-                padding: 0;
+                padding: 8px 0 0;
             }
         }
     }
