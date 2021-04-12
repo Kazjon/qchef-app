@@ -2,7 +2,7 @@
 
 	<div class="content-wrapper column">
 		<ion-card class="content-prompt" [ngClass]="{ 'loading': state === 'loading'}">
-			<ion-segment (ionChange)="segmentChanged($event)" value="login">
+			<ion-segment (ionChange)="segmentChanged($event)" value="login" mode="md">
 				<ion-segment-button value="login">
 				  <ion-label>Login</ion-label>
 				</ion-segment-button>
@@ -41,7 +41,7 @@
 			</div>
 
 		</ion-card>
-		<ion-button fill="clear" class="transparent-butt-link" [routerLink]="['/forgotpassword']" >Forgot Password</ion-button>
+		<ion-button fill="clear" class="transparent-butt-link" [routerLink]="['/forgotpassword']" >Forgot Password?</ion-button>
 
 	</div>
 
