@@ -10,6 +10,10 @@ ion-card ion-card-content {
     padding: 30px 24px 40px;
 }
 
-ion-segment.ios {
-    height: 35px;
+ion-segment {
+    padding: 15px 24px 0;
+
+    &.ios {
+        height: 35px;
+    }
 }
