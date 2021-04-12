@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, ValidationErrors, AbstractControl } from '@angular/forms';
 import { FirebaseService } from '../../services/firebase/firebase.service';
 import { Router } from '@angular/router';
 import { DataService } from 'src/app/services/data/data.service';
@@ -13,6 +13,7 @@ import { MealSlot } from 'src/app/core/objects/MealSlot';
 })
 export class LoginPage implements OnInit {
     loginForm: FormGroup;
+    registerForm: FormGroup;
     formSubmitted: boolean = false;
     formDisabled: boolean = false;
     errorMessage: string = undefined;
@@ -22,6 +23,7 @@ export class LoginPage implements OnInit {
         error: "error"
     }
     state: string = undefined;
+    switchToRegisterForm: boolean = false;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -32,24 +34,53 @@ export class LoginPage implements OnInit {
 
     ngOnInit() {
 
-        this.loginForm = this.formBuilder.group({
-            email: ['', [
-                Validators.required,
-                Validators.pattern("[^ @]*@[^ @]*")
-            ]],
-            password: ['', [
-                Validators.required,
-                Validators.minLength(6)
-            ]]
-        });
-
+        this.createLoginForm();
+        
         this.state = this.loginStates.ready;
 
         let idToken = localStorage.getItem('idToken');
         if (idToken != undefined) {
             this.router.navigateByUrl('dashboard/recipes', { replaceUrl: true });
         }
+    }
 
+    segmentChanged(ev: any) {
+        this.state = this.loginStates.ready;
+        this.enableForm();
+        this.errorMessage = "";
+        console.log('Segment changed', ev);
+        this.switchToRegisterForm = !this.switchToRegisterForm;
+        if (this.switchToRegisterForm) {
+            this.createRegisterForm()
+        }
+    }
+
+    private createLoginForm() {
+        this.loginForm = this.formBuilder.group({
+            email: ['', [
+                Validators.required,
+                Validators.pattern("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"),
+            ]],
+            password: ['', [
+                Validators.required,
+                Validators.minLength(8),
+            ]]
+        });
+    }
+
+    private createRegisterForm() {
+        this.registerForm = this.formBuilder.group({
+            email: ['', [
+                Validators.required,
+                Validators.pattern("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")
+            ]],
+            password: ['', [
+                Validators.required,
+                Validators.minLength(8),
+                Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}')
+            ]],
+            confirmPassword: [''],
+        }, {validator: [this.checkPasswords]});
     }
 
     login() {
@@ -117,6 +148,42 @@ export class LoginPage implements OnInit {
                 this.router.navigateByUrl('onboarding', { replaceUrl: true });
             });
 
+    }
+
+    checkPasswords(group: FormGroup) {
+        let fieldsMatch = null;
+        let field1 = group.get('password').value;
+        let field2 = group.get('confirmPassword').value;
+        (field1 === field2) ? fieldsMatch = true : fieldsMatch = { notSame: true }
+        return fieldsMatch;
+    }
+
+    register() {
+        if (this.registerForm.valid) {
+            this.state = this.loginStates.loading;
+            this.firebaseService.createUserWithEmailAndPassword(this.registerForm.value.email, this.registerForm.value.password)
+                .then((res) => {
+                    const firebaseResp = <any>res;
+                    if(firebaseResp && firebaseResp.user && firebaseResp.user.uid){
+                        localStorage.setItem('userID', firebaseResp.user.uid)
+                    }
+                    this.firebaseService.getUserIDToken()
+                        .then((res) => {
+                            this.dataService.getCustomTokenFromServer(res).subscribe((customToken) => {
+                                this.dataService.initAuthToken(customToken['token']);
+                                localStorage.setItem('idToken', customToken['token']);
+                                localStorage.setItem('loginDate',new Date().toUTCString());
+                                this.state = this.loginStates.ready;
+                                this.router.navigateByUrl('onboarding', { replaceUrl: true });
+                            });
+                        })
+                })
+                .catch((error) => {
+                    this.state = this.loginStates.error;
+                    this.enableForm();
+                    this.errorMessage = error.message;
+                });
+        }
     }
 
     private disableForm() {

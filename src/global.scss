@@ -38,6 +38,26 @@
                 display: flex;
             }
         }
+
+        .transparent-butt-link {
+            --background: transparent;
+            color: #3fa4dd;
+            text-transform: uppercase;
+            font-size: 14px;
+            line-height: 17px;
+            font-family: var(--font-family-button);
+            font-style: var(--font-style-button);
+            font-weight: var(--font-weight-button);
+            --box-shadow: none;
+            max-width: 400px;
+            width: 87%;
+
+            &:active, &:hover, &:focus {
+                --background-activated: transparent;
+                --background-focused: transparent;
+                --background-hover: transparent;
+            }
+        }
     }
 
     app-ingredientmodal.ion-page {
@@ -60,6 +80,14 @@
 
         input {
             height: 52px;
+        }
+
+        &.ion-invalid.ion-dirty {
+            border: 1px solid var(--ion-color-danger);
+        }
+
+        &.not-match {
+            border: 1px solid var(--ion-color-danger);
         }
     }
 
@@ -392,15 +420,27 @@
         }
     }
 
-    .submit-invalid-modal .modal-wrapper{
+    .submit-invalid-modal .modal-wrapper {
         margin: auto 24px !important;
         min-height: 340px;
         height: auto;
     }
+
     .exit-review-modal .modal-wrapper {
         margin: auto 24px !important;
         min-height: 370px;
         height: auto;
+    }
+
+    .forgot-password-modal .modal-wrapper  {
+        margin: auto 15px !important;
+        min-height: 400px;
+        padding: 0 43px;
+        height: auto;
+        .header {
+            padding: 12px 0 7px;
+            margin: 18px 0;
+        }
     }
 
     .slide-options {
@@ -647,6 +687,15 @@
     }
 }
 
+.inline-error {
+    display: none;
+    color: var(--ion-color-danger);
+    font-size: 0.9em;
+    &.is-error {
+        display: block;
+    }
+}
+
 .vertical-center {
     display: flex;
     align-items: center;
@@ -825,7 +874,7 @@ h1 {
 
 
 .safe-top {
-    margin-top: env(safe-area-inset-top, 20px)
+    padding: 0;
 }
 
 .button-previous {

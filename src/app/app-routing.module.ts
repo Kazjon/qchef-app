@@ -17,6 +17,10 @@ const routes: Routes = [
 		loadChildren: () => import('./views/login/login.module').then(m => m.LoginPageModule)
 	},
 	{
+		path: 'forgotpassword',
+		loadChildren: () => import('./views/forgotpassword/forgotpassword.module').then(m => m.ForgotpasswordPageModule)
+	},
+	{
 		path: 'splash',
 		loadChildren: () => import('./views/splash/splash.module').then(m => m.SplashPageModule)
 	},
@@ -42,7 +46,11 @@ const routes: Routes = [
 	{ 	path: '',
 		redirectTo: 'splash',
 		pathMatch: 'full'
-	}
+	},
+  {
+    path: 'forgotpassword',
+    loadChildren: () => import('./views/forgotpassword/forgotpassword.module').then( m => m.ForgotpasswordPageModule)
+  }
 ];
 
 @NgModule({
