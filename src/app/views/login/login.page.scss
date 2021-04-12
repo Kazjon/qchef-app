@@ -11,7 +11,8 @@ ion-card ion-card-content {
 }
 
 ion-segment {
-    padding: 15px 24px 0;
+    width: auto;
+    margin: 15px 24px 0;
 
     &.ios {
         height: 35px;
