@@ -61,6 +61,7 @@ export class SplashPage implements OnInit {
 						});
 					}
 				}
+				this.router.navigateByUrl('onboarding', { replaceUrl: true });
 			});
 
 	}
