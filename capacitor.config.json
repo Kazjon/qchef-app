@@ -1,5 +1,5 @@
 {
-  "appId": "com.ent.theprojectfactory.qchef",
+  "appId": "com.theprojectfactory.qchef",
   "appName": "QChef",
   "bundledWebRuntime": false,
   "npmClient": "npm",
