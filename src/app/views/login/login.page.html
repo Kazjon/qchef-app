@@ -17,7 +17,7 @@
 					<ion-input formControlName="email" type="email" placeholder="Email" ></ion-input>
 					<div class="inline-error" [ngClass]="{'is-error': loginForm.get('email').dirty && loginForm.get('email').invalid}">Please enter a valid email address</div>
 					<ion-input formControlName="password" type="password" placeholder="Password"></ion-input>
-					<div class="inline-error" [ngClass]="{'is-error': loginForm.get('password').dirty && loginForm.get('password').invalid}">Password to contain capital, symbol and 8 characters</div>
+					<div class="inline-error" [ngClass]="{'is-error': loginForm.get('password').dirty && loginForm.get('password').invalid}">Password must contain 1 capital, 1 symbol and at least 9 characters</div>
 					<ion-button mode="ios" type="submit" [disabled]="formDisabled">Login</ion-button>
 					<div class="error" [ngClass]="{'is-error': state === 'error'}">{{ errorMessage }}</div>
 				</form>
@@ -28,7 +28,7 @@
 					<ion-input formControlName="email" type="email" placeholder="Email" ></ion-input>
 					<div class="inline-error" [ngClass]="{'is-error': registerForm.get('email').dirty && registerForm.get('email').invalid}">Please enter a valid email address</div>
 					<ion-input formControlName="password" type="password" placeholder="Password"></ion-input>
-					<div class="inline-error" [ngClass]="{'is-error': registerForm.get('password').dirty && registerForm.get('password').invalid}">Password to contain capital, symbol and 8 characters</div>
+					<div class="inline-error" [ngClass]="{'is-error': registerForm.get('password').dirty && registerForm.get('password').invalid}">Password must contain 1 capital, 1 symbol and at least 9 characters</div>
 					<ion-input formControlName="confirmPassword" type="password" placeholder="Confirm Password" [ngClass]="{'not-match': registerForm.get('password').value != registerForm.get('confirmPassword').value}"></ion-input>
 					<div class="inline-error" [ngClass]="{'is-error': registerForm.get('confirmPassword').dirty && registerForm.get('password').value != registerForm.get('confirmPassword').value}">Passwords do not match</div>
 					<ion-button mode="ios" type="submit" [disabled]="formDisabled">Register</ion-button>
