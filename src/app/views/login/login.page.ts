@@ -63,7 +63,7 @@ export class LoginPage implements OnInit {
             ]],
             password: ['', [
                 Validators.required,
-                Validators.minLength(8),
+                Validators.minLength(9),
             ]]
         });
     }
@@ -76,8 +76,7 @@ export class LoginPage implements OnInit {
             ]],
             password: ['', [
                 Validators.required,
-                Validators.minLength(8),
-                Validators.pattern('(?=.*[a-z])(?=.*[A-Z])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{8,}')
+                Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&\/\-=+_<>.,\\\]\[():;"~|{}])[A-Za-z\d@$!%*?&\/\-=+_<>.,\\\]\[():;"~|{}]{8,}$/)
             ]],
             confirmPassword: [''],
         }, {validator: [this.checkPasswords]});
