@@ -1,236 +1,241 @@
 ion-content {
-    --padding-start: 18px;
-    --padding-end: 18px;
+  --padding-start: 18px;
+  --padding-end: 18px;
 
-    .content-wrapper {
-        align-items: start;
+  .content-wrapper {
+    align-items: start;
+  }
+
+  .page-info {
+    text-align: left;
+    padding-top: 20px;
+  }
+
+  .meal-note {
+    padding: 12px 0;
+  }
+
+  h1 {
+    font-size: 36px;
+    line-height: 45px;
+  }
+
+  p.summary-description {
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+
+  p.summary-description {
+    margin-bottom: 15px;
+  }
+
+  ion-button {
+    width: 240px;
+  }
+
+  .button-wrap {
+    width: 100%;
+    text-align: center;
+    padding-bottom: 54px;
+    margin-top: 54px;
+
+    button {
+      width: 87%;
+      height: 37px;
+      border-radius: 50px;
+      background: #64c7ff;
+      font-family: --var(--font-family-body);
+      font-weight: bold;
+      color: white;
+      font-size: 14px;
+      text-transform: uppercase;
+
+      &.disabled {
+        background: #eeeeee;
+      }
+
+      &:active,
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+
+  .meal-selection {
+    width: 100%;
+
+    h2 {
+      font-size: 16px;
+      margin-bottom: 6px;
     }
 
-    .page-info {
-        text-align: left;
-        padding-top: 20px;
+    .link {
+      width: 100%;
+      text-align: center;
+      color: #64c7ff;
+      font-size: 12px;
+      font-weight: 600;
+      margin-top: 11px;
+      letter-spacing: -0.03em;
     }
 
-    h1{
-        font-size: 36px;
-        line-height: 45px;
-    }
+    .meal-wrap {
+      background: #fefefe;
+      border: 1px solid #e3e3e3;
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+      border-radius: 8px;
+      width: 100%;
+      height: 130px;
+      display: flex;
+      justify-content: flex-start;
+      overflow: hidden;
 
-    p.summary-description {
-        padding-left: 6px;
-        padding-right: 6px;
-    }
+      .image-wrap {
+        width: 40%;
+        max-width: 200px;
+        height: 100%;
 
-    p.summary-description {
-        margin-bottom: 15px;
+        img {
+          height: 100%;
+          width: 100%;
+          object-fit: cover;
+        }
+      }
+
+      .meal-content {
+        flex: 1;
+        padding-left: 13px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        padding-right: 13px;
+
+        .title {
+          font-size: 16px;
+          margin: 5px 0;
+        }
+
+        .detail {
+          font-size: 12px;
+          margin-bottom: 5px;
+
+          .icon {
+            width: 18px;
+            height: 18px;
+            display: inline-block;
+            vertical-align: bottom;
+            margin-right: 5px;
+
+            &.cooktime {
+              background: url(../../../../../assets/images/icon-cooktime.svg) center center no-repeat;
+              background-size: contain;
+            }
+
+            &.ingredients {
+              background: url(../../../../../assets/images/icon-ingredients.svg) center center no-repeat;
+              background-size: contain;
+            }
+          }
+
+          .link {
+            margin: 0;
+            text-align: left;
+            display: inline-block;
+            width: auto;
+          }
+        }
+      }
+
+      &.empty {
+        justify-content: center;
+        align-items: center;
+      }
     }
 
     ion-button {
-        width: 240px;
+      &.small {
+        --background: transparent;
+
+        &:active,
+        &:hover,
+        &:focus {
+          --background: transparent !important;
+          --background-activated: transparent !important;
+          --background-focused: transparent !important;
+          --background-hovered: transparent !important;
+        }
+      }
+    }
+  }
+
+  ion-item {
+    padding-inline-start: 0;
+    padding-inline-end: 0;
+    border: 1px solid var(--ion-color-input-border);
+    border-radius: 8px;
+    margin-bottom: 18px;
+    width: 100%;
+    height: 126px;
+    display: flex;
+
+    &:last-of-type {
+      margin-bottom: 56px;
     }
 
-    .button-wrap {
-        width: 100%;
-        text-align: center;
-        padding-bottom: 54px;
-        margin-top: 54px;
-
-        button {
-            width: 87%;
-            height: 37px;
-            border-radius: 50px;
-            background: #64C7FF;
-            font-family: --var(--font-family-body);
-            font-weight: bold;
-            color: white;
-            font-size: 14px;
-            text-transform: uppercase;
-
-            &.disabled {
-                background: #EEEEEE;
-            }
-
-            &:active, &:focus {
-                outline: none;
-            }
-
-        }
+    ion-thumbnail {
+      border-radius: 8px 0px 0px 8px;
+      margin-top: 0;
+      margin-bottom: 0;
+      height: 126px;
+      width: 100px;
+      object-fit: cover;
     }
 
-    .meal-selection {
-        width: 100%;
+    ion-label {
+      h2,
+      p {
+        font-family: var(--font-family-body);
+        font-style: var(--font-style-body);
+        font-weight: var(--font-weight-body);
+        color: var(--ion-color-font-main);
+      }
 
-        h2 {
-            font-size: 16px;
-            margin-bottom: 6px;
-        }
+      h2 {
+        font-size: 16px;
+        line-height: 18px;
+        margin-bottom: 5px;
+      }
 
-        .link {
-            width: 100%;
-            text-align: center;
-            color: #64C7FF;
-            font-size: 12px;
-            font-weight: 600;
-            margin-top: 11px;
-            letter-spacing: -0.03em;
-        }
+      p {
+        font-size: 12px;
+        line-height: 18px;
+        margin-top: 0;
+      }
 
-        .meal-wrap {
-            background: #FEFEFE;
-            border: 1px solid #E3E3E3;
-            box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-            border-radius: 8px;
-            width: 100%;
-            height: 130px;
-            display: flex;
-            justify-content: flex-start;
-            overflow: hidden;
+      .text-button {
+        font-family: var(--font-family-question-button) !important;
+        font-style: var(--font-style-question-button);
+        font-weight: var(--font-weight-question-button);
+        font-size: 12px;
+        line-height: 16px;
+        text-transform: uppercase;
 
-            .image-wrap {
-                width: 40%;
-                max-width: 200px;
-                height: 100%;
-
-                img {
-                    height: 100%;
-                    width: 100%;
-                    object-fit: cover;
-                }
-            }
-
-            .meal-content {
-                flex: 1;
-                padding-left: 13px;
-                display: flex;
-                flex-direction: column;
-                justify-content: space-evenly;
-                padding-right: 13px;
-
-                .title {
-                    font-size: 16px;
-                    margin: 5px 0;
-                }
-
-                .detail {
-                    font-size: 12px;
-                    margin-bottom: 5px;
-
-                    .icon {
-                        width: 18px;
-                        height: 18px;
-                        display: inline-block;
-                        vertical-align: bottom;
-                        margin-right: 5px;
-
-                        &.cooktime {
-                            background: url(../../../../../assets/images/icon-cooktime.svg) center center no-repeat;
-                            background-size: contain;
-                        }
-
-                        &.ingredients {
-                            background: url(../../../../../assets/images/icon-ingredients.svg) center center no-repeat;
-                            background-size: contain;
-                        }
-                    }
-
-                    .link {
-                        margin: 0;
-                        text-align: left;
-                        display: inline-block;
-                        width: auto;
-                    }
-                }
-            }
-
-            &.empty {
-
-                justify-content: center;
-                align-items: center;
-            }
-        }
-
-        ion-button {
-            &.small {
-                --background: transparent;
-
-                &:active, &:hover, &:focus {
-                    --background: transparent!important;
-                    --background-activated: transparent!important;
-                    --background-focused: transparent!important;
-                    --background-hovered: transparent!important;
-                }
-            }
-        }
+        color: var(--ion-color-primary);
+        //margin-top: 9px;
+      }
     }
 
-    ion-item {
-        padding-inline-start: 0;
-        padding-inline-end: 0;
-        border: 1px solid var(--ion-color-input-border);
-        border-radius: 8px;
-        margin-bottom: 18px;
-        width: 100%;
-        height: 126px;
-        display: flex;
-
-        &:last-of-type {
-            margin-bottom: 56px;
-        }
-
-        ion-thumbnail {
-            border-radius: 8px 0px 0px 8px;
-            margin-top: 0;
-            margin-bottom: 0;
-            height: 126px;
-            width: 100px;
-            object-fit: cover;
-        }
-
-        ion-label {
-            h2, p {
-                font-family: var(--font-family-body);
-                font-style: var(--font-style-body);
-                font-weight: var(--font-weight-body);
-                color: var(--ion-color-font-main);
-            }
-
-            h2 {
-                font-size: 16px;
-                line-height: 18px;
-                margin-bottom: 5px;
-            }
-
-            p {
-                font-size: 12px;
-                line-height: 18px;
-                margin-top: 0;
-            }
-
-            .text-button {
-                font-family: var(--font-family-question-button)!important;
-                font-style: var(--font-style-question-button);
-                font-weight: var(--font-weight-question-button);
-                font-size: 12px;
-                line-height: 16px;
-                text-transform: uppercase;
-
-                color: var(--ion-color-primary);
-                //margin-top: 9px;
-            }
-        }
-
-        .description {
-            display: block;
-            display: -webkit-box;
-            max-width: 100%;
-            height: 43px;
-            margin: 0 auto;
-            font-size: 14px;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
+    .description {
+      display: block;
+      display: -webkit-box;
+      max-width: 100%;
+      height: 43px;
+      margin: 0 auto;
+      font-size: 14px;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
+  }
 }
-

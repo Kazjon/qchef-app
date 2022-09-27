@@ -1,41 +1,48 @@
 <ion-header [translucent]="true" class="ion-no-border">
-    <ion-toolbar>
-        <!--<ion-buttons mode="ios" slot="start">
+  <ion-toolbar>
+    <!--<ion-buttons mode="ios" slot="start">
             <ion-back-button></ion-back-button>
         </ion-buttons>-->
-        <img class="logo" src="../../../../../assets/images/header-logo.svg">
-    </ion-toolbar>
+    <img class="logo" src="../../../../../assets/images/header-logo.svg" />
+  </ion-toolbar>
 </ion-header>
 <ion-content fullscreen no-bounce has-bouncing="false" forceOverscroll="false">
+  <div class="loading-overlay" [ngClass]="{ loading: isLoading, 'stop-scroll': isLoading }">
+    <ion-spinner name="crescent" color="primary"></ion-spinner>
+  </div>
 
-    <div class="loading-overlay" [ngClass]="{'loading': isLoading, 'stop-scroll': isLoading}">
-		<ion-spinner name="crescent" color="primary"></ion-spinner>
+  <div class="content-wrapper column start" *ngIf="!isLoading">
+    <div class="page-info">
+      <h1>Meal Selection</h1>
     </div>
 
-    <div class="content-wrapper column start" *ngIf="!isLoading">
+    <div class="meal-note" *ngIf="mealSlots.length > 1">
+      We'll be showing you the same 10 recipes to select from, no matter how many meals you choose for the week.
+    </div>
 
-        <div class="page-info">
-            <h1>Meal Selection</h1>
+    <div class="meal-selection" *ngFor="let mealslot of mealSlots; let mealIndex = index">
+      <h2>Meal {{ mealIndex + 1 }}</h2>
+      <div class="meal-wrap empty" *ngIf="!mealslot.recipe" (click)="changeMeal(mealslot)">
+        <ion-button class="small" mode="ios">Select Meal Option</ion-button>
+      </div>
+      <div class="meal-wrap" *ngIf="mealslot.recipe">
+        <div class="image-wrap"><img src="{{ mealslot.recipe.image }}" /></div>
+        <div class="meal-content">
+          <div class="title">{{ mealslot.recipe.title }}</div>
+          <div class="detail">
+            <div class="icon cooktime"></div>
+            {{ mealslot.recipe.cookTime }} mins
+          </div>
+          <div class="detail">
+            <div class="icon ingredients"></div>
+            <div class="link" (click)="openIngredients(mealslot.recipe)">View Ingredients</div>
+          </div>
         </div>
+      </div>
+      <div class="link" *ngIf="mealslot.recipe" (click)="changeMeal(mealslot)">Modify Meal Selection</div>
+    </div>
 
-        <div class="meal-selection" *ngFor="let mealslot of mealSlots; let mealIndex = index">
-            <h2>Meal {{ mealIndex + 1}}</h2>
-            <div class="meal-wrap empty" *ngIf="!mealslot.recipe" (click)="changeMeal(mealslot)">
-                <ion-button class="small" mode="ios">Select Meal Option</ion-button>
-            </div>
-            <div class="meal-wrap" *ngIf="mealslot.recipe">
-                <div class="image-wrap"><img src="{{ mealslot.recipe.image }}"></div>
-                <div class="meal-content">
-                    <div class="title">{{ mealslot.recipe.title }}</div>
-                    <div class="detail"><div class="icon cooktime"></div>{{ mealslot.recipe.cookTime }} mins</div>
-                    <div class="detail"><div class="icon ingredients"></div><div class="link" (click)="openIngredients(mealslot.recipe)">View Ingredients</div></div>
-                </div>
-            </div>
-            <div class="link" *ngIf="mealslot.recipe" (click)="changeMeal(mealslot)">Modify Meal Selection</div>
-        </div>
-
-
-        <!--<ion-item *ngFor="let mealslot of mealSlots" (click)="changeMeal(mealslot)" lines="none" class="ion-no-padding">
+    <!--<ion-item *ngFor="let mealslot of mealSlots" (click)="changeMeal(mealslot)" lines="none" class="ion-no-padding">
             <ion-thumbnail slot="start" *ngIf="mealslot.recipe">
                 <img src="{{ mealslot.recipe?.image }}">
             </ion-thumbnail>
@@ -44,9 +51,11 @@
                 <p class="text-button">Change Meal</p>
             </ion-label>
         </ion-item>-->
-        <div class="button-wrap">
-            <button class="butt-confirm" [ngClass]="{'disabled': !isAllMealSelected }" [disabled]="!isAllMealSelected" (click)="setWeekStartDate()">Confirm Meal Plan</button>
-            <!--<ion-button mode="ios" color="primary" (click)="setWeekStartDate()">Confirm</ion-button>-->
-        </div>
+    <div class="button-wrap">
+      <button class="butt-confirm" [ngClass]="{ disabled: !isAllMealSelected }" [disabled]="!isAllMealSelected" (click)="setWeekStartDate()">
+        Confirm Meal Plan
+      </button>
+      <!--<ion-button mode="ios" color="primary" (click)="setWeekStartDate()">Confirm</ion-button>-->
     </div>
+  </div>
 </ion-content>
