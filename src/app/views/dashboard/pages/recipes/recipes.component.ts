@@ -1,18 +1,19 @@
-import { Component, OnInit } from '@angular/core';
-import { DataService } from 'src/app/services/data/data.service';
-import { combineLatest } from 'rxjs';
-import { take } from 'rxjs/operators';
-import { MealSlot } from 'src/app/core/objects/MealSlot';
-import { MealPreference } from 'src/app/core/objects/MealPreference';
-import { Router } from '@angular/router';
-import { ModalController } from '@ionic/angular';
-import { RecipeModalComponent } from 'src/app/core/components/recipemodal/recipemodal.component';
-import { FirebaseService } from 'src/app/services/firebase/firebase.service';
+import { Component, OnInit } from "@angular/core";
+import { DataService } from "src/app/services/data/data.service";
+import { combineLatest } from "rxjs";
+import { take } from "rxjs/operators";
+import { MealSlot } from "src/app/core/objects/MealSlot";
+import { MealPreference } from "src/app/core/objects/MealPreference";
+import { Router } from "@angular/router";
+import { ModalController } from "@ionic/angular";
+import { RecipeModalComponent } from "src/app/core/components/recipemodal/recipemodal.component";
+import { FirebaseService } from "src/app/services/firebase/firebase.service";
+import { SideStoreDataService } from "src/app/services/data/side-store.service";
 
 @Component({
-    selector: 'app-recipes',
-    templateUrl: './recipes.component.html',
-    styleUrls: ['./recipes.component.scss'],
+    selector: "app-recipes",
+    templateUrl: "./recipes.component.html",
+    styleUrls: ["./recipes.component.scss"],
 })
 export class RecipesPage implements OnInit {
     mealSlots: MealSlot[];
@@ -24,7 +25,9 @@ export class RecipesPage implements OnInit {
         private dataService: DataService,
         private firebaseService: FirebaseService,
         private router: Router,
-        private modalController: ModalController) { }
+        private modalController: ModalController,
+        private sideStoreService: SideStoreDataService
+    ) {}
 
     ngOnInit() {
         this.dataService.setOnboardingStage("dashboard");
@@ -39,35 +42,40 @@ export class RecipesPage implements OnInit {
         combineLatest(
             this.dataService.mealSlotsObservable,
             this.dataService.weekStartDateObservable
-        ).pipe(
-            take(3)
         )
-        .subscribe(([mealSlots, weekStartDate]) => {
-            this.checkData(mealSlots, weekStartDate);
-            this.checkIfWeekIsComplete(mealSlots, weekStartDate);
-        });
+            .pipe(take(3))
+            .subscribe(([mealSlots, weekStartDate]) => {
+                this.checkData(mealSlots, weekStartDate);
+                this.checkIfWeekIsComplete(mealSlots, weekStartDate);
+            });
     }
 
     private checkData(data, weekStartDate) {
-        if (weekStartDate == undefined || isNaN(weekStartDate.getTime()) && data.length <= 0) {
-            this.firebaseService.logout()
-                .then(() => {
-                    this.router.navigateByUrl('splash');
-                })
-        }
-        else if (data.length <= 0 || data[0].recipe == undefined) {
-           this.router.navigateByUrl('mealselection/summary', { replaceUrl: true });
-        }
-        else {
+        if (
+            weekStartDate == undefined ||
+            (isNaN(weekStartDate.getTime()) && data.length <= 0)
+        ) {
+            this.firebaseService.logout().then(() => {
+                this.router.navigateByUrl("splash");
+            });
+        } else if (data.length <= 0 || data[0].recipe == undefined) {
+            this.router.navigateByUrl("mealselection/summary", {
+                replaceUrl: true,
+            });
+        } else {
+            /** Side store: filter out meals stored in the side store as being reviewed */
+            data = data.filter(
+                (meal) => !this.sideStoreService.getMealSlot(meal, true)
+            );
             this.mealSlots = data;
         }
     }
 
     private checkIfWeekIsComplete(mealSlots, weekStartDate: Date) {
         let reviewedMeal = 0;
-        mealSlots.forEach(mealSlot => {
+        mealSlots.forEach((mealSlot) => {
             if (mealSlot.reviewed == true) {
-                reviewedMeal ++;
+                reviewedMeal++;
             }
         });
 
@@ -98,7 +106,6 @@ export class RecipesPage implements OnInit {
         //     this.isNewWeek = false;
         //     this.isLoading = false;
         // }
-
     }
 
     private getDaysBetweenDates(dateOne: Date, dateTwo: Date) {
@@ -108,23 +115,22 @@ export class RecipesPage implements OnInit {
     }
 
     startWeeklyFlow() {
-        localStorage.removeItem('localMealSlots');
-        localStorage.removeItem('localWeekStartDate');
-        this.router.navigateByUrl('onboarding/numberofmeals', { replaceUrl: true });
+        localStorage.removeItem("localMealSlots");
+        localStorage.removeItem("localWeekStartDate");
+        this.router.navigateByUrl("onboarding/numberofmeals", {
+            replaceUrl: true,
+        });
     }
 
     async openRecipe(recipe: MealPreference) {
-
         const modal = await this.modalController.create({
             component: RecipeModalComponent,
-            cssClass: 'recipe-modal',
+            cssClass: "recipe-modal",
             componentProps: {
-                'recipe': recipe,
-                'showReview': true
-            }
+                recipe: recipe,
+                showReview: true,
+            },
         });
         return await modal.present();
-
     }
-
 }

@@ -11,6 +11,7 @@ import { MealSlot } from 'src/app/core/objects/MealSlot';
 import { IncompleteReviewModalComponent } from 'src/app/core/components/incompletereviewmodal/incompletereviewmodal.component';
 import { RecipeReviewResponse } from 'src/app/core/objects/RecipeReviewResponse';
 import { FirebaseService } from 'src/app/services/firebase/firebase.service';
+import { SideStoreDataService } from '../../../../services/data/side-store.service';
 // import { ExitReviewModalComponent } from 'src/app/core/components/exitreviewmodal/exitreviewmodal.component';
 
 @Component({
@@ -57,7 +58,8 @@ export class ReviewsFormComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private alertController: AlertController,
-        private firebaseService: FirebaseService) {
+        private firebaseService: FirebaseService,
+        private sideStoreService: SideStoreDataService) {
     }
 
     ngOnInit() {
@@ -117,7 +119,6 @@ export class ReviewsFormComponent implements OnInit {
     }
 
     updateTaste(optionSelected) {
-
         this.taste.option1Selected = false;
         this.taste.option2Selected = false;
         this.taste.option3Selected = false;
@@ -125,12 +126,15 @@ export class ReviewsFormComponent implements OnInit {
         switch (optionSelected) {
             case "0":
                 this.taste.option1Selected = true;
+                this.reviewForm.controls.taste.setValue("0");
                 break;
             case "1":
                 this.taste.option2Selected = true;
+                this.reviewForm.controls.taste.setValue("1");
                 break;
             case "2":
                 this.taste.option3Selected = true;
+                this.reviewForm.controls.taste.setValue("2");
                 break;
             default:
                 break;
@@ -139,7 +143,6 @@ export class ReviewsFormComponent implements OnInit {
     }
 
     updateEnjoy(optionSelected) {
-
         this.enjoy.option1Selected = false;
         this.enjoy.option2Selected = false;
         this.enjoy.option3Selected = false;
@@ -147,21 +150,22 @@ export class ReviewsFormComponent implements OnInit {
         switch (optionSelected) {
             case "0":
                 this.enjoy.option1Selected = true;
+                this.reviewForm.controls.enjoy.setValue("0");
                 break;
             case "1":
                 this.enjoy.option2Selected = true;
+                this.reviewForm.controls.enjoy.setValue("1");
                 break;
             case "2":
                 this.enjoy.option3Selected = true;
+                this.reviewForm.controls.enjoy.setValue("2");
                 break;
             default:
                 break;
-
         }
     }
 
-    updateTryAgain(optionSelected) {
-
+    updateTryAgain(optionSelected,) {
         this.tryAgain.option1Selected = false;
         this.tryAgain.option2Selected = false;
         this.tryAgain.option3Selected = false;
@@ -169,12 +173,15 @@ export class ReviewsFormComponent implements OnInit {
         switch (optionSelected) {
             case "0":
                 this.tryAgain.option1Selected = true;
+                this.reviewForm.controls.tryAgain.setValue("0");
                 break;
             case "1":
                 this.tryAgain.option2Selected = true;
+                this.reviewForm.controls.tryAgain.setValue("1");
                 break;
             case "2":
                 this.tryAgain.option3Selected = true;
+                this.reviewForm.controls.tryAgain.setValue("2");
                 break;
             default:
                 break;
@@ -217,6 +224,11 @@ export class ReviewsFormComponent implements OnInit {
                     this.dataService.setTotalMealsNotReviewed();
                     this.router.navigateByUrl('dashboard/reviews', { replaceUrl: true });
                     this.formSubmitted = false;
+
+                    /** Side Store: also store reviewed status */
+                    if (element.recipe.id == this.id) {
+                        this.sideStoreService.saveMealReview(element);
+                    }
                 });
             },
                 (exception) => {
