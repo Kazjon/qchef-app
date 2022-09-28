@@ -16,7 +16,7 @@ export class OnboardingGetStartedPage implements OnInit {
 	}
 
 	getStarted() {
-		this.router.navigateByUrl('/onboarding/preferences');
+		this.router.navigateByUrl('/onboarding/mealpreferences');
 	}
 
 }
