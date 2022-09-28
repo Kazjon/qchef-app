@@ -122,7 +122,7 @@ export class ReviewsFormComponent implements OnInit {
         this.taste.option2Selected = false;
         this.taste.option3Selected = false;
 
-        switch(optionSelected) {
+        switch (optionSelected) {
             case "0":
                 this.taste.option1Selected = true;
                 break;
@@ -144,7 +144,7 @@ export class ReviewsFormComponent implements OnInit {
         this.enjoy.option2Selected = false;
         this.enjoy.option3Selected = false;
 
-        switch(optionSelected) {
+        switch (optionSelected) {
             case "0":
                 this.enjoy.option1Selected = true;
                 break;
@@ -166,7 +166,7 @@ export class ReviewsFormComponent implements OnInit {
         this.tryAgain.option2Selected = false;
         this.tryAgain.option3Selected = false;
 
-        switch(optionSelected) {
+        switch (optionSelected) {
             case "0":
                 this.tryAgain.option1Selected = true;
                 break;
@@ -213,21 +213,21 @@ export class ReviewsFormComponent implements OnInit {
                 this.mealSlots.forEach(element => {
                     if (element.recipe.id == this.id)
                         element.reviewed = true;
-                        this.dataService.saveMealSlotsToLocal(this.mealSlots);
-                        this.dataService.setTotalMealsNotReviewed();
-                        this.router.navigateByUrl('dashboard/reviews', { replaceUrl: true });
-                        this.formSubmitted = false;
+                    this.dataService.saveMealSlotsToLocal(this.mealSlots);
+                    this.dataService.setTotalMealsNotReviewed();
+                    this.router.navigateByUrl('dashboard/reviews', { replaceUrl: true });
+                    this.formSubmitted = false;
                 });
             },
-            (exception) => {
-                // need to check if server return 'Unable to authenticate'
-                if (exception && exception.error && typeof (exception.error) == "string") {
-                    const strRes = <string>exception.error;
-                    if (strRes.includes('Unable to authenticate')) {
-                        this.showLogoutUserPop();
+                (exception) => {
+                    // need to check if server return 'Unable to authenticate'
+                    if (exception && exception.error && typeof (exception.error) == "string") {
+                        const strRes = <string>exception.error;
+                        if (strRes.includes('Unable to authenticate')) {
+                            this.showLogoutUserPop();
+                        }
                     }
-                }
-            });
+                });
 
     }
 
@@ -246,8 +246,53 @@ export class ReviewsFormComponent implements OnInit {
             source: source
         });
 
+        // Check and resize the image
+        function getImageDimensions(file) {
+            return new Promise (function (resolved, rejected) {
+                var i = new Image();
+                i.onload = function() {
+                    resolved({w: i.width, h: i.height})
+                };
+                i.src = file
+            })
+        }
+
+        function resizeViaCanvas(dataURI, originalDimensions: any) {
+            const quality = 0.7;
+            const maxDimension = 800;
+            let finalWidth: number;
+            let finalHeight: number;
+            if (originalDimensions.w > originalDimensions.h) {
+                finalWidth = maxDimension;
+                finalHeight = (finalWidth / dimensions.w) * dimensions.h;
+            } else {
+                finalHeight = maxDimension;
+                finalWidth = (finalHeight / dimensions.h) * dimensions.w;
+            }
+
+            return new Promise(function(resolve, reject) {
+                var canvas = document.createElement('canvas');
+                var ctx = canvas.getContext('2d');
+                var img = document.createElement('img');
+                img.onload = async function() {
+                    canvas.width = finalWidth;
+                    canvas.height = finalHeight;
+                    await ctx!.drawImage(img, 0, 0, finalWidth, finalHeight);
+                    var dataURI = await canvas.toDataURL("image/jpeg", quality);
+                    resolve(dataURI);
+                }
+                img.src = dataURI;
+            });
+        }
+
+        // Resize the image and set quality level
+        var dimensions: any = await getImageDimensions(image.dataUrl);
+        var resized: any = await resizeViaCanvas(image.dataUrl, dimensions);
+
+        // Set and finish
         this.photoBase64 = image.dataUrl;
-        this.photo = this.sanitizer.bypassSecurityTrustResourceUrl(image && (image.dataUrl));
+        //this.photo = this.sanitizer.bypassSecurityTrustResourceUrl(image && (image.dataUrl));
+        this.photo = this.sanitizer.bypassSecurityTrustResourceUrl(resized);
         if (this.photo) {
             this.buttonLabel = 'REPLACE IMAGE';
         }
@@ -314,7 +359,7 @@ export class ReviewsFormComponent implements OnInit {
                     handler: () => {
                         this.firebaseService.logoutUserFromApp()
                             .then(() => {
-                                this.router.navigateByUrl('login',  { replaceUrl: true });
+                                this.router.navigateByUrl('login', { replaceUrl: true });
                             })
                     }
                 }
