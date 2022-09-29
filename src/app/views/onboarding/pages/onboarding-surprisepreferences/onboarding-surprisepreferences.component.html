@@ -1,70 +1,101 @@
 <ion-header [translucent]="true" class="ion-no-border">
-	<ion-toolbar>
-		<ion-buttons mode="ios" slot="start" (click)="prevStage()">
-			<ion-button class="button-previous" *ngIf="page > 1" (click)="showPrevMeal()"><ion-icon name="chevron-back-outline"></ion-icon> Previous</ion-button>
-		</ion-buttons>
-		<img class="logo" src="../../../../../assets/images/header-logo.svg">
-	</ion-toolbar>
+   <ion-toolbar>
+      <ion-buttons mode="ios" slot="start" (click)="prevStage()">
+         <ion-button class="button-previous" *ngIf="page > 1" (click)="showPrevMeal()"
+            ><ion-icon name="chevron-back-outline"></ion-icon> Previous</ion-button
+         >
+      </ion-buttons>
+      <img class="logo" src="../../../../../assets/images/header-logo.svg" />
+   </ion-toolbar>
 </ion-header>
-<ion-content #scroller fullscreen [ngClass]="{'loading': isLoading}" no-bounce has-bouncing="false" forceOverscroll="false">
+<ion-content #scroller fullscreen [ngClass]="{ loading: isLoading }" no-bounce has-bouncing="false" forceOverscroll="false">
+   <div class="loading-overlay" [ngClass]="{ loading: isLoading, 'stop-scroll': isLoading }">
+      <ion-spinner name="crescent" color="primary"></ion-spinner>
+   </div>
 
-	<div class="loading-overlay" [ngClass]="{'loading': isLoading, 'stop-scroll': isLoading}">
-		<ion-spinner name="crescent" color="primary"></ion-spinner>
-	</div>
-
-	<div class="content-wrapper column start preferences" *ngIf="!isLoading">
-		<div class="progress">
-			<onboarding-progress [showOverall]="false"></onboarding-progress>
-			<div class="total-progress">PART 3: Meal Preferences ({{ page }} of {{ surprisePreferenceOptions?.length }})</div>
-		</div>
-		<h1 class="content-prompt">Meal Preferences</h1>
-		<div class="slide-options">
-			<ion-slides #surpriseSlides (ionSlideDidChange)="setPagerNum()" [options]="{ allowTouchMove: false, autoHeight: true }">
-				<ion-slide *ngFor="let meal of surprisePreferenceOptions; let mealIndex = index">
-					<ion-card>
-						<div class="image-wrap">
-							<img src="{{ meal.image }}" (load)="imageLoaded(meal)" [ngClass]="{'loaded': meal.loaded }"/>
-						</div>
-						<ion-card-header>
-							<ion-card-title>{{ meal.title }}</ion-card-title>
-						</ion-card-header>
-						<ion-card-content>
-							<div class="content-row">
-								<div class="detail">
-									<span class="icon ingredients"></span>
-									<span class="sub-heading">Ingredients</span>
-								</div>
-							</div>
-							<p class="description-detail">
-								<ion-grid>
-									<ion-row no-padding>
-										<ion-col size="6" *ngFor="let ingredient of meal.ingredients; let i = index" [ngClass]="{'not-display': i >= 10 && !showAllIngredients, 'expand-ingredient': showAllIngredients }">
-											<span>{{ ingredient }}</span>
-										</ion-col>
-									</ion-row>
-								</ion-grid>
-							</p>
-							<p class="description-detail show-more" *ngIf="meal.ingredients.length > 10 && !isExpand" ><span (click)="openIngredients(meal)">SHOW MORE</span></p>
-							<div class="question-group" *ngFor="let question of meal.questions; let questionIndex = index" [ngClass]="{'disabled': question.disabled}">
-								<h2>{{ question.title }}</h2>
-								<div class="question-option-radio" *ngFor="let option of question.options; let optionIndex = index"  (click)="selectPreference(meal.id, question, option, optionIndex, questionIndex, mealIndex)" [ngClass]="{'selected': option.selected}">
-									<div class="radio"></div>
-									<div class="title">{{ option.title }}</div>
-								</div>
-							</div>
-							<ion-button mode="ios" class="next" (click)="showNextMeal(mealIndex)" [ngClass]="{'disabled': selectedAnswerNum != meal.questions.length }" >Next Meal</ion-button>
-							<!--<div class="preference-question-group" *ngFor="let question of meal.questions; let questionIndex = index" [ngClass]="{'visible': question.active}">
+   <div class="content-wrapper column start preferences" *ngIf="!isLoading">
+      <div class="progress">
+         <onboarding-progress [showOverall]="false"></onboarding-progress>
+         <div class="total-progress">PART 3: Meal Preferences ({{ page }} of {{ surprisePreferenceOptions?.length }})</div>
+      </div>
+      <h1 class="content-prompt">Meal Preferences</h1>
+      <div class="slide-options">
+         <ion-slides #surpriseSlides (ionSlideDidChange)="setPagerNum()" [options]="{ allowTouchMove: false, autoHeight: true }">
+            <ion-slide *ngFor="let meal of surprisePreferenceOptions; let mealIndex = index">
+               <ion-card>
+                  <div class="image-wrap">
+                     <img src="{{ meal.image }}" (load)="imageLoaded(meal)" [ngClass]="{ loaded: meal.loaded }" />
+                  </div>
+                  <ion-card-header>
+                     <ion-card-title>{{ meal.title }}</ion-card-title>
+                  </ion-card-header>
+                  <ion-card-content>
+                     <div class="content-row">
+                        <div class="detail">
+                           <span class="icon ingredients"></span>
+                           <span class="sub-heading">Ingredients</span>
+                        </div>
+                     </div>
+                     <p class="description-detail">
+                        <ion-grid>
+                           <ion-row no-padding>
+                              <ion-col
+                                 size="6"
+                                 *ngFor="let ingredient of meal.ingredients; let i = index"
+                                 [ngClass]="{ 'not-display': i >= 10 && !showAllIngredients, 'expand-ingredient': showAllIngredients }"
+                              >
+                                 <span>{{ ingredient }}</span>
+                              </ion-col>
+                           </ion-row>
+                        </ion-grid>
+                     </p>
+                     <p class="description-detail show-more" *ngIf="meal.ingredients.length > 10 && !isExpand">
+                        <span (click)="openIngredients(meal)">SHOW MORE</span>
+                     </p>
+                     <div
+                        class="question-group"
+                        *ngFor="let question of meal.questions; let questionIndex = index"
+                        [ngClass]="{ disabled: question.disabled }"
+                     >
+                        <h2>{{ question.title }}</h2>
+                        <div
+                           class="question-option-radio"
+                           *ngFor="let option of question.options; let optionIndex = index"
+                           (click)="selectPreference(meal.id, question, option, optionIndex, questionIndex, mealIndex)"
+                           [ngClass]="{ selected: option.selected }"
+                        >
+                           <div class="radio"></div>
+                           <div class="title">{{ option.title }}</div>
+                        </div>
+                     </div>
+                     <ion-button
+                        *ngIf="surprisePreferenceOptions?.length - page > 0"
+                        mode="ios"
+                        class="next"
+                        (click)="showNextMeal(mealIndex)"
+                        [ngClass]="{ disabled: selectedAnswerNum != meal.questions.length }"
+                        >Next Meal</ion-button
+                     >
+                     <ion-button
+                        *ngIf="surprisePreferenceOptions?.length - page == 0"
+                        mode="ios"
+                        class="next"
+                        (click)="showNextMeal(mealIndex)"
+                        [ngClass]="{ disabled: selectedAnswerNum != meal.questions.length }"
+                        >Next</ion-button
+                     >
+                     <!--<div class="preference-question-group" *ngFor="let question of meal.questions; let questionIndex = index" [ngClass]="{'visible': question.active}">
 								<p class="sub-heading">Question {{ questionIndex + 1 }} of {{ meal.questions.length }}:</p>
 								<ion-button *ngFor="let option of question.options; let optionIndex = index" [disabled]="question.disabled" (click)="selectPreference(meal.id, question, option, optionIndex, questionIndex, mealIndex)" class="butt-preference" [ngClass]="{'selected': option.selected}" color="{{ option.selected ? 'secondary' : 'primary'}}" slot="start" mode="ios" id="option-{{meal.id}}{{questionIndex}}{{optionIndex}}"><span>{{ option.title }}</span></ion-button>
 								<ion-button class="transparent-butt" [ngClass]="{'hidden': questionIndex == 0}" (click)="backToPrevQuestion(questionIndex, mealIndex)"> &#60; Back to Previous Question</ion-button>
 
 							</div>-->
-						</ion-card-content>
-					</ion-card>
-				</ion-slide>
-			</ion-slides>
-		</div>
-		<div class="pager">{{ (surprisePreferenceOptions?.length - page) }} meals remaining</div>
-	</div>
-
+                  </ion-card-content>
+               </ion-card>
+            </ion-slide>
+         </ion-slides>
+      </div>
+      <div class="pager" *ngIf="surprisePreferenceOptions?.length - page > 0">{{ surprisePreferenceOptions?.length - page }} meals remaining</div>
+      <div class="pager" *ngIf="surprisePreferenceOptions?.length - page == 0">Part 3 of 3 Complete</div>
+   </div>
 </ion-content>

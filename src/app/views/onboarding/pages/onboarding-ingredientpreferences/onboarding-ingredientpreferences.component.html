@@ -1,54 +1,83 @@
 <ion-header [translucent]="true" class="ion-no-border">
-	<ion-toolbar>
-		<ion-buttons mode="ios" slot="start" (click)="prevStage()">
-			<ion-button class="button-previous" *ngIf="page > 1" (click)="showPrevIngredient()"><ion-icon name="chevron-back-outline"></ion-icon> Previous</ion-button>
-		</ion-buttons>
-		<img class="logo" src="../../../../../assets/images/header-logo.svg">
-	</ion-toolbar>
+   <ion-toolbar>
+      <ion-buttons mode="ios" slot="start" (click)="prevStage()">
+         <ion-button class="button-previous" *ngIf="page > 1" (click)="showPrevIngredient()"
+            ><ion-icon name="chevron-back-outline"></ion-icon> Previous</ion-button
+         >
+      </ion-buttons>
+      <img class="logo" src="../../../../../assets/images/header-logo.svg" />
+   </ion-toolbar>
 </ion-header>
-<ion-content #scroller fullscreen [ngClass]="{'loading': isLoading}" no-bounce has-bouncing="false" forceOverscroll="false">
+<ion-content #scroller fullscreen [ngClass]="{ loading: isLoading }" no-bounce has-bouncing="false" forceOverscroll="false">
+   <div class="loading-overlay" [ngClass]="{ loading: isLoading, 'stop-scroll': isLoading }">
+      <ion-spinner name="crescent" color="primary"></ion-spinner>
+   </div>
 
-	<div class="loading-overlay" [ngClass]="{'loading': isLoading, 'stop-scroll': isLoading}">
-		<ion-spinner name="crescent" color="primary"></ion-spinner>
-	</div>
-
-	<div class="content-wrapper column start preferences" *ngIf="!isLoading">
-		<div class="progress">
-			<onboarding-progress [showOverall]="false"></onboarding-progress>
-			<div class="total-progress">PART 2: Ingredient Preferences ({{ page }} of {{ ingredientPreferenceOptions?.length }})</div>
-		</div>
-		<h1 class="content-prompt">Ingredient Preferences</h1>
-		<div class="slide-options">
-			<ion-slides #ingredientSlides (ionSlideDidChange)="setPagerNum()" [options]="{ allowTouchMove: false, autoHeight: true }">
-				<ion-slide *ngFor="let ingredient of ingredientPreferenceOptions; let ingredientIndex = index">
-					<ion-card>
-						<div class="image-wrap">
-							<img src="{{ ingredient.image }}" (load)="imageLoaded(ingredient)" [ngClass]="{'loaded': ingredient.loaded }"/>
-						</div>
-						<ion-card-header>
-							<ion-card-title>{{ ingredient.title }}</ion-card-title>
-						</ion-card-header>
-						<ion-card-content>
-							<div class="question-group" *ngFor="let question of ingredient.questions; let questionIndex = index" [ngClass]="{'disabled': question.disabled}">
-								<h2>{{ question.title }}</h2>
-								<div class="question-option-radio" *ngFor="let option of question.options; let optionIndex = index"  (click)="selectPreference(ingredient.id, question, option, optionIndex, questionIndex, ingredientIndex)" [ngClass]="{'selected': option.selected}">
-									<div class="radio"></div>
-									<div class="title">{{ option.title }}</div>
-								</div>
-							</div>
-							<ion-button mode="ios" class="next" (click)="showNextIngredient(ingredientIndex)" [ngClass]="{'disabled': selectedAnswerNum != ingredient.questions.length }" [disabled]="disableNext">Next Ingredient</ion-button>
-							<!--<div class="preference-question-group" *ngFor="let question of ingredient.questions; let questionIndex = index" [ngClass]="{'visible': question.active}">
+   <div class="content-wrapper column start preferences" *ngIf="!isLoading">
+      <div class="progress">
+         <onboarding-progress [showOverall]="false"></onboarding-progress>
+         <div class="total-progress">PART 2: Ingredient Preferences ({{ page }} of {{ ingredientPreferenceOptions?.length }})</div>
+      </div>
+      <h1 class="content-prompt">Ingredient Preferences</h1>
+      <div class="slide-options">
+         <ion-slides #ingredientSlides (ionSlideDidChange)="setPagerNum()" [options]="{ allowTouchMove: false, autoHeight: true }">
+            <ion-slide *ngFor="let ingredient of ingredientPreferenceOptions; let ingredientIndex = index">
+               <ion-card>
+                  <div class="image-wrap">
+                     <img src="{{ ingredient.image }}" (load)="imageLoaded(ingredient)" [ngClass]="{ loaded: ingredient.loaded }" />
+                  </div>
+                  <ion-card-header>
+                     <ion-card-title>{{ ingredient.title }}</ion-card-title>
+                  </ion-card-header>
+                  <ion-card-content>
+                     <div
+                        class="question-group"
+                        *ngFor="let question of ingredient.questions; let questionIndex = index"
+                        [ngClass]="{ disabled: question.disabled }"
+                     >
+                        <h2>{{ question.title }}</h2>
+                        <div
+                           class="question-option-radio"
+                           *ngFor="let option of question.options; let optionIndex = index"
+                           (click)="selectPreference(ingredient.id, question, option, optionIndex, questionIndex, ingredientIndex)"
+                           [ngClass]="{ selected: option.selected }"
+                        >
+                           <div class="radio"></div>
+                           <div class="title">{{ option.title }}</div>
+                        </div>
+                     </div>
+                     <ion-button
+                        *ngIf="ingredientPreferenceOptions.length - page > 0"
+                        mode="ios"
+                        class="next"
+                        (click)="showNextIngredient(ingredientIndex)"
+                        [ngClass]="{ disabled: selectedAnswerNum != ingredient.questions.length }"
+                        [disabled]="disableNext"
+                        >Next Ingredient</ion-button
+                     >
+                     <ion-button
+                        *ngIf="ingredientPreferenceOptions.length - page == 0"
+                        mode="ios"
+                        class="next"
+                        (click)="showNextIngredient(ingredientIndex)"
+                        [ngClass]="{ disabled: selectedAnswerNum != ingredient.questions.length }"
+                        [disabled]="disableNext"
+                        >Next</ion-button
+                     >
+                     <!--<div class="preference-question-group" *ngFor="let question of ingredient.questions; let questionIndex = index" [ngClass]="{'visible': question.active}">
 								<p class="sub-heading">Question {{ questionIndex + 1 }} of {{ ingredient.questions.length }}:</p>
 								<ion-button mode="ios" *ngFor="let option of question.options; let optionIndex = index" [disabled]="question.disabled" (click)="selectPreference(ingredient.id, question, option, optionIndex, questionIndex, ingredientIndex)" color="{{ option.selected ? 'secondary' : 'primary'}}" slot="start" id="ingredient-{{ingredient.id}}{{questionIndex}}{{optionIndex}}"><span>{{ option.title }}</span></ion-button>
 								<ion-button class="transparent-butt" [ngStyle]="{'display': (ingredientIndex == 0 && questionIndex == 0) ? 'block' : 'none' }" (click)="goBack()"> &#60; Back to Previous Card</ion-button>
 								<ion-button class="transparent-butt" [ngClass]="{'hidden': questionIndex == 0, 'not-display': ingredientIndex == 0 && questionIndex == 0 }" (click)="backToPrevQuestion(questionIndex, ingredientIndex)"> &#60; Back to Previous Question</ion-button>
 							</div>-->
-						</ion-card-content>
-					</ion-card>
-				</ion-slide>
-			</ion-slides>
-		</div>
-		<div class="pager">{{ (ingredientPreferenceOptions.length - page) }} ingredients remaining</div>
-	</div>
-
+                  </ion-card-content>
+               </ion-card>
+            </ion-slide>
+         </ion-slides>
+      </div>
+      <div class="pager" *ngIf="ingredientPreferenceOptions.length - page > 0">
+         {{ ingredientPreferenceOptions.length - page }} ingredients remaining
+      </div>
+      <div class="pager" *ngIf="ingredientPreferenceOptions.length - page == 0">Part 2 of 3 Complete</div>
+   </div>
 </ion-content>
