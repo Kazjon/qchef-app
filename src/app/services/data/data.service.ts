@@ -18,6 +18,7 @@ import { SideStoreDataService } from "./side-store.service";
    providedIn: "root",
 })
 export class DataService {
+   public arbitraryOnboardingTimeout: number = 0;
    private totalStages: number = 94;
    private baseURL: string = "https://q-chef-backend-api-server.web.app";
    httpOptions = {};

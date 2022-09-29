@@ -31,8 +31,8 @@ export class ShoppingListPage implements OnInit {
          });
       } else {
          /** Side store: filter out meals stored in the side store as being reviewed */
+         this.sideStoreService.saveMeals(data);
          data = data.filter((meal) => !this.sideStoreService.getMealSlot(meal, true));
-         //this.setupSideSto
 
          // And finally return the data
          this.mealSlots = data;
