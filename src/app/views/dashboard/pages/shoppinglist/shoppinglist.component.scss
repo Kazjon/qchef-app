@@ -1,48 +1,76 @@
 ion-content {
-    --padding-start: 24px;
-    --padding-end: 24px;
-    --padding-top: 20px;
+   --padding-start: 24px;
+   --padding-end: 24px;
+   --padding-top: 20px;
 
-    .content-wrapper {
-        align-items: flex-start;
+   .content-wrapper {
+      align-items: flex-start;
 
-        h1 {
-            font-size: 36px;
-            line-height: 45px;
-            font-family: var(--font-family-heading);
-            font-style: var(--font-style-heading);
-            font-weight: var(--font-weight-heading);
+      h1 {
+         font-size: 36px;
+         line-height: 45px;
+         font-family: var(--font-family-heading);
+         font-style: var(--font-style-heading);
+         font-weight: var(--font-weight-heading);
 
-            margin-bottom: 7px;
-        }
+         margin-bottom: 7px;
+      }
 
-        h2 {
-            font-size: 18px;
-            line-height: 23px;
-            font-family: var(--font-family-title);
-            font-style: var(--font-style-title);
-            font-weight: var(--font-weight-title);
-            margin-top: 22px;
-            margin-bottom: 12px;
-        }
+      h2 {
+         font-size: 18px;
+         line-height: 23px;
+         font-family: var(--font-family-title);
+         font-style: var(--font-style-title);
+         font-weight: var(--font-weight-title);
+         margin-top: 22px;
+         margin-bottom: 12px;
+      }
 
+      .ingredient-item {
+         .text {
+            vertical-align: bottom;
+            color: var(--ion-color-font-main);
+            font-family: var(--font-family-body);
+            font-weight: var(--font-weight-body);
+            font-style: var(--font-style-body);
+            font-size: 20px;
+            line-height: 26px;
+            margin: 0 0 8px;
+         }
+      }
 
-        .ingredient-item {
-            .text {
-                vertical-align: bottom;
-                color: var(--ion-color-font-main);
-                font-family: var(--font-family-body);
-                font-weight: var(--font-weight-body);
-                font-style: var(--font-style-body);
-                font-size: 20px;
-                line-height: 26px;
-                margin: 0 0 8px;
-            }
-        }
+      .mealslot:last-of-type {
+         margin-bottom: 100px;
+      }
+   }
 
-        .mealslot:last-of-type {
-            margin-bottom: 100px;
-        }
-    }
+   .no-list {
+      margin-top: 8px;
+   }
+}
 
+.ingredient-item {
+   .question-option-radio {
+      height: auto;
+      margin: 0 0 12px;
+      box-shadow: none;
+      line-height: normal;
+
+      &.selected {
+         border: none;
+
+         p.text {
+            text-decoration: line-through;
+            color: #888;
+         }
+      }
+
+      .radio {
+         margin: 0 20px 0 10px;
+      }
+
+      p.text {
+         margin-bottom: 0 !important;
+      }
+   }
 }
