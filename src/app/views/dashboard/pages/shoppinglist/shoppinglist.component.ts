@@ -6,57 +6,57 @@ import { Router } from "@angular/router";
 import { SideStoreDataService, SideStoreMealSlot } from "../../../../services/data/side-store.service";
 
 @Component({
-  selector: "app-shoppinglist",
-  templateUrl: "./shoppinglist.component.html",
-  styleUrls: ["./shoppinglist.component.scss"],
+   selector: "app-shoppinglist",
+   templateUrl: "./shoppinglist.component.html",
+   styleUrls: ["./shoppinglist.component.scss"],
 })
 export class ShoppingListPage implements OnInit {
-  mealSlots: MealSlot[];
-  sideStoreIngredientStates: SideStoreMealSlot[] = [];
+   mealSlots: MealSlot[];
+   sideStoreIngredientStates: SideStoreMealSlot[] = [];
 
-  constructor(private dataService: DataService, private router: Router, private sideStoreService: SideStoreDataService) {}
+   constructor(private dataService: DataService, private router: Router, private sideStoreService: SideStoreDataService) {}
 
-  ngOnInit() {
-    this.dataService.getMealSlotsFromLocal();
+   ngOnInit() {
+      this.dataService.getMealSlotsFromLocal();
 
-    combineLatest(this.dataService.mealSlotsObservable).subscribe(([mealSlots]) => {
-      this.checkData(mealSlots);
-    });
-  }
-
-  private checkData(data) {
-    if (data.length <= 0 || data[0].recipe == undefined) {
-      this.router.navigateByUrl("mealselection/meal/1", {
-        replaceUrl: true,
+      combineLatest(this.dataService.mealSlotsObservable).subscribe(([mealSlots]) => {
+         this.checkData(mealSlots);
       });
-    } else {
-      /** Side store: filter out meals stored in the side store as being reviewed */
-      data = data.filter((meal) => !this.sideStoreService.getMealSlot(meal, true));
-      //this.setupSideSto
+   }
 
-      // And finally return the data
-      this.mealSlots = data;
-    }
-  }
+   private checkData(data) {
+      if (data.length <= 0 || data[0].recipe == undefined) {
+         this.router.navigateByUrl("mealselection/meal/1", {
+            replaceUrl: true,
+         });
+      } else {
+         /** Side store: filter out meals stored in the side store as being reviewed */
+         data = data.filter((meal) => !this.sideStoreService.getMealSlot(meal, true));
+         //this.setupSideSto
 
-  /**
-   * Checks the Side Store for ingredients being collected
-   * */
-  ingredientCollected(index, meal) {
-    if (!this.sideStoreIngredientStates.length) {
-      this.sideStoreIngredientStates = this.sideStoreService.checkoutSideStoreMealStates();
-    }
+         // And finally return the data
+         this.mealSlots = data;
+      }
+   }
 
-    const collapsedID = this.sideStoreService.getCollapsedID(meal.recipe.id, meal.id);
-    const mealState = this.sideStoreIngredientStates.find((meal) => meal.collapsed_id == collapsedID);
-    if (mealState) {
-      return mealState.ingredient_checklist[index];
-    } else {
-      return false;
-    }
-  }
+   /**
+    * Checks the Side Store for ingredients being collected
+    * */
+   ingredientCollected(index, meal) {
+      if (!this.sideStoreIngredientStates.length) {
+         this.sideStoreIngredientStates = this.sideStoreService.checkoutSideStoreMealStates();
+      }
 
-  markIngredientCollected(index, meal) {
-    this.sideStoreIngredientStates = this.sideStoreService.markIngredientCollected(index, meal);
-  }
+      const collapsedID = this.sideStoreService.getCollapsedID(meal.recipe.id, meal.id);
+      const mealState = this.sideStoreIngredientStates.find((meal) => meal.collapsed_id == collapsedID);
+      if (mealState) {
+         return mealState.ingredient_checklist[index];
+      } else {
+         return false;
+      }
+   }
+
+   toggleIngredientCollected(index, meal) {
+      this.sideStoreIngredientStates = this.sideStoreService.toggleIngredientCollected(index, meal);
+   }
 }
