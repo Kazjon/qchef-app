@@ -1,0 +1,10 @@
+<ion-content no-bounce has-bouncing="false" forceOverscroll="false">
+  <div class="content">
+    <p class="header">{{ title }}</p>
+    <p class="description" *ngFor="let desc of description; let i = index">
+      {{ desc }}
+    </p>
+    <ion-button mode="ios" (click)="confirm()">OK</ion-button>
+    <ion-button mode="ios" (click)="cancel()">Cancel</ion-button>
+  </div>
+</ion-content>

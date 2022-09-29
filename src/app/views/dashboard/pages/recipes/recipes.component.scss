@@ -1,42 +1,51 @@
 ion-content {
-    --padding-start: 24px;
-    --padding-end: 24px;
-    --padding-top: 20px;
+  --padding-start: 24px;
+  --padding-end: 24px;
+  --padding-top: 20px;
 }
 
 .mealslot {
-    width: 100vw;
-    margin-bottom: 50px;
+  position: relative;
+  width: 100vw;
+  margin-bottom: 50px;
 
-    &:last-child {
-        margin-bottom: 100px;
-        padding-bottom: 130px;
+  .bt-remove {
+    position: absolute;
+    right: 28px;
+    top: 5px;
+    width: 25px;
+    height: 25px;
+  }
+
+  &:last-child {
+    margin-bottom: 100px;
+    padding-bottom: 130px;
+  }
+
+  .image-wrap {
+    height: 225px;
+    overflow: hidden;
+    text-align: center;
+    box-shadow: inset 0px -6px 4px -5px rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid white;
+
+    img {
+      object-fit: cover;
+      width: 90%;
+      height: 100%;
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
     }
+  }
 
-    .image-wrap {
-        height: 225px;
-        overflow: hidden;
-        text-align: center;
-        box-shadow: inset 0px -6px 4px -5px rgba(0, 0, 0, 0.2);
-        border-bottom: 1px solid white;
-
-        img {
-            object-fit: cover;
-            width: 90%;
-            height: 100%;
-            border-top-left-radius: 8px;
-            border-top-right-radius: 8px;
-        }
-    }
-
-    .meal-content {
-        width: 90%;
-        max-width: 400px;
-        margin: 0 auto;
-        padding: 0 20px;
-    }
+  .meal-content {
+    width: 90%;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
 }
 
 .page-info {
-    text-align: left;
+  text-align: left;
 }

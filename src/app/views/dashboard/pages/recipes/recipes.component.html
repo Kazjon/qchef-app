@@ -1,58 +1,52 @@
 <ion-header [translucent]="false">
-    <ion-toolbar class="header-dashboard">
-        <img class="logo" src="../../../../../assets/images/header-logo.svg">
+  <ion-toolbar class="header-dashboard">
+    <img class="logo" src="../../../../../assets/images/header-logo.svg" />
 
-        <ion-buttons mode="ios" slot="end">
-            <ion-buttons slot="start">
-                <ion-menu-button autoHide="false"></ion-menu-button>
-            </ion-buttons>
-        </ion-buttons>
-    </ion-toolbar>
-  </ion-header>
-<ion-content fullscreen class="has-tabs" [ngClass]="{'loading': isLoading}" no-bounce has-bouncing="false" forceOverscroll="false">
+    <ion-buttons mode="ios" slot="end">
+      <ion-buttons slot="start">
+        <ion-menu-button autoHide="false"></ion-menu-button>
+      </ion-buttons>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content fullscreen class="has-tabs" [ngClass]="{ loading: isLoading }" no-bounce has-bouncing="false" forceOverscroll="false">
+  <div class="loading-overlay">
+    <ion-spinner name="crescent" color="primary"></ion-spinner>
+  </div>
 
-    <div class="loading-overlay">
-        <ion-spinner name="crescent" color="primary"></ion-spinner>
+  <div class="content-wrapper column start" *ngIf="!isCompleted && !isLoading && mealSlots">
+    <div class="page-info">
+      <h1>Meal Plan</h1>
+      <p>Here is your personalised yummy meal plan with {{ mealSlots.length }} meals.</p>
     </div>
 
-    <div class="content-wrapper column start" *ngIf="!isCompleted && !isLoading && mealSlots">
-
-        <div class="page-info">
-            <h1>Meal Plan</h1>
-            <p>Here is your personalised yummy meal plan with {{ mealSlots.length }} meals.</p>
+    <div class="mealslot" *ngFor="let meal of mealSlots">
+      <div class="bt-remove" (click)="removeMeal(meal)"><img src="assets/images/icon-close.svg" /></div>
+      <div class="image-wrap">
+        <img src="{{ meal.recipe.image }}" />
+      </div>
+      <div class="meal-content">
+        <h2>{{ meal.recipe.title }}</h2>
+        <div class="meal-details">
+          <div class="detail">
+            <span class="icon cooktime"></span>
+            <span class="text">{{ meal.recipe.cookTime }} mins</span>
+          </div>
+          <div class="detail">
+            <span class="icon ingredients"></span>
+            <span class="text">{{ meal.recipe.ingredients.length }} ingredients</span>
+          </div>
         </div>
-
-        <div class="mealslot" *ngFor="let meal of mealSlots">
-
-            <div class="image-wrap">
-                <img src="{{ meal.recipe.image }}" />
-            </div>
-            <div class="meal-content">
-                <h2>{{ meal.recipe.title }}</h2>
-                <div class="meal-details">
-                    <div class="detail">
-                        <span class="icon cooktime"></span>
-                        <span class="text">{{ meal.recipe.cookTime }} mins</span>
-                    </div>
-                    <div class="detail">
-                        <span class="icon ingredients"></span>
-                        <span class="text">{{ meal.recipe.ingredients.length }} ingredients</span>
-                    </div>
-                </div>
-                <ion-button mode="ios" color="primary" (click)="openRecipe(meal.recipe)">View &amp; Cook Meal</ion-button>
-            </div>
-
-        </div>
-
+        <ion-button mode="ios" color="primary" (click)="openRecipe(meal.recipe)">View &amp; Cook Meal</ion-button>
+      </div>
     </div>
+  </div>
+  <div class="content-wrapper column" *ngIf="!isCompleted && !isLoading && mealSlots">
+    <ion-button mode="ios" color="primary" (click)="addMoreMeals()">Add Meals</ion-button>
+  </div>
 
-    <div class="content-wrapper column" *ngIf="isCompleted && !isLoading">
-
-        <p>You have no selected meals for this week.</p>
-        <ion-button mode="ios" color="primary" (click)="startWeeklyFlow()">Pick Weekly Meals</ion-button>
-
-    </div>
-
-
-
+  <div class="content-wrapper column" *ngIf="isCompleted && !isLoading">
+    <p>You have no selected meals for this week.</p>
+    <ion-button mode="ios" color="primary" (click)="startWeeklyFlow()">Pick Weekly Meals</ion-button>
+  </div>
 </ion-content>

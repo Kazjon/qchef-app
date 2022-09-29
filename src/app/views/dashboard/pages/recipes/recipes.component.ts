@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { DataService } from "src/app/services/data/data.service";
 import { combineLatest } from "rxjs";
 import { take } from "rxjs/operators";
+import { ConfirmmodalComponent } from "../../../../core/components/confirmmodal/confirmmodal.component";
 import { MealSlot } from "src/app/core/objects/MealSlot";
 import { MealPreference } from "src/app/core/objects/MealPreference";
 import { Router } from "@angular/router";
@@ -11,123 +12,157 @@ import { FirebaseService } from "src/app/services/firebase/firebase.service";
 import { SideStoreDataService } from "src/app/services/data/side-store.service";
 
 @Component({
-   selector: "app-recipes",
-   templateUrl: "./recipes.component.html",
-   styleUrls: ["./recipes.component.scss"],
+  selector: "app-recipes",
+  templateUrl: "./recipes.component.html",
+  styleUrls: ["./recipes.component.scss"],
 })
 export class RecipesPage implements OnInit {
-   mealSlots: MealSlot[];
-   isLoading: boolean = true;
-   isNewWeek: boolean = false;
-   isCompleted: boolean = false;
+  mealSlots: MealSlot[];
+  isLoading: boolean = true;
+  isNewWeek: boolean = false;
+  isCompleted: boolean = false;
 
-   constructor(
-      private dataService: DataService,
-      private firebaseService: FirebaseService,
-      private router: Router,
-      private modalController: ModalController,
-      private sideStoreService: SideStoreDataService
-   ) {}
+  consideredRemovalMealSlot: MealSlot;
 
-   ngOnInit() {
-      this.dataService.setOnboardingStage("dashboard");
-      this.dataService.getMealSlotsFromLocal();
-      this.dataService.getWeekStartDateFromLocal();
-   }
+  constructor(
+    private dataService: DataService,
+    private firebaseService: FirebaseService,
+    private router: Router,
+    private modalController: ModalController,
+    private sideStoreService: SideStoreDataService
+  ) {}
 
-   ionViewWillEnter() {
-      this.dataService.getMealSlotsFromLocal();
-      this.dataService.getWeekStartDateFromLocal();
+  ngOnInit() {
+    this.dataService.setOnboardingStage("dashboard");
+    this.dataService.getMealSlotsFromLocal();
+    this.dataService.getWeekStartDateFromLocal();
+  }
 
-      combineLatest(this.dataService.mealSlotsObservable, this.dataService.weekStartDateObservable)
-         .pipe(take(3))
-         .subscribe(([mealSlots, weekStartDate]) => {
-            this.checkData(mealSlots, weekStartDate);
-            this.checkIfWeekIsComplete(mealSlots, weekStartDate);
-         });
-   }
+  ionViewWillEnter() {
+    this.dataService.getMealSlotsFromLocal();
+    this.dataService.getWeekStartDateFromLocal();
 
-   private checkData(data, weekStartDate) {
-      if (weekStartDate == undefined || (isNaN(weekStartDate.getTime()) && data.length <= 0)) {
-         this.firebaseService.logout().then(() => {
-            this.router.navigateByUrl("splash");
-         });
-      } else if (data.length <= 0 || data[0].recipe == undefined) {
-         this.router.navigateByUrl("mealselection/summary", {
-            replaceUrl: true,
-         });
-      } else {
-         /** Side store: filter out meals stored in the side store as being reviewed */
-         this.sideStoreService.saveMeals(data);
-         data = data.filter((meal) => !this.sideStoreService.getMealSlot(meal, true));
+    combineLatest(this.dataService.mealSlotsObservable, this.dataService.weekStartDateObservable)
+      .pipe(take(3))
+      .subscribe(([mealSlots, weekStartDate]) => {
+        this.checkData(mealSlots, weekStartDate);
+        this.checkIfWeekIsComplete(mealSlots, weekStartDate);
+      });
+  }
 
-         this.mealSlots = data;
+  private checkData(data, weekStartDate) {
+    if (weekStartDate == undefined || (isNaN(weekStartDate.getTime()) && data.length <= 0)) {
+      this.firebaseService.logout().then(() => {
+        this.router.navigateByUrl("splash");
+      });
+    } else if (data.length <= 0 || data[0].recipe == undefined) {
+      this.router.navigateByUrl("mealselection/summary", {
+        replaceUrl: true,
+      });
+    } else {
+      /** Side store: filter out meals stored in the side store as being reviewed */
+      this.sideStoreService.saveMeals(data);
+      data = data.filter((meal) => !this.sideStoreService.getMealSlot(meal, true));
+
+      this.mealSlots = data;
+    }
+  }
+
+  private checkIfWeekIsComplete(mealSlots, weekStartDate: Date) {
+    let reviewedMeal = 0;
+    mealSlots.forEach((mealSlot) => {
+      /** Side store: filter out meals stored in the side store as being reviewed */
+      const wasReviewedSideStore = this.sideStoreService.getMealSlot(mealSlot, true);
+
+      if (mealSlot.reviewed == true || wasReviewedSideStore) {
+        reviewedMeal++;
       }
-   }
+    });
 
-   private checkIfWeekIsComplete(mealSlots, weekStartDate: Date) {
-      let reviewedMeal = 0;
-      mealSlots.forEach((mealSlot) => {
-         /** Side store: filter out meals stored in the side store as being reviewed */
-         const wasReviewedSideStore = this.sideStoreService.getMealSlot(mealSlot, true);
+    if (mealSlots && reviewedMeal == mealSlots.length) {
+      this.isCompleted = true;
+      this.isLoading = false;
+    } else {
+      this.isCompleted = false;
+      this.isLoading = false;
+    }
 
-         if (mealSlot.reviewed == true || wasReviewedSideStore) {
-            reviewedMeal++;
-         }
-      });
+    // console.log(weekStartDate);
+    // let startDate = weekStartDate;
 
-      if (mealSlots && reviewedMeal == mealSlots.length) {
-         this.isCompleted = true;
-         this.isLoading = false;
-      } else {
-         this.isCompleted = false;
-         this.isLoading = false;
-      }
+    // if (isNaN(weekStartDate.getTime())) {
+    //     startDate = new Date();
+    // }
 
-      // console.log(weekStartDate);
-      // let startDate = weekStartDate;
+    // let todayDate = new Date();
 
-      // if (isNaN(weekStartDate.getTime())) {
-      //     startDate = new Date();
-      // }
+    // let daysBetweenDates = this.getDaysBetweenDates(startDate, todayDate);
 
-      // let todayDate = new Date();
+    // if (daysBetweenDates >= 7) {
+    //     this.isNewWeek = true;
+    //     this.isLoading = false;
+    // }
+    // else {
+    //     this.isNewWeek = false;
+    //     this.isLoading = false;
+    // }
+  }
 
-      // let daysBetweenDates = this.getDaysBetweenDates(startDate, todayDate);
+  private getDaysBetweenDates(dateOne: Date, dateTwo: Date) {
+    let differenceInTime = dateTwo.getTime() - dateOne.getTime();
+    let differenceInDays = differenceInTime / (1000 * 3600 * 24);
+    return differenceInDays;
+  }
 
-      // if (daysBetweenDates >= 7) {
-      //     this.isNewWeek = true;
-      //     this.isLoading = false;
-      // }
-      // else {
-      //     this.isNewWeek = false;
-      //     this.isLoading = false;
-      // }
-   }
+  startWeeklyFlow() {
+    localStorage.removeItem("localMealSlots");
+    localStorage.removeItem("localWeekStartDate");
+    this.router.navigateByUrl("onboarding/numberofmeals", {
+      replaceUrl: true,
+    });
+  }
 
-   private getDaysBetweenDates(dateOne: Date, dateTwo: Date) {
-      let differenceInTime = dateTwo.getTime() - dateOne.getTime();
-      let differenceInDays = differenceInTime / (1000 * 3600 * 24);
-      return differenceInDays;
-   }
+  async openRecipe(recipe: MealPreference) {
+    const modal = await this.modalController.create({
+      component: RecipeModalComponent,
+      cssClass: "recipe-modal",
+      componentProps: {
+        recipe: recipe,
+        showReview: true,
+      },
+    });
+    return await modal.present();
+  }
 
-   startWeeklyFlow() {
-      localStorage.removeItem("localMealSlots");
-      localStorage.removeItem("localWeekStartDate");
-      this.router.navigateByUrl("onboarding/numberofmeals", {
-         replaceUrl: true,
-      });
-   }
+  addMoreMeals() {
+    console.log("Add more meals");
+    this.router.navigateByUrl("onboarding/numberofmeals/add", {
+      replaceUrl: true,
+    });
+    //get_meal_plan_selection
+  }
 
-   async openRecipe(recipe: MealPreference) {
-      const modal = await this.modalController.create({
-         component: RecipeModalComponent,
-         cssClass: "recipe-modal",
-         componentProps: {
-            recipe: recipe,
-            showReview: true,
-         },
-      });
-      return await modal.present();
-   }
+  async removeMeal(mealSlot: MealSlot) {
+    console.log("Meal Slot:", mealSlot);
+    this.consideredRemovalMealSlot = mealSlot;
+
+    const modal = await this.modalController.create({
+      component: ConfirmmodalComponent,
+      cssClass: "confirm-modal",
+      componentProps: {
+        title: "Remove Meal",
+        description: ["Are you sure you wish to remove this meal from your meal plan?"],
+        confirmCallback: this.confirmRemoveMeal.bind(this),
+      },
+    });
+    return await modal.present();
+  }
+
+  confirmRemoveMeal() {
+    console.log("Confrm removing", this.consideredRemovalMealSlot, this);
+    this.dataService.removeMealSlot(this.consideredRemovalMealSlot);
+  }
+
+  //get_meal_plan_selection
+  //save_meal_plan
 }
