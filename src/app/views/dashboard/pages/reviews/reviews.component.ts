@@ -34,6 +34,7 @@ export class ReviewsPage implements OnInit {
          this.router.navigateByUrl("mealselection/meal/1", { replaceUrl: true });
       } else {
          /** Side store: filter out meals stored in the side store as being reviewed */
+         this.sideStoreService.saveMeals(data);
          data = data.filter((meal) => !this.sideStoreService.getMealSlot(meal, true));
 
          this.mealSlots = data;
