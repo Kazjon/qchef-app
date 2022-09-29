@@ -1,29 +1,30 @@
 <ion-header [translucent]="false">
-  <ion-toolbar class="header-dashboard">
-      <img class="logo" src="../../../../../assets/images/header-logo.svg">
+   <ion-toolbar class="header-dashboard">
+      <img class="logo" src="../../../../../assets/images/header-logo.svg" />
 
       <ion-buttons mode="ios" slot="end">
-          <ion-buttons slot="start">
-              <ion-menu-button autoHide="false"></ion-menu-button>
-          </ion-buttons>
+         <ion-buttons slot="start">
+            <ion-menu-button autoHide="false"></ion-menu-button>
+         </ion-buttons>
       </ion-buttons>
-  </ion-toolbar>
+   </ion-toolbar>
 </ion-header>
 
 <ion-content fullscreen class="has-tabs" no-bounce has-bouncing="false" forceOverscroll="false">
-  <div class="content-wrapper column start">
-    <h1>Review</h1>
-    <p>Help us suggest more yummy dishes in your next meal plan by completing these reviews.</p>
-    <div class="mealslot">
-      <ion-card *ngFor="let meal of mealSlots" [ngClass]="{'not-display': meal.reviewed}">
-        <div class="image-wrap">
-          <img src="{{ meal.recipe.image }}"/>
-        </div>
-        <ion-card-content>
-          <h2>{{ meal.recipe.title }}</h2>
-          <ion-button mode="ios" type="submit" (click)="reviewMeal(meal.recipe)"><span>Review</span></ion-button>
-        </ion-card-content>
-      </ion-card>
-    </div>
-  </div>
+   <div class="content-wrapper column start">
+      <h1>Review</h1>
+      <p *ngIf="mealSlots.length > 0">Help us suggest more yummy dishes in your next meal plan by completing these reviews.</p>
+      <p *ngIf="mealSlots.length == 0">You have no pending meal reviews.</p>
+      <div class="mealslot">
+         <ion-card *ngFor="let meal of mealSlots" [ngClass]="{ 'not-display': meal.reviewed }">
+            <div class="image-wrap">
+               <img src="{{ meal.recipe.image }}" />
+            </div>
+            <ion-card-content>
+               <h2>{{ meal.recipe.title }}</h2>
+               <ion-button mode="ios" type="submit" (click)="reviewMeal(meal.recipe)"><span>Review</span></ion-button>
+            </ion-card-content>
+         </ion-card>
+      </div>
+   </div>
 </ion-content>
