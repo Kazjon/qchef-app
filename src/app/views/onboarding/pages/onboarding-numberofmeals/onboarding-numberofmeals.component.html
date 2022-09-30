@@ -1,41 +1,34 @@
 <ion-header [translucent]="true" class="ion-no-border">
-	<ion-toolbar>
-		<ion-buttons mode="ios" slot="start">
-			<ion-back-button></ion-back-button>
-		</ion-buttons>
-	</ion-toolbar>
+  <ion-toolbar>
+    <ion-buttons mode="ios" slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
 </ion-header>
 <ion-content fullscreen no-bounce has-bouncing="false" forceOverscroll="false">
-
   <div class="content-wrapper column start">
+    <div class="content">
+      <ion-card class="content-prompt">
+        <ion-card-header>
+          <ion-card-title>Number of Meals</ion-card-title>
+        </ion-card-header>
 
-    <div class="progress">
-        <onboarding-progress [showOverall]="true"></onboarding-progress>
+        <ion-card-content>
+          <p>How many recipes do you want to prepare this week?</p>
+          <div class="input-fields">
+            <ion-img class="minus" [src]="iconMinus" (click)="setNumberOfMeals('minus')"></ion-img>
+            <div class="number-box">
+              <p>{{ numberOfMeals }}</p>
+            </div>
+            <ion-img class="plus" [src]="iconPlus" (click)="setNumberOfMeals('plus')"></ion-img>
+          </div>
+          <ion-button mode="ios" color="primary" (click)="next()">Next</ion-button>
+        </ion-card-content>
+
+        <div class="loading-overlay">
+          <ion-spinner name="crescent" color="primary"></ion-spinner>
+        </div>
+      </ion-card>
     </div>
-
-      <div class="content">
-          <ion-card class="content-prompt">
-              <ion-card-header>
-                  <ion-card-title>Number of Meals</ion-card-title>
-              </ion-card-header>
-
-              <ion-card-content>
-                  <p>How many recipes do you want to prepare this week?</p>
-                  <div class="input-fields">
-                    <ion-img class="minus" [src]="iconMinus" (click)="setNumberOfMeals('minus')"></ion-img>
-                    <div class="number-box"><p>{{numberOfMeals}}</p></div>
-                    <ion-img class="plus" [src]="iconPlus" (click)="setNumberOfMeals('plus')"></ion-img>
-                  </div>
-                  <ion-button mode="ios" color="primary" (click)="next()">Next</ion-button>
-              </ion-card-content>
-
-              <div class="loading-overlay">
-                  <ion-spinner name="crescent" color="primary"></ion-spinner>
-              </div>
-          </ion-card>
-      </div>
-
-
   </div>
-
 </ion-content>

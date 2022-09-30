@@ -12,269 +12,270 @@ import { FirebaseService } from "src/app/services/firebase/firebase.service";
 import { Subscription } from "rxjs";
 
 @Component({
-   selector: "app-onboarding-ingredientpreferences",
-   templateUrl: "./onboarding-ingredientpreferences.component.html",
-   styleUrls: ["./onboarding-ingredientpreferences.component.scss"],
+  selector: "app-onboarding-ingredientpreferences",
+  templateUrl: "./onboarding-ingredientpreferences.component.html",
+  styleUrls: ["./onboarding-ingredientpreferences.component.scss"],
 })
 export class OnboardingIngredientPreferencesComponent implements OnInit {
-   @ViewChild("scroller", { static: false }) scroller: IonContent;
-   @ViewChild("ingredientSlides", { static: false }) ingredientSlides: IonSlides;
-   @Input() progressValue: any;
-   @Input() page: number = 1;
-   activeSlide: number = 0;
-   disableNext: boolean = false;
-   isLoading: boolean = true;
-   ingredientPreferenceOptions: IngredientPreference[];
-   preferenceQuestions: IngredientPreferenceQuestion[] = ingredientPreferenceQuestions;
-   ingredientPreferenceResponse: IngredientPreferenceResponse;
-   percentage: any;
-   totalProgressSubscription: Subscription;
-   totalProgress: Object[];
-   selectedAnswerNum: number = 0;
+  @ViewChild("scroller", { static: false }) scroller: IonContent;
+  @ViewChild("ingredientSlides", { static: false }) ingredientSlides: IonSlides;
+  @Input() progressValue: any;
+  @Input() page: number = 1;
+  activeSlide: number = 0;
+  disableNext: boolean = false;
+  isLoading: boolean = true;
+  ingredientPreferenceOptions: IngredientPreference[];
+  preferenceQuestions: IngredientPreferenceQuestion[] = ingredientPreferenceQuestions;
+  ingredientPreferenceResponse: IngredientPreferenceResponse;
+  percentage: any;
+  totalProgressSubscription: Subscription;
+  totalProgress: Object[];
+  selectedAnswerNum: number = 0;
+  imgSrcLoading: string = "../../../assets/images/splash.svg";
 
-   constructor(
-      private dataService: DataService,
-      private router: Router,
-      private dataHandlingService: DataHandlingService,
-      private alertController: AlertController,
-      private firebaseService: FirebaseService,
-      public modalController: ModalController
-   ) {}
+  constructor(
+    private dataService: DataService,
+    private router: Router,
+    private dataHandlingService: DataHandlingService,
+    private alertController: AlertController,
+    private firebaseService: FirebaseService,
+    public modalController: ModalController
+  ) {}
 
-   ngOnInit() {
-      let uid = localStorage.getItem("userID");
-      this.surprisePreferenceStartPopup();
+  ngOnInit() {
+    let uid = localStorage.getItem("userID");
+    this.surprisePreferenceStartPopup();
 
-      this.ingredientPreferenceResponse = {
-         userID: uid,
-         taste_ratings: {},
-         familiarity_ratings: {},
-      };
+    this.ingredientPreferenceResponse = {
+      userID: uid,
+      taste_ratings: {},
+      familiarity_ratings: {},
+    };
 
-      this.dataService.getIngredientsFromServer().subscribe(
-         (res) => {
-            this.dataHandlingService.handleIngredientPreferenceData(res).then((organisedData: IngredientPreference[]) => {
-               this.ingredientPreferenceOptions = organisedData;
-               this.isLoading = false;
-            });
-         },
-         (exception) => {
-            // need to check if server return 'Unable to authenticate'
-            if (exception && exception.error && typeof exception.error == "string") {
-               const strRes = <string>exception.error;
-               if (strRes.includes("Unable to authenticate")) {
-                  this.showLogoutUserPop();
-               }
-            }
-         }
-      );
-      //this.progressValue = this.dataService.getProgressStage();
-      //this.percentage = this.progressValue;
+    this.dataService.getIngredientsFromServer().subscribe(
+      (res) => {
+        this.dataHandlingService.handleIngredientPreferenceData(res).then((organisedData: IngredientPreference[]) => {
+          this.ingredientPreferenceOptions = organisedData;
+          this.isLoading = false;
+        });
+      },
+      (exception) => {
+        // need to check if server return 'Unable to authenticate'
+        if (exception && exception.error && typeof exception.error == "string") {
+          const strRes = <string>exception.error;
+          if (strRes.includes("Unable to authenticate")) {
+            this.showLogoutUserPop();
+          }
+        }
+      }
+    );
+    //this.progressValue = this.dataService.getProgressStage();
+    //this.percentage = this.progressValue;
 
-      this.totalProgressSubscription = this.dataService.totalProgressObservable.subscribe((res) => {
-         this.totalProgress = res;
-      });
-   }
+    this.totalProgressSubscription = this.dataService.totalProgressObservable.subscribe((res) => {
+      this.totalProgress = res;
+    });
+  }
 
-   prevStage() {
-      this.progressValue = this.dataService.getProgressMark("mealPreference");
-      this.percentage = this.progressValue;
-   }
+  prevStage() {
+    this.progressValue = this.dataService.getProgressMark("mealPreference");
+    this.percentage = this.progressValue;
+  }
 
-   imageLoaded(ingredient: IngredientPreference) {
-      ingredient.loaded = true;
-   }
+  imageLoaded(ingredient: IngredientPreference) {
+    ingredient.loaded = true;
+  }
 
-   selectPreference(
-      ingredientID: string,
-      question: IngredientPreferenceQuestion,
-      option: IngredientPreferenceQuestionOption,
-      optionIndex: number,
-      questionIndex: number,
-      ingredientIndex: number
-   ) {
-      this.ingredientPreferenceOptions[ingredientIndex].questions[questionIndex].disabled = true;
+  selectPreference(
+    ingredientID: string,
+    question: IngredientPreferenceQuestion,
+    option: IngredientPreferenceQuestionOption,
+    optionIndex: number,
+    questionIndex: number,
+    ingredientIndex: number
+  ) {
+    this.ingredientPreferenceOptions[ingredientIndex].questions[questionIndex].disabled = true;
 
-      // Set answer to selected
-      this.deselectAllAnswers(ingredientIndex, questionIndex);
-      this.ingredientPreferenceOptions[ingredientIndex].questions[questionIndex].options[optionIndex].selected = true;
-      this.getSelectedAnswerNum(ingredientIndex);
+    // Set answer to selected
+    this.deselectAllAnswers(ingredientIndex, questionIndex);
+    this.ingredientPreferenceOptions[ingredientIndex].questions[questionIndex].options[optionIndex].selected = true;
+    this.getSelectedAnswerNum(ingredientIndex);
 
-      // Set ingredient preference answer
-      this.setIngredientPreferenceAnswer(ingredientID, question, option);
+    // Set ingredient preference answer
+    this.setIngredientPreferenceAnswer(ingredientID, question, option);
 
-      // Show the next question
-      /*let timeout = setTimeout(() => {
+    // Show the next question
+    /*let timeout = setTimeout(() => {
             this.showNextQuestion(questionIndex, ingredientIndex);
             clearTimeout(timeout);
         }, 300);*/
-   }
+  }
 
-   private deselectAllAnswers(ingredientIndex: number, questionIndex: number) {
-      this.ingredientPreferenceOptions[ingredientIndex].questions[questionIndex].options.forEach((option) => {
-         option.selected = false;
+  private deselectAllAnswers(ingredientIndex: number, questionIndex: number) {
+    this.ingredientPreferenceOptions[ingredientIndex].questions[questionIndex].options.forEach((option) => {
+      option.selected = false;
+    });
+  }
+
+  private setIngredientPreferenceAnswer(ingredientID: string, question: IngredientPreferenceQuestion, option: IngredientPreferenceQuestionOption) {
+    this.ingredientPreferenceResponse[question.id][ingredientID] = option.id;
+  }
+
+  private showNextQuestion(questionIndex: number, ingredientIndex: number) {
+    let next = questionIndex + 1;
+
+    if (next < this.ingredientPreferenceOptions[ingredientIndex].questions.length) {
+      this.ingredientPreferenceOptions[ingredientIndex].questions[questionIndex].active = false;
+      this.ingredientPreferenceOptions[ingredientIndex].questions[next].active = true;
+    } else {
+      this.ingredientSlides.isEnd().then((isEnd) => {
+        if (isEnd) {
+          (this.totalProgress[1] as any).progress = 100;
+          (this.totalProgress[1] as any).count = 30;
+          this.dataService.updateTotalProgress(this.totalProgress);
+          this.savePreferences();
+        } else {
+          this.progressValue = this.dataService.getProgressStage();
+          this.percentage = this.progressValue;
+          this.ingredientSlides.slideNext();
+          this.calculateProgress();
+        }
       });
-   }
+    }
+  }
 
-   private setIngredientPreferenceAnswer(ingredientID: string, question: IngredientPreferenceQuestion, option: IngredientPreferenceQuestionOption) {
-      this.ingredientPreferenceResponse[question.id][ingredientID] = option.id;
-   }
+  getSelectedAnswerNum(mealIndex: number) {
+    this.selectedAnswerNum = 0;
 
-   private showNextQuestion(questionIndex: number, ingredientIndex: number) {
-      let next = questionIndex + 1;
-
-      if (next < this.ingredientPreferenceOptions[ingredientIndex].questions.length) {
-         this.ingredientPreferenceOptions[ingredientIndex].questions[questionIndex].active = false;
-         this.ingredientPreferenceOptions[ingredientIndex].questions[next].active = true;
-      } else {
-         this.ingredientSlides.isEnd().then((isEnd) => {
-            if (isEnd) {
-               (this.totalProgress[1] as any).progress = 100;
-               (this.totalProgress[1] as any).count = 30;
-               this.dataService.updateTotalProgress(this.totalProgress);
-               this.savePreferences();
-            } else {
-               this.progressValue = this.dataService.getProgressStage();
-               this.percentage = this.progressValue;
-               this.ingredientSlides.slideNext();
-               this.calculateProgress();
-            }
-         });
+    for (let i = 0; i < this.ingredientPreferenceOptions[mealIndex].questions.length; i++) {
+      for (let p = 0; p < this.ingredientPreferenceOptions[mealIndex].questions[i].options.length; p++) {
+        if (this.ingredientPreferenceOptions[mealIndex].questions[i].options[p].selected) {
+          this.selectedAnswerNum++;
+        }
       }
-   }
+    }
+  }
 
-   getSelectedAnswerNum(mealIndex: number) {
-      this.selectedAnswerNum = 0;
+  showNextIngredient(mealIndex: number) {
+    this.disableNext = true;
+    this.getSelectedAnswerNum(mealIndex);
 
-      for (let i = 0; i < this.ingredientPreferenceOptions[mealIndex].questions.length; i++) {
-         for (let p = 0; p < this.ingredientPreferenceOptions[mealIndex].questions[i].options.length; p++) {
-            if (this.ingredientPreferenceOptions[mealIndex].questions[i].options[p].selected) {
-               this.selectedAnswerNum++;
-            }
-         }
-      }
-   }
-
-   showNextIngredient(mealIndex: number) {
-      this.disableNext = true;
-      this.getSelectedAnswerNum(mealIndex);
-
-      if (this.selectedAnswerNum === 2) {
-         this.ingredientSlides.isEnd().then((isEnd) => {
-            if (isEnd) {
-               (this.totalProgress[1] as any).progress = 100;
-               (this.totalProgress[1] as any).count = 30;
-               this.dataService.updateTotalProgress(this.totalProgress);
-               this.savePreferences();
-            } else {
-               this.progressValue = this.dataService.getProgressStage();
-               this.percentage = this.progressValue;
-               this.ingredientSlides.slideNext();
-               this.selectedAnswerNum = 0;
-               this.scroller.scrollToTop(500);
-               this.disableNext = false;
-               this.calculateProgress();
-               this.getSelectedAnswerNum(this.activeSlide + 1);
-            }
-         });
-      } else {
-         this.disableNext = false;
-      }
-   }
-
-   showPrevIngredient() {
-      this.ingredientSlides.slidePrev();
-      this.activeSlide = this.activeSlide - 1;
-      this.getSelectedAnswerNum(this.activeSlide);
-   }
-
-   backToPrevQuestion(questionIndex: number, ingredientIndex: number) {
-      let prev: number;
-
-      if (questionIndex > 0) {
-         prev = questionIndex - 1;
-         this.ingredientPreferenceOptions[ingredientIndex].questions[questionIndex].active = false;
-         this.ingredientPreferenceOptions[ingredientIndex].questions[prev].active = true;
-      } else {
-         this.ingredientPreferenceOptions[ingredientIndex - 1].questions[2].disabled = false;
-         this.progressValue = this.dataService.getProgressStage();
-         this.percentage = this.progressValue;
-         this.ingredientSlides.slidePrev();
-         this.calculateProgress();
-      }
-   }
-
-   private calculateProgress() {
-      this.ingredientSlides.getActiveIndex().then((activeIndex) => {
-         this.activeSlide = activeIndex;
-         let percentage = (activeIndex / this.ingredientPreferenceOptions.length) * 100;
-         (this.totalProgress[1] as any).progress = percentage;
-         (this.totalProgress[1] as any).count = activeIndex;
-         this.dataService.updateTotalProgress(this.totalProgress);
+    if (this.selectedAnswerNum === 2) {
+      this.ingredientSlides.isEnd().then((isEnd) => {
+        if (isEnd) {
+          (this.totalProgress[1] as any).progress = 100;
+          (this.totalProgress[1] as any).count = 30;
+          this.dataService.updateTotalProgress(this.totalProgress);
+          this.savePreferences();
+        } else {
+          this.progressValue = this.dataService.getProgressStage();
+          this.percentage = this.progressValue;
+          this.ingredientSlides.slideNext();
+          this.selectedAnswerNum = 0;
+          this.scroller.scrollToTop(500);
+          this.disableNext = false;
+          this.calculateProgress();
+          this.getSelectedAnswerNum(this.activeSlide + 1);
+        }
       });
-   }
-
-   setPagerNum() {
-      this.ingredientSlides.getActiveIndex().then((index) => {
-         this.page = ++index;
-      });
-   }
-
-   private savePreferences() {
-      localStorage.setItem("ingredientPrefs", JSON.stringify(this.ingredientPreferenceResponse));
+    } else {
       this.disableNext = false;
-      this.goToLoadingScreen();
-      /*this.dataService.postIngredientRatingsToServer(this.ingredientPreferenceResponse)
+    }
+  }
+
+  showPrevIngredient() {
+    this.ingredientSlides.slidePrev();
+    this.activeSlide = this.activeSlide - 1;
+    this.getSelectedAnswerNum(this.activeSlide);
+  }
+
+  backToPrevQuestion(questionIndex: number, ingredientIndex: number) {
+    let prev: number;
+
+    if (questionIndex > 0) {
+      prev = questionIndex - 1;
+      this.ingredientPreferenceOptions[ingredientIndex].questions[questionIndex].active = false;
+      this.ingredientPreferenceOptions[ingredientIndex].questions[prev].active = true;
+    } else {
+      this.ingredientPreferenceOptions[ingredientIndex - 1].questions[2].disabled = false;
+      this.progressValue = this.dataService.getProgressStage();
+      this.percentage = this.progressValue;
+      this.ingredientSlides.slidePrev();
+      this.calculateProgress();
+    }
+  }
+
+  private calculateProgress() {
+    this.ingredientSlides.getActiveIndex().then((activeIndex) => {
+      this.activeSlide = activeIndex;
+      let percentage = (activeIndex / this.ingredientPreferenceOptions.length) * 100;
+      (this.totalProgress[1] as any).progress = percentage;
+      (this.totalProgress[1] as any).count = activeIndex;
+      this.dataService.updateTotalProgress(this.totalProgress);
+    });
+  }
+
+  setPagerNum() {
+    this.ingredientSlides.getActiveIndex().then((index) => {
+      this.page = ++index;
+    });
+  }
+
+  private savePreferences() {
+    localStorage.setItem("ingredientPrefs", JSON.stringify(this.ingredientPreferenceResponse));
+    this.disableNext = false;
+    this.goToLoadingScreen();
+    /*this.dataService.postIngredientRatingsToServer(this.ingredientPreferenceResponse)
             .subscribe((res) => {
                 console.log('post ingredirent', res);
                 this.goToLoadingScreen();
             });*/
-   }
+  }
 
-   async surprisePreferenceStartPopup() {
-      const modal = await this.modalController.create({
-         component: GuidemodalComponent,
-         cssClass: "guide-modal",
-         componentProps: {
-            title: "Nice work!",
-            description: [
-               "On the next page we're going to show you some ingredients.",
-               "We'll ask if you're familiar with each one, then how much you like it.",
-               "If there's something you've never eaten, don't worry: just answer as well as you can.",
-            ],
-         },
-      });
-      return await modal.present();
-   }
+  async surprisePreferenceStartPopup() {
+    const modal = await this.modalController.create({
+      component: GuidemodalComponent,
+      cssClass: "guide-modal",
+      componentProps: {
+        title: "Nice work!",
+        description: [
+          "In Part 2 we're going to show you some ingredients.",
+          "We'll ask if you're familiar with each one, then how much you like it.",
+          "If there's something you've never eaten, don't worry: just answer as well as you can.",
+        ],
+      },
+    });
+    return await modal.present();
+  }
 
-   private goToLoadingScreen() {
-      this.router.navigateByUrl("/onboarding/loadingscreen");
-   }
+  private goToLoadingScreen() {
+    this.router.navigateByUrl("/onboarding/loadingscreen");
+  }
 
-   goBack() {
-      this.router.navigateByUrl("/onboarding/mealpreferences");
-   }
+  goBack() {
+    this.router.navigateByUrl("/onboarding/mealpreferences");
+  }
 
-   async showLogoutUserPop() {
-      const alert = await this.alertController.create({
-         header: "Oh no!",
-         message: "Your session has expired! Please log back in.",
-         buttons: [
-            {
-               text: "Okay",
-               handler: () => {
-                  this.firebaseService.logoutUserFromApp().then(() => {
-                     this.router.navigateByUrl("login", { replaceUrl: true });
-                  });
-               },
-            },
-         ],
-      });
+  async showLogoutUserPop() {
+    const alert = await this.alertController.create({
+      header: "Oh no!",
+      message: "Your session has expired! Please log back in.",
+      buttons: [
+        {
+          text: "Okay",
+          handler: () => {
+            this.firebaseService.logoutUserFromApp().then(() => {
+              this.router.navigateByUrl("login", { replaceUrl: true });
+            });
+          },
+        },
+      ],
+    });
 
-      await alert.present();
-   }
+    await alert.present();
+  }
 
-   ngOnDestroy() {
-      this.totalProgressSubscription.unsubscribe();
-   }
+  ngOnDestroy() {
+    this.totalProgressSubscription.unsubscribe();
+  }
 }
