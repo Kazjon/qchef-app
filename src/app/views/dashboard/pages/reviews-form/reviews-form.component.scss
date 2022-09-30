@@ -114,12 +114,19 @@ ion-content {
       }
 
       ion-spinner {
-         position: absolute;
          left: 0;
          right: 0;
          top: 0;
          bottom: 0;
          margin: auto;
+         margin-left: 20px;
+         vertical-align: middle;
+      }
+
+      span {
+         visibility: visible;
+         opacity: 1;
+         color: #fff;
       }
    }
 

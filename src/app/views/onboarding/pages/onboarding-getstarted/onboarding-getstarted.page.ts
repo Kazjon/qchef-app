@@ -8,6 +8,7 @@ import { DataService } from "src/app/services/data/data.service";
    styleUrls: ["./onboarding-getstarted.page.scss"],
 })
 export class OnboardingGetStartedPage implements OnInit {
+   imgSrc: string = "../../../assets/images/header-logo.svg";
    constructor(private router: Router, private dataService: DataService) {}
 
    ngOnInit() {

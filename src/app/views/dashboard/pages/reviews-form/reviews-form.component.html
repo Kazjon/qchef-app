@@ -127,8 +127,13 @@
                class="btn-submit"
                [ngClass]="{ submitted: formSubmitted }"
                [disabled]="(!reviewForm.valid && photoBase64 == null) || formSubmitted"
-               >SUBMIT<ion-spinner *ngIf="formSubmitted" name="crescent" color="light"></ion-spinner
-            ></ion-button>
+            >
+               <div *ngIf="!formSubmitted">SUBMIT ></div>
+               <div *ngIf="formSubmitted">
+                  <span>Submitting</span>
+                  <ion-spinner name="dots" color="light"></ion-spinner>
+               </div>
+            </ion-button>
             <div class="padder"></div>
          </form>
       </div>
