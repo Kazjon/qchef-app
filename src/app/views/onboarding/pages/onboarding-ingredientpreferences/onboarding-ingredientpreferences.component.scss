@@ -1,16 +1,37 @@
 .total-progress {
-    font-size: 12px;
-    padding: 15px 0;
+  font-size: 12px;
+  padding: 15px 0;
 }
 
 .button-previous {
-    letter-spacing: normal!important;
-    font-family: 'robotomedium'!important;
-    font-size: 13.3333px!important;
+  letter-spacing: normal !important;
+  font-family: "robotomedium" !important;
+  font-size: 13.3333px !important;
 
-    ion-icon {
-        width: 26px;
-        height: 26px;
-        margin-right: -5px;
-    }
+  ion-icon {
+    width: 26px;
+    height: 26px;
+    margin-right: -5px;
+  }
+}
+
+@media screen and (max-width: 460px) {
+  .content-prompt {
+    font-size: 30px;
+    line-height: 35px;
+  }
+}
+
+@media screen and (max-width: 380px) {
+  .content-prompt {
+    font-size: 26px;
+    line-height: 32px;
+  }
+}
+
+@media screen and (max-width: 330px) {
+  .content-prompt {
+    font-size: 23px;
+    line-height: 28px;
+  }
 }

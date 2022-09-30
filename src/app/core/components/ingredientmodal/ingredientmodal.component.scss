@@ -1,47 +1,47 @@
 .butt-close {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    margin: 9px;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  margin: 9px;
 }
 
 .content {
-    margin: 29px;
-    height: 100%;
-    overflow-y: scroll;
+  margin: 29px;
+  height: 100%;
+  overflow-y: scroll;
 }
 
 .header {
-    font-size: 18px;
-    line-height: 23px;
-    color: var(--ion-color-font-main);
-    font-family: var(--font-family-meal-subheading);
-    font-weight: var(--font-weight-heading);
-    font-style: var(--font-weight-meal-subheading);
+  font-size: 18px;
+  line-height: 23px;
+  color: var(--ion-color-font-main);
+  font-family: var(--font-family-meal-subheading);
+  font-weight: var(--font-weight-heading);
+  font-style: var(--font-weight-meal-subheading);
 }
 
 p {
-    font-size: 14px;
-    line-height: 20px;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--ion-color-font-main);
+  font-family: var(--font-family-body);
+  font-weight: var(--font-weight-body);
+  font-style: var(--font-style-body);
+}
+
+.ingredients {
+  padding-bottom: 120px;
+}
+
+.ingredient-item {
+  margin-bottom: 10px;
+  .text {
+    vertical-align: bottom;
     color: var(--ion-color-font-main);
     font-family: var(--font-family-body);
     font-weight: var(--font-weight-body);
     font-style: var(--font-style-body);
-}
-
-.ingredients {
-    padding-bottom: 120px;
-}
-
-.ingredient-item {
-    margin-bottom: 10px;
-    .text {
-        vertical-align: bottom;
-        color: var(--ion-color-font-main);
-        font-family: var(--font-family-body);
-        font-weight: var(--font-weight-body);
-        font-style: var(--font-style-body);
-        font-size: 14px;
-        line-height: 20px;
-    }
+    font-size: 14px;
+    line-height: 20px;
+  }
 }
