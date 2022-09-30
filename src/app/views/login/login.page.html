@@ -1,61 +1,62 @@
 <ion-content no-bounce has-bouncing="false" forceOverscroll="false" class="ion-padding" scroll-y="false">
-  <div class="content-wrapper column" #wrapper>
-    <ion-card class="content-prompt" [ngClass]="{ 'loading': state === 'loading'}">
-      <ion-segment (ionChange)="segmentChanged($event)" value="login" mode="md">
-        <ion-segment-button value="login">
-          <ion-label>Login</ion-label>
-        </ion-segment-button>
-        <ion-segment-button value="register">
-          <ion-label>Register </ion-label>
-        </ion-segment-button>
-      </ion-segment>
+   <div class="content-wrapper column" #wrapper>
+      <ion-img [src]="imgSrc" class="ion-align-self-center"></ion-img>
+      <ion-card class="content-prompt" [ngClass]="{ 'loading': state === 'loading'}">
+         <ion-segment (ionChange)="segmentChanged($event)" value="login" mode="md">
+            <ion-segment-button value="login">
+               <ion-label>Login</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="register">
+               <ion-label>Register </ion-label>
+            </ion-segment-button>
+         </ion-segment>
 
-      <ion-card-content *ngIf="!switchToRegisterForm">
-        <form (ngSubmit)="login()" [formGroup]="loginForm">
-          <ion-input formControlName="email" type="email" placeholder="Email" #emailFormField class="login-email"></ion-input>
-          <!--<div class="inline-error" [ngClass]="{'is-error': loginForm.get('email').dirty && loginForm.get('email').invalid}">
+         <ion-card-content *ngIf="!switchToRegisterForm">
+            <form (ngSubmit)="login()" [formGroup]="loginForm">
+               <ion-input formControlName="email" type="email" placeholder="Email" #emailFormField class="login-email"></ion-input>
+               <!--<div class="inline-error" [ngClass]="{'is-error': loginForm.get('email').dirty && loginForm.get('email').invalid}">
             Please enter a valid email address
           </div>-->
-          <ion-input formControlName="password" type="password" placeholder="Password" #passwordFormField class="login-password"></ion-input>
-          <!--<div class="inline-error" [ngClass]="{'is-error': loginForm.get('password').dirty && loginForm.get('password').invalid}">
+               <ion-input formControlName="password" type="password" placeholder="Password" #passwordFormField class="login-password"></ion-input>
+               <!--<div class="inline-error" [ngClass]="{'is-error': loginForm.get('password').dirty && loginForm.get('password').invalid}">
                   Password must contain 1 capital, 1 symbol, 1 digit and at least 9 characters
                </div>-->
-          <ion-button mode="ios" type="submit" [disabled]="formDisabled">Login</ion-button>
-          <div class="error" [ngClass]="{'is-error': state === 'error'}">{{ errorMessage }}</div>
-        </form>
-      </ion-card-content>
+               <ion-button mode="ios" type="submit" [disabled]="formDisabled">Login</ion-button>
+               <div class="error" [ngClass]="{'is-error': state === 'error'}">{{ errorMessage }}</div>
+            </form>
+         </ion-card-content>
 
-      <ion-card-content *ngIf="switchToRegisterForm">
-        <form (ngSubmit)="register()" [formGroup]="registerForm">
-          <ion-input formControlName="email" type="email" placeholder="Email"></ion-input>
-          <div class="inline-error" [ngClass]="{'is-error': registerForm.get('email').dirty && registerForm.get('email').invalid}">
-            Please enter a valid email address
-          </div>
-          <ion-input formControlName="password" type="password" placeholder="Password"></ion-input>
-          <div class="inline-error" [ngClass]="{'is-error': registerForm.get('password').dirty && registerForm.get('password').invalid}">
-            Password must contain at least 1 letter, 1 number and at least 8 characters
-          </div>
-          <ion-input
-            formControlName="confirmPassword"
-            type="password"
-            placeholder="Confirm Password"
-            [ngClass]="{'not-match': registerForm.get('password').value != registerForm.get('confirmPassword').value}"
-          ></ion-input>
-          <div
-            class="inline-error"
-            [ngClass]="{'is-error': registerForm.get('confirmPassword').dirty && registerForm.get('password').value != registerForm.get('confirmPassword').value}"
-          >
-            Passwords do not match
-          </div>
-          <ion-button mode="ios" type="submit" [disabled]="formDisabled">Register</ion-button>
-          <div class="error" [ngClass]="{'is-error': state === 'error'}">{{ errorMessage }}</div>
-        </form>
-      </ion-card-content>
+         <ion-card-content *ngIf="switchToRegisterForm">
+            <form (ngSubmit)="register()" [formGroup]="registerForm">
+               <ion-input formControlName="email" type="email" placeholder="Email"></ion-input>
+               <div class="inline-error" [ngClass]="{'is-error': registerForm.get('email').dirty && registerForm.get('email').invalid}">
+                  Please enter a valid email address
+               </div>
+               <ion-input formControlName="password" type="password" placeholder="Password"></ion-input>
+               <div class="inline-error" [ngClass]="{'is-error': registerForm.get('password').dirty && registerForm.get('password').invalid}">
+                  Password must contain at least 1 letter, 1 number and at least 8 characters
+               </div>
+               <ion-input
+                  formControlName="confirmPassword"
+                  type="password"
+                  placeholder="Confirm Password"
+                  [ngClass]="{'not-match': registerForm.get('password').value != registerForm.get('confirmPassword').value}"
+               ></ion-input>
+               <div
+                  class="inline-error"
+                  [ngClass]="{'is-error': registerForm.get('confirmPassword').dirty && registerForm.get('password').value != registerForm.get('confirmPassword').value}"
+               >
+                  Passwords do not match
+               </div>
+               <ion-button mode="ios" type="submit" [disabled]="formDisabled">Register</ion-button>
+               <div class="error" [ngClass]="{'is-error': state === 'error'}">{{ errorMessage }}</div>
+            </form>
+         </ion-card-content>
 
-      <div class="loading-overlay">
-        <ion-spinner name="crescent" color="primary"></ion-spinner>
-      </div>
-    </ion-card>
-    <ion-button fill="clear" class="transparent-butt-link" [routerLink]="['/forgotpassword']">Forgot Password?</ion-button>
-  </div>
+         <div class="loading-overlay">
+            <ion-spinner name="crescent" color="primary"></ion-spinner>
+         </div>
+      </ion-card>
+      <ion-button fill="clear" class="transparent-butt-link" [routerLink]="['/forgotpassword']">Forgot Password?</ion-button>
+   </div>
 </ion-content>

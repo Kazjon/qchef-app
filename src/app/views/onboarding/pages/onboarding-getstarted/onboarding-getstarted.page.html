@@ -1,22 +1,20 @@
 <ion-content no-bounce has-bouncing="false" forceOverscroll="false">
+   <div class="content-wrapper column">
+      <ion-img [src]="imgSrc" class="ion-align-self-center"></ion-img>
+      <ion-card class="content-prompt">
+         <ion-card-header>
+            <ion-card-title>Hi there!</ion-card-title>
+         </ion-card-header>
 
-	<div class="content-wrapper row">
-		<ion-card class="content-prompt">
-			<ion-card-header>
-				<ion-card-title>Hi there!</ion-card-title>
-			</ion-card-header>
+         <ion-card-content>
+            <p>To help us create yummy meal ideas for you, we need to grab some information about what you like (and don't like) to eat!</p>
+            <p>This process should take about 15 minutes.</p>
+            <ion-button mode="ios" color="primary" (click)="getStarted()">Get Started</ion-button>
+         </ion-card-content>
 
-			<ion-card-content>
-				<p>To help us create yummy meal ideas for you, we need to grab some information about what you like (and don't like) to eat!</p>
-				<p>This process should take about 15 minutes.</p>
-				<ion-button mode="ios" color="primary" (click)="getStarted()">Get Started</ion-button>
-			</ion-card-content>
-
-			<div class="loading-overlay">
-				<ion-spinner name="crescent" color="primary"></ion-spinner>
-			</div>
-
-		</ion-card>
-	</div>
-
+         <div class="loading-overlay">
+            <ion-spinner name="crescent" color="primary"></ion-spinner>
+         </div>
+      </ion-card>
+   </div>
 </ion-content>
