@@ -1,36 +1,32 @@
 <ion-header [translucent]="false" class="ion-no-border">
-    <ion-toolbar>
-        <ion-buttons mode="ios" slot="start">
-            <ion-back-button></ion-back-button>
-        </ion-buttons>
-    </ion-toolbar>
+   <ion-toolbar>
+      <ion-buttons mode="ios" slot="start">
+         <ion-back-button></ion-back-button>
+      </ion-buttons>
+   </ion-toolbar>
 </ion-header>
 <ion-content fullscreen no-bounce has-bouncing="false" forceOverscroll="false">
+   <div class="content-wrapper column start">
+      <div class="progress">
+         <onboarding-progress [showOverall]="true"></onboarding-progress>
+      </div>
 
-    <div class="content-wrapper column start">
+      <div class="content">
+         <img class="logo" src="../../../../../assets/images/header-logo.svg" />
+         <ion-card class="content-prompt">
+            <ion-card-header>
+               <ion-card-title>Food Preferences</ion-card-title>
+            </ion-card-header>
 
-        <div class="progress">
-            <onboarding-progress [showOverall]="true"></onboarding-progress>
-        </div>
+            <ion-card-content>
+               <p>To help us customise your meal plan, tell us whether you like (or don't like) the following meals and ingredients.</p>
+               <ion-button mode="ios" color="primary" (click)="next()">Next</ion-button>
+            </ion-card-content>
 
-        <div class="content">
-            <ion-card class="content-prompt">
-                <ion-card-header>
-                    <ion-card-title>Food Preferences</ion-card-title>
-                </ion-card-header>
-
-                <ion-card-content>
-                    <p>To help us customise your meal plan, tell us whether you like (or don't like) the following meals and ingredients.</p>
-                    <ion-button mode="ios" color="primary" (click)="next()">Next</ion-button>
-                </ion-card-content>
-
-                <div class="loading-overlay">
-                    <ion-spinner name="crescent" color="primary"></ion-spinner>
-                </div>
-            </ion-card>
-        </div>
-
-
-    </div>
-
+            <div class="loading-overlay">
+               <ion-spinner name="crescent" color="primary"></ion-spinner>
+            </div>
+         </ion-card>
+      </div>
+   </div>
 </ion-content>
