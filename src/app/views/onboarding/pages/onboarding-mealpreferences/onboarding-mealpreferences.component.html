@@ -47,7 +47,7 @@
                                  *ngFor="let ingredient of meal.ingredients; let i = index"
                                  [ngClass]="{ 'not-display': i >= 10 && !showAllIngredients, 'expand-ingredient': showAllIngredients }"
                               >
-                                 <span>{{ ingredient }}</span>
+                                 <span class="ingredient-name">{{ ingredient }}</span>
                               </ion-col>
                            </ion-row>
                         </ion-grid>
