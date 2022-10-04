@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, AfterViewInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { combineLatest } from "rxjs";
 import { take } from "rxjs/operators";

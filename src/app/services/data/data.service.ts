@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { Observable, BehaviorSubject } from "rxjs";
+import { Observable, BehaviorSubject, Subscription } from "rxjs";
 import { MealPreference } from "../../core/objects/MealPreference";
 import { IngredientPreference } from "src/app/core/objects/IngredientPreference";
 import { MealPlanSelectionResponse } from "src/app/core/objects/MealPlanSelectionResponse";
@@ -13,6 +13,7 @@ import { DataHandlingService } from "../datahandling/datahandling.service";
 import { RecipeReviewResponse } from "src/app/core/objects/RecipeReviewResponse";
 import { FirebaseService } from "../firebase/firebase.service";
 import { SideStoreDataService } from "./side-store.service";
+import { Router } from "@angular/router";
 
 @Injectable({
    providedIn: "root",
@@ -67,7 +68,14 @@ export class DataService {
    actionLog = new BehaviorSubject<any>([]);
    actionLogObservable = this.actionLog.asObservable();
 
-   constructor(private http: HttpClient, private dataHandlingService: DataHandlingService, private sideStoreService: SideStoreDataService) {}
+   reviewSubscription: Subscription; // Stores the http call so we can cancel on suspend
+
+   constructor(
+      private http: HttpClient,
+      private dataHandlingService: DataHandlingService,
+      private sideStoreService: SideStoreDataService,
+      private router: Router
+   ) {}
 
    logAction(recipeID: string, action: string) {
       let log = [];
@@ -357,6 +365,22 @@ export class DataService {
    getOnboardingStage() {
       let stage = localStorage.getItem("onboardingStage");
       return stage;
+   }
+
+   saveReviewSubscription(subscription: Subscription) {
+      this.reviewSubscription = subscription;
+   }
+
+   cancelReviewHTTP() {
+      if (this.reviewSubscription) {
+         console.log("Cancelling");
+         this.reviewSubscription.unsubscribe();
+         this.router.navigateByUrl("/dashboard/reviewcancel");
+      }
+   }
+
+   clearReviewSubscription() {
+      this.reviewSubscription = null;
    }
 
    updateTotalProgress(progress: Object[]) {

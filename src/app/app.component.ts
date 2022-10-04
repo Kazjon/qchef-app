@@ -58,9 +58,9 @@ export class AppComponent {
       const { App } = Plugins;
       App.addListener("appStateChange", (state: any) => {
          if (state.isActive) {
-            console.log("Resume Event");
+            // Suspended event
          } else {
-            console.log("Suspend Event");
+            this.dataService.cancelReviewHTTP();
          }
       });
    }
