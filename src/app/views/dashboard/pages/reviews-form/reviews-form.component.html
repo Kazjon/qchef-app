@@ -57,17 +57,17 @@
                <div class="question-option-radio" [ngClass]="{ selected: taste.option1Selected }" (click)="updateTaste('0')">
                   <div class="radio"></div>
                   <input type="radio" id="like" name="taste" value="0" formControlName="taste" />
-                  <label class="title" for="like">like other things I've had before</label>
+                  <label class="title" for="like"><strong>like</strong> other things I've had before</label>
                </div>
                <div class="question-option-radio" [ngClass]="{ selected: taste.option2Selected }" (click)="updateTaste('1')">
                   <div class="radio"></div>
                   <input type="radio" id="abit" name="taste" value="1" formControlName="taste" />
-                  <label class="title" for="abit">a bit like something I've had before</label>
+                  <label class="title" for="abit">a <strong>bit like</strong> something I've had before</label>
                </div>
                <div class="question-option-radio" [ngClass]="{ selected: taste.option3Selected }" (click)="updateTaste('2')">
                   <div class="radio"></div>
                   <input type="radio" id="unlike" name="taste" value="2" formControlName="taste" />
-                  <label class="title" for="unlike">unlike anything else I've had before</label>
+                  <label class="title" for="unlike"><strong>unlike</strong> anything else I've had before</label>
                </div>
             </div>
             <div class="question-group">
@@ -82,17 +82,17 @@
                <div class="question-option-radio" [ngClass]="{ selected: enjoy.option1Selected }" (click)="updateEnjoy('0')">
                   <div class="radio"></div>
                   <input type="radio" id="enjoyable" name="enjoy" value="0" formControlName="enjoy" />
-                  <label class="title" for="enjoyable">was enjoyable</label>
+                  <label class="title" for="enjoyable">was <strong>enjoyable</strong></label>
                </div>
                <div class="question-option-radio" [ngClass]="{ selected: enjoy.option2Selected }" (click)="updateEnjoy('1')">
                   <div class="radio"></div>
                   <input type="radio" id="somewhat" name="enjoy" value="1" formControlName="enjoy" />
-                  <label class="title" for="somewhat">was somewhat enjoyable</label>
+                  <label class="title" for="somewhat">was <strong>somewhat enjoyable</strong></label>
                </div>
                <div class="question-option-radio" [ngClass]="{ selected: enjoy.option3Selected }" (click)="updateEnjoy('2')">
                   <div class="radio"></div>
                   <input type="radio" id="wasnt" name="enjoy" value="2" formControlName="enjoy" />
-                  <label class="title" for="wasnt">wasn’t really something I enjoyed</label>
+                  <label class="title" for="wasnt"><strong>wasn't really</strong> something I enjoyed</label>
                </div>
             </div>
             <div class="question-group">
@@ -107,17 +107,17 @@
                <div class="question-option-radio" [ngClass]="{ selected: tryAgain.option1Selected }" (click)="updateTryAgain('0')">
                   <div class="radio"></div>
                   <input type="radio" id="yes" name="tryAgain" value="0" formControlName="tryAgain" />
-                  <label class="title" for="yes">Yes</label>
+                  <label class="title" for="yes"><strong>Yes</strong></label>
                </div>
                <div class="question-option-radio" [ngClass]="{ selected: tryAgain.option2Selected }" (click)="updateTryAgain('1')">
                   <div class="radio"></div>
                   <input type="radio" id="only" name="tryAgain" value="1" formControlName="tryAgain" />
-                  <label class="title" for="only">Only for the right occasion</label>
+                  <label class="title" for="only">Only for the <strong>right occasion</strong></label>
                </div>
                <div class="question-option-radio" [ngClass]="{ selected: tryAgain.option3Selected }" (click)="updateTryAgain('2')">
                   <div class="radio"></div>
                   <input type="radio" id="probably" name="tryAgain" value="2" formControlName="tryAgain" />
-                  <label class="title" for="probably">Probably not</label>
+                  <label class="title" for="probably">Probably <strong>not</strong></label>
                </div>
             </div>
             <ion-button
