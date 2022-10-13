@@ -444,6 +444,18 @@
       }
    }
 
+   .delete-account-modal .modal-wrapper {
+      margin: auto 18px !important;
+      min-height: 475px;
+      height: auto;
+   }
+
+   .delete-account-fail-modal .modal-wrapper {
+      margin: auto 18px !important;
+      min-height: 275px;
+      height: auto;
+   }
+
    .slide-options {
       ion-card {
          border-radius: 8px;

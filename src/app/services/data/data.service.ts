@@ -162,6 +162,10 @@ export class DataService {
       return this.http.post<RecipeReviewResponse>(this.baseURL + "/review_recipe", recipeReviewResponse, this.httpOptions);
    }
 
+   postDeleteAccountToServer(): Observable<any> {
+      return this.http.post(this.baseURL + "/delete_user", {}, this.httpOptions);
+   }
+
    getRecommendedMealsFromLocal() {
       let recommendedMeals: MealPreference[];
       let localRecommendedMealsString = localStorage.getItem("localRecommendedMeals");

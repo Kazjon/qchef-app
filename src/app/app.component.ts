@@ -1,5 +1,5 @@
 import { Component, ViewChild } from "@angular/core";
-import { Platform, IonMenu, MenuController } from "@ionic/angular";
+import { Platform, IonMenu, MenuController, ModalController } from "@ionic/angular";
 import { SplashScreen } from "@ionic-native/splash-screen/ngx";
 //import { StatusBar } from '@ionic-native/status-bar/ngx';
 
@@ -9,6 +9,8 @@ import { FirebaseService } from "./services/firebase/firebase.service";
 import { Router } from "@angular/router";
 import { DataService } from "./services/data/data.service";
 import { Plugins, StatusBarStyle, KeyboardInfo } from "@capacitor/core";
+import { DeleteAccountModalComponent } from "./core/components/deleteaccountmodal/deleteaccountmodal.component";
+import { DeleteAccountFailModalComponent } from "./core/components/deleteaccountfailmodal/deleteaccountfailmodal.component";
 
 const { Keyboard } = Plugins;
 const { StatusBar } = Plugins;
@@ -26,7 +28,8 @@ export class AppComponent {
       private firebaseService: FirebaseService,
       private dataService: DataService,
       private menu: MenuController,
-      private router: Router
+      private router: Router,
+      private modalController: ModalController
    ) {
       this.initializeApp();
 
@@ -83,6 +86,14 @@ export class AppComponent {
       }
 
       this.menu.close();
+   }
+
+   async deleteAccountRequest() {
+      const modal = await this.modalController.create({
+         component: DeleteAccountModalComponent,
+         cssClass: "delete-account-modal",
+      });
+      return await modal.present();
    }
 
    logout() {

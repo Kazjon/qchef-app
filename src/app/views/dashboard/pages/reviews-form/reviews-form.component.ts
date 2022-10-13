@@ -87,7 +87,6 @@ export class ReviewsFormComponent implements OnInit {
    }
 
    ionViewWillEnter() {
-      console.log("WILL ENTER");
       this.formSubmitted = false;
    }
 

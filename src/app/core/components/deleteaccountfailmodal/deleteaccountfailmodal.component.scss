@@ -1,0 +1,23 @@
+ion-content {
+   --overflow: hidden;
+
+   .modal-wrapper {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 15px;
+      padding: 20px 5px 20px;
+
+      h1 {
+         font-size: 1.75rem;
+      }
+
+      p {
+         margin: 0;
+      }
+
+      ion-button:first-of-type {
+         margin-top: 20px;
+      }
+   }
+}
