@@ -49,7 +49,6 @@ export class RecipesPage implements OnInit, AfterViewInit {
             this.checkIfWeekIsComplete(mealSlots, weekStartDate);
          });
 
-      console.log("Will enter");
       if (this.router.url.indexOf("reviewcancel") !== -1) {
          this.openReviewIssueModal();
       }

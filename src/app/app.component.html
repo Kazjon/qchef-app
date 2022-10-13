@@ -1,24 +1,29 @@
 <ion-app>
-    <ion-menu #sideMenu side="end" type="push" contentId="main" swipe-gesture="false">
-        <ion-header [translucent]="false">
-            <ion-toolbar class="header-dashboard">
-                <img class="logo" src="../../../../../assets/images/header-logo.svg">
+   <ion-menu #sideMenu side="end" type="push" contentId="main" swipe-gesture="false">
+      <ion-header [translucent]="false">
+         <ion-toolbar class="header-dashboard">
+            <img class="logo" src="../../../../../assets/images/header-logo.svg" />
 
-                <ion-buttons mode="ios" slot="end">
-                    <ion-buttons slot="start">
-                        <ion-menu-button autoHide="false"></ion-menu-button>
-                    </ion-buttons>
-                </ion-buttons>
-            </ion-toolbar>
-          </ion-header>
-        <ion-content class="side-menu" no-bounce has-bouncing="false" forceOverscroll="false">
-            <ion-list class="safe-top">
-                <ion-item lines="none" (click)="goTo('recipes')"><img src="../../../../../assets/images/icon-recipes.svg">Meal Plan</ion-item>
-                <ion-item lines="none" (click)="goTo('shoppinglist')"><img src="../../../../../assets/images/icon-shopping-list.svg">Shopping List</ion-item>
-                <ion-item lines="none" (click)="goTo('reviews')"><img src="../../../../../assets/images/icon-review.svg">Reviews</ion-item>
-                <ion-item lines="none" (click)="logout()" ><img src="../../../../../assets/images/icon-logout.svg">Logout</ion-item>
-            </ion-list>
-        </ion-content>
-    </ion-menu>
-    <ion-router-outlet id="main"></ion-router-outlet>
+            <ion-buttons mode="ios" slot="end">
+               <ion-buttons slot="start">
+                  <ion-menu-button autoHide="false"></ion-menu-button>
+               </ion-buttons>
+            </ion-buttons>
+         </ion-toolbar>
+      </ion-header>
+      <ion-content class="side-menu" no-bounce has-bouncing="false" forceOverscroll="false">
+         <ion-list class="safe-top">
+            <ion-item lines="none" (click)="goTo('recipes')"><img src="../../../../../assets/images/icon-recipes.svg" />Meal Plan</ion-item>
+            <ion-item lines="none" (click)="goTo('shoppinglist')"
+               ><img src="../../../../../assets/images/icon-shopping-list.svg" />Shopping List</ion-item
+            >
+            <ion-item lines="none" (click)="goTo('reviews')"><img src="../../../../../assets/images/icon-review.svg" />Reviews</ion-item>
+            <ion-item lines="none" (click)="logout()"><img src="../../../../../assets/images/icon-logout.svg" />Logout</ion-item>
+            <ion-item lines="none" (click)="deleteAccountRequest()"
+               ><img src="../../../../../assets/images/icon-delete-account.svg" />Delete Account</ion-item
+            >
+         </ion-list>
+      </ion-content>
+   </ion-menu>
+   <ion-router-outlet id="main"></ion-router-outlet>
 </ion-app>
